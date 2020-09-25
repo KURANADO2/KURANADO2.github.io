@@ -1,55 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.kuranado.com</id>
-    <title>Gridea</title>
-    <updated>2020-09-25T03:46:54.290Z</updated>
+    <title>KURANADO</title>
+    <updated>2020-09-25T06:06:35.083Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.kuranado.com"/>
     <link rel="self" href="https://blog.kuranado.com/atom.xml"/>
-    <subtitle>温故而知新</subtitle>
+    <subtitle>笔记/博客</subtitle>
     <logo>https://blog.kuranado.com/images/avatar.png</logo>
     <icon>https://blog.kuranado.com/favicon.ico</icon>
-    <rights>All rights reserved 2020, Gridea</rights>
+    <rights>All rights reserved 2020, KURANADO</rights>
     <entry>
-        <title type="html"><![CDATA[测试文章]]></title>
-        <id>https://blog.kuranado.com/post/ce-shi-wen-zhang/</id>
-        <link href="https://blog.kuranado.com/post/ce-shi-wen-zhang/">
+        <title type="html"><![CDATA[nginx 安装 SSL 证书.md]]></title>
+        <id>https://blog.kuranado.com/post/nginx+https/</id>
+        <link href="https://blog.kuranado.com/post/nginx+https/">
         </link>
-        <updated>2020-09-25T03:05:48.000Z</updated>
-        <content type="html"><![CDATA[<p>dfjafldaf<br>
-jlkj</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://blog.kuranado.com/post/hello-gridea/</id>
-        <link href="https://blog.kuranado.com/post/hello-gridea/">
-        </link>
-        <updated>2018-12-11T16:00:00.000Z</updated>
-        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+        <updated>2020-09-25T06:05:24.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="安全组开启-443-端口">安全组开启 443 端口</h2>
+<p><img src="http://image.kuranado.com/blog/1601013606.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+以腾讯云为例，<strong>入站规则</strong>和<strong>出站规则</strong>都需要添加 443<br>
+<img src="http://image.kuranado.com/blog/1601013628.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<h2 id="下载证书">下载证书</h2>
+<p>腾讯云下载证书<br>
+<img src="http://image.kuranado.com/blog/1601013639.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<h2 id="安装证书">安装证书</h2>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601013649.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>证书下载后解压，得到如下两个文件：</p>
+<ul>
+<li><code>1_kuranado.com_bundle.crt</code> 证书</li>
+<li><code>2_kuranado.com.key</code> 私钥</li>
+</ul>
+<p>将这两份文件上传到服务器，并保存在服务器 /usr/local/nginx/conf 目录下，即 Nginx 的安装目录，然后编辑 Nginx 配置文件，先来看下原有的配置：</p>
+<pre><code>server {
+    listen 80;
+    server_name kuranado.com www.kuranado.com emoji.kuranado.com;
+
+    location / {
+        root /home/jing/data/soft/emoji-web;
+        index index.html;
+    }
+}
+</code></pre>
+<p>原有的配置为 http 配置，可以不用对其做任何修改，下面增加证书配置：</p>
+<pre><code>server {
+    listen 443 ssl;
+    server_name kuranado.com www.kuranado.com;
+    ssl_certificate 1_kuranado.com_bundle.crt;
+    ssl_certificate_key 2_kuranado.com.key;
+    ssl_session_timeout 5m;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+    ssl_prefer_server_ciphers on;
+    location / {
+        root /home/jing/data/soft/emoji-web;
+        index index.html;
+    }
+}
+</code></pre>
+<p>增加了一个监听 443 端口的 server，因为我这里是在腾讯云申请的亚洲诚信免费 DV 版 SSL 证书，一个证书只能用于一个域名，所以 server_name 只能配置为申请证书时的域名（www.kuranado.com 和 kuranado.com 等价），而不能配置泛域名<br>
+配置添加完成后，<code>./sbin/nginx -s reload</code> 重新加载 Nginx 配置文件，可正常访问 https://kuranado.com 或 https://www.kuranado.com/，说明证书生效<br>
+<img src="http://image.kuranado.com/blog/1601013669.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+<img src="http://image.kuranado.com/blog/1601013680.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>当然原先的 http 也可以正常使用</p>
+<h2 id="申请免费域名证书">申请免费域名证书</h2>
+<p><img src="http://image.kuranado.com/blog/1601013691.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+<img src="http://image.kuranado.com/blog/1601013703.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>正如上面所见，同一主域可以申请 20 张 DV 版免费 SSL 证书，对于一个个人小型网站来说已经足够使用了，只是稍微有些麻烦，需要为每个子域名都申请一份证书配置到 Nginx 中</p>
+<p>如下面为访问 xxl-job 的 http 配置 <code>http://task.kuranado.com/xxl-job-admin</code>：</p>
+<pre><code>upstream task {
+    ip_hash;
+    server 127.0.0.1:10001 max_fails=3 fail_timeout=30s;
+}
+
+server {
+    listen 80;
+    server_name task.kuranado.com;
+
+    #charset koi8-r;
+
+    #access_log logs/host.access.log main;
+
+    location /xxl-job-admin {
+        #root html;
+        #index index.html index.htm;
+        proxy_pass http://task;
+    }
+}
+</code></pre>
+<p>这时我们就可以为其申请一张免费的域名证书，申请时通用名称填写 <code>task.kuranado.com</code>，然后按照上面的证书安装方法在 Nginx 中增加如下配置：</p>
+<pre><code>server {
+    listen 443 ssl;
+    server_name task.kuranado.com;
+    ssl_certificate 1_task.kuranado.com_bundle.crt;
+    ssl_certificate_key 2_task.kuranado.com.key;
+    ssl_session_timeout 5m;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+    ssl_prefer_server_ciphers on;
+    
+    location /xxl-job-admin {
+        #root html;
+        #index index.html index.htm;
+        proxy_pass http://task;
+    }
+}
+</code></pre>
+<p>重新加载 Nginx 配置文件，即可使用 <code>https://task.kuranado.com/xxl-job-admin</code> 访问 xxl-job<br>
+同理，为每个域名都申请免费证书（不超过 20 个），便可以实现全站 https 了，美滋滋<br>
+<img src="http://image.kuranado.com/blog/1601013716.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+<img src="http://image.kuranado.com/blog/1601013728.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://cloud.tencent.com/document/product/400/35244">腾讯云文档 - Nginx 服务器证书安装</a></li>
+<li><a href="https://blog.csdn.net/duyusean/article/details/79348613">nginx使用ssl模块配置支持HTTPS访问</a></li>
+</ul>
 ]]></content>
     </entry>
 </feed>
