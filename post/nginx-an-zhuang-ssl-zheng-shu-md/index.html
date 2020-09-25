@@ -163,92 +163,127 @@
         <article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
             <figure class="animate-box">
                 
-                    <img src="https://blog.kuranado.com/post-images/yuan-di-suan-fa-zong-jie-md.jpg" alt="原地算法总结.md" class="img-responsive">
+                    <img src="https://blog.kuranado.com/post-images/nginx-an-zhuang-ssl-zheng-shu-md.jpg" alt="nginx 安装 SSL 证书.md" class="img-responsive">
                 
             </figure>
             <span class="fh5co-meta animate-box">
                 
                     <div class="tag-container">
                         
-                            <a href="https://blog.kuranado.com/tag/qjEtrVrzm/" class="tag">Algorithm, </a>
+                            <a href="https://blog.kuranado.com/tag/EbMZ5TaKp/" class="tag">Nginx, </a>
+                        
+                            <a href="https://blog.kuranado.com/tag/ZK7puSVb5W/" class="tag">HTTPS, </a>
                         
                     </div>
                 
             </span>
-            <h2 class="fh5co-article-title animate-box">原地算法总结.md</h2>
+            <h2 class="fh5co-article-title animate-box">nginx 安装 SSL 证书.md</h2>
             <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
                 <li>2020-09-25</li>
-                <li>846字</li>
-                <li>4 min read</li>
+                <li>681字</li>
+                <li>3 min read</li>
             </ol>
 
             <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
                 <div class="row">
                     <div class="col-md-12 animate-box post-content">
-                        <p> <p>在做<a href="https://leetcode-cn.com/problems/game-of-life/">289. 生命游戏</a>这道题时，题目的进阶描述中提到了<code>原地算法</code>，头一次听说这个名词，做个总结</p>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601018996.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<blockquote>
-<p>在计算机科学中，一个原地算法（in-place algorithm）基本上不需要额外辅助的数据结构，然而，允许少量额外的辅助变量来转换数据的算法。当算法运行时，输入的数据通常会被要输出的部分覆盖掉。不是原地算法有时候称为非原地（not-in-place）或不得其所（out-of-place）。在计算复杂性理论中，原地算法包含使用<strong>O(1)空间复杂度</strong>的所有算法，DSPACE(1)类型。<br>
-一句话总结就是：原地算法不依赖额外的资源或者依赖少数的额外资源，仅依靠<strong>输出来覆盖输入</strong>的一种算法操作。<br>
-综上，当我们的输入数据没有其他用处时，可以考虑将输入数据覆盖掉，将覆盖后的结果作为输出。<br>
-下面为几个典型使用原地算法解决的例题：</p>
-</blockquote>
-<h2 id="例题一">例题一</h2>
-<p>给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。<br>
-不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。<br>
-示例 1:</p>
-<pre><code>给定数组 nums = [1,1,2],
-函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。
-你不需要考虑数组中超出新长度后面的元素。
-</code></pre>
-<p>示例2:</p>
-<pre><code>给定 nums = [0,0,1,1,1,2,2,3,3,4],
-函数应该返回新的长度 5, 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4。
-你不需要考虑数组中超出新长度后面的元素。
-</code></pre>
-<h3 id="代码实现">代码实现</h3>
-<pre><code class="language-java">public int removeDuplicates(int[] nums) {
+                        <p> <h2 id="安全组开启-443-端口">安全组开启 443 端口</h2>
+<p><img src="http://image.kuranado.com/blog/1601013606.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+以腾讯云为例，<strong>入站规则</strong>和<strong>出站规则</strong>都需要添加 443<br>
+<img src="http://image.kuranado.com/blog/1601013628.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<h2 id="下载证书">下载证书</h2>
+<p>腾讯云下载证书<br>
+<img src="http://image.kuranado.com/blog/1601013639.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<h2 id="安装证书">安装证书</h2>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601013649.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>证书下载后解压，得到如下两个文件：</p>
+<ul>
+<li><code>1_kuranado.com_bundle.crt</code> 证书</li>
+<li><code>2_kuranado.com.key</code> 私钥</li>
+</ul>
+<p>将这两份文件上传到服务器，并保存在服务器 /usr/local/nginx/conf 目录下，即 Nginx 的安装目录，然后编辑 Nginx 配置文件，先来看下原有的配置：</p>
+<pre><code>server {
+    listen 80;
+    server_name kuranado.com www.kuranado.com emoji.kuranado.com;
 
-    if (nums == null || nums.length == 0) {
-        return 0;
+    location / {
+        root /home/jing/data/soft/emoji-web;
+        index index.html;
     }
-    int pos = 0, count = 1;
-    for (int i = 0; i &lt; nums.length; i++) {
-        if (nums[pos] == nums[i]) {
-            nums[pos] = nums[i];
-        } else {
-            pos++;
-            nums[pos] = nums[i];
-            count++;
-        }
-    }
-    return count;
 }
 </code></pre>
-<h2 id="例题二">例题二</h2>
-<p>将具有 n 项内容的数组 a 翻转过来<br>
-看到这题的常规思路是创建一个大小相等的新数组，用适当的顺序填充副本，最后的新数组记为结果，如下面的伪代码：</p>
-<pre><code>function reverse(a[0..n-1])
-    allocate b[0..n-1] # 额外设定一个数组
-    for i from 0 to n-1 # 从 0 到 n-1 遍历数组 a
-        b[n -1 - i] := a[i] 
-    return b
+<p>原有的配置为 http 配置，可以不用对其做任何修改，下面增加证书配置：</p>
+<pre><code>server {
+    listen 443 ssl;
+    server_name kuranado.com www.kuranado.com;
+    ssl_certificate 1_kuranado.com_bundle.crt;
+    ssl_certificate_key 2_kuranado.com.key;
+    ssl_session_timeout 5m;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+    ssl_prefer_server_ciphers on;
+    location / {
+        root /home/jing/data/soft/emoji-web;
+        index index.html;
+    }
+}
 </code></pre>
-<p>这种方法虽然简单，但是需要 O(n) 的额外空间以使数组 a 和 b 同时可用。此外，分配存储空间和释放存储空间通常是缓慢的操作<br>
-其实本题完全可以不用新建数组，而是可以直接修改原数组达到题目要求效果，也就是使用原地算法，用它自己翻转的内容来覆盖掉原先的内容。这样，无论数组有多大，它都只需要辅助变量 i 和 tmp</p>
-<h3 id="代码实现-2">代码实现：</h3>
-<pre><code>function reverse_in_place(a[0..n-1])
-    for i from 0 to floor((n-2)/2)
-        tmp := a[i]
-        a[i] := a[n − 1 − i]
-        a[n − 1 − i] := tmp
+<p>增加了一个监听 443 端口的 server，因为我这里是在腾讯云申请的亚洲诚信免费 DV 版 SSL 证书，一个证书只能用于一个域名，所以 server_name 只能配置为申请证书时的域名（www.kuranado.com 和 kuranado.com 等价），而不能配置泛域名<br>
+配置添加完成后，<code>./sbin/nginx -s reload</code> 重新加载 Nginx 配置文件，可正常访问 https://kuranado.com 或 https://www.kuranado.com/，说明证书生效<br>
+<img src="http://image.kuranado.com/blog/1601013669.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+<img src="http://image.kuranado.com/blog/1601013680.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>当然原先的 http 也可以正常使用</p>
+<h2 id="申请免费域名证书">申请免费域名证书</h2>
+<p><img src="http://image.kuranado.com/blog/1601013691.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+<img src="http://image.kuranado.com/blog/1601013703.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>正如上面所见，同一主域可以申请 20 张 DV 版免费 SSL 证书，对于一个个人小型网站来说已经足够使用了，只是稍微有些麻烦，需要为每个子域名都申请一份证书配置到 Nginx 中</p>
+<p>如下面为访问 xxl-job 的 http 配置 <code>http://task.kuranado.com/xxl-job-admin</code>：</p>
+<pre><code>upstream task {
+    ip_hash;
+    server 127.0.0.1:10001 max_fails=3 fail_timeout=30s;
+}
+
+server {
+    listen 80;
+    server_name task.kuranado.com;
+
+    #charset koi8-r;
+
+    #access_log logs/host.access.log main;
+
+    location /xxl-job-admin {
+        #root html;
+        #index index.html index.htm;
+        proxy_pass http://task;
+    }
+}
 </code></pre>
-<h2 id="例题三">例题三</h2>
-<p><a href="https://leetcode-cn.com/problems/game-of-life/">生命游戏</a></p>
+<p>这时我们就可以为其申请一张免费的域名证书，申请时通用名称填写 <code>task.kuranado.com</code>，然后按照上面的证书安装方法在 Nginx 中增加如下配置：</p>
+<pre><code>server {
+    listen 443 ssl;
+    server_name task.kuranado.com;
+    ssl_certificate 1_task.kuranado.com_bundle.crt;
+    ssl_certificate_key 2_task.kuranado.com.key;
+    ssl_session_timeout 5m;
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+    ssl_prefer_server_ciphers on;
+    
+    location /xxl-job-admin {
+        #root html;
+        #index index.html index.htm;
+        proxy_pass http://task;
+    }
+}
+</code></pre>
+<p>重新加载 Nginx 配置文件，即可使用 <code>https://task.kuranado.com/xxl-job-admin</code> 访问 xxl-job<br>
+同理，为每个域名都申请免费证书（不超过 20 个），便可以实现全站 https 了，美滋滋<br>
+<img src="http://image.kuranado.com/blog/1601013716.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+<img src="http://image.kuranado.com/blog/1601013728.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
 <h2 id="参考">参考</h2>
 <ul>
-<li><a href="https://www.jianshu.com/p/567b1dc38db7">原地算法（in-place algorithm）</a></li>
-<li><a href="https://blog.csdn.net/m0_37941483/article/details/89814847">算法系列之原地算法(in-place algorithm)</a></li>
+<li><a href="https://cloud.tencent.com/document/product/400/35244">腾讯云文档 - Nginx 服务器证书安装</a></li>
+<li><a href="https://blog.csdn.net/duyusean/article/details/79348613">nginx使用ssl模块配置支持HTTPS访问</a></li>
 </ul>
  </p>
                     </div>
@@ -256,15 +291,6 @@
 
                 <div class="row">
                     <div class="col-md-12 animate-box">
-                        
-                            <div class="next-post">
-                                <div class="next">下一篇</div>
-                                <a href="https://blog.kuranado.com/post/nginx-an-zhuang-ssl-zheng-shu-md/">
-                                    <h3 class="post-title">
-                                        nginx 安装 SSL 证书.md
-                                    </h3>
-                                </a>
-                            </div>
                         
                     </div>
                 </div>
@@ -304,17 +330,10 @@
     <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#%E4%BE%8B%E9%A2%98%E4%B8%80">例题一</a>
-<ul>
-<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0">代码实现</a></li>
-</ul>
-</li>
-<li><a href="#%E4%BE%8B%E9%A2%98%E4%BA%8C">例题二</a>
-<ul>
-<li><a href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-2">代码实现：</a></li>
-</ul>
-</li>
-<li><a href="#%E4%BE%8B%E9%A2%98%E4%B8%89">例题三</a></li>
+<li><a href="#%E5%AE%89%E5%85%A8%E7%BB%84%E5%BC%80%E5%90%AF-443-%E7%AB%AF%E5%8F%A3">安全组开启 443 端口</a></li>
+<li><a href="#%E4%B8%8B%E8%BD%BD%E8%AF%81%E4%B9%A6">下载证书</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85%E8%AF%81%E4%B9%A6">安装证书</a></li>
+<li><a href="#%E7%94%B3%E8%AF%B7%E5%85%8D%E8%B4%B9%E5%9F%9F%E5%90%8D%E8%AF%81%E4%B9%A6">申请免费域名证书</a></li>
 <li><a href="#%E5%8F%82%E8%80%83">参考</a></li>
 </ul>
 </li>
