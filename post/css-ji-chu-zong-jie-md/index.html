@@ -1,22 +1,201 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-    <id>http://blog.kuranado.com</id>
-    <title>KURANADO</title>
-    <updated>2020-09-26T08:15:55.328Z</updated>
-    <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="http://blog.kuranado.com"/>
-    <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
-    <subtitle>笔记/博客</subtitle>
-    <logo>http://blog.kuranado.com/images/avatar.png</logo>
-    <icon>http://blog.kuranado.com/favicon.ico</icon>
-    <rights>All rights reserved 2020, KURANADO</rights>
-    <entry>
-        <title type="html"><![CDATA[CSS 基础总结.md]]></title>
-        <id>http://blog.kuranado.com/post/css-ji-chu-zong-jie-md/</id>
-        <link href="http://blog.kuranado.com/post/css-ji-chu-zong-jie-md/">
-        </link>
-        <updated>2020-09-26T08:11:07.000Z</updated>
-        <content type="html"><![CDATA[<p>[TOC]</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<title>KURANADO</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta name="description" content="笔记/博客"/>
+<meta name="keywords" content="笔记/博客"/>
+
+<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico">
+
+<link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
+
+<!-- Modernizr JS -->
+<script src="http://blog.kuranado.com/media/scripts/modernizr-2.6.2.min.js"></script>
+<!-- FOR IE9 below -->
+<!--[if lt IE 9]>
+<scripts src="http://blog.kuranado.com/media/scripts/respond.min.js"></scripts>
+<![endif]-->
+
+<!-- Comment -->
+
+    
+        <link href="https://cdn.bootcss.com/gitalk/1.5.0/gitalk.min.css" rel="stylesheet">
+    
+
+    
+
+
+
+<!-- katex -->
+<!--<link href="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.css" rel="stylesheet">-->
+
+<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+
+
+
+</head>
+<body>
+    <div id="fh5co-offcanvas">
+    <a href="#!" class="fh5co-close-offcanvas js-fh5co-close-offcanvas">
+        <span><i class="icon-cross3"></i> <span>Close</span></span>
+    </a>
+    <div class="fh5co-bio">
+        <figure>
+            <img src="http://blog.kuranado.com/images/avatar.png" alt="KURANADO"
+                 class="img-responsive">
+        </figure>
+        <a href="http://blog.kuranado.com/post/about/"><h3 class="heading">ABOUT ME</h3></a>
+        <h2>KURANADO</h2>
+        <p>笔记/博客</p>
+        <ul class="fh5co-social">
+            
+                <li>
+                    
+                        <a href="https://github.com/KURANADO2" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    
+                </li>
+            
+                <li>
+                    
+                </li>
+            
+                <li>
+                    
+                </li>
+            
+                <li>
+                    
+                        <a href="https://www.zhihu.com/people/jing-xin-ling-32" target="_blank">
+                            <i class="fab fa-zhihu"></i>
+                        </a>
+                    
+                </li>
+            
+                <li>
+                    
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="fh5co-menu">
+
+        <!-- 标签 -->
+        <div class="fh5co-box">
+            <a href="http://blog.kuranado.com/tags/"><h3 class="heading">👉标签</h3></a>
+            <ul>
+                
+                    <li><a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/">CSS</a></li>
+                
+                    <li><a href="http://blog.kuranado.com/tag/Eb-3VtzRjb/">HTML</a></li>
+                
+                    <li><a href="http://blog.kuranado.com/tag/AIzjXFqb32/">前端</a></li>
+                
+                    <li><a href="http://blog.kuranado.com/tag/qjEtrVrzm/">Algorithm</a></li>
+                
+                    <li><a href="http://blog.kuranado.com/tag/EbMZ5TaKp/">Nginx</a></li>
+                
+                    <li><a href="http://blog.kuranado.com/tag/ZK7puSVb5W/">HTTPS</a></li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+<header id="fh5co-header">
+    <div class="container-fluid">
+        <div class="row">
+            <a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle"><i></i></a>
+            <ul class="fh5co-social">
+                
+                    <li>
+                        <a href="/"
+                        
+                        >
+                            首页
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives"
+                        
+                        >
+                            归档
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/tags"
+                        
+                        >
+                            标签
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/post/about"
+                        
+                        >
+                            关于
+                        </a>
+                    </li>
+                
+            </ul>
+            <div class="col-lg-12 col-md-12 text-center">
+                <h1 id="fh5co-logo">
+                    <a href="http://blog.kuranado.com">KURANADO </a>
+                </h1>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+    <!--  <a href="#" class="fh5co-post-prev"><span>👈 Prev</span></a>-->
+    <!--  <a href="#" class="fh5co-post-next"><span>Next 👉</span></a>-->
+
+    <!-- 等gridea出自定义页面功能再优化一下 -->
+    
+        <div class="container-fluid">
+    <div class="row fh5co-post-entry single-entry">
+        <article class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
+            <figure class="animate-box">
+                
+                    <img src="http://blog.kuranado.com/post-images/css-ji-chu-zong-jie-md.jpg" alt="CSS 基础总结.md" class="img-responsive">
+                
+            </figure>
+            <span class="fh5co-meta animate-box">
+                
+                    <div class="tag-container">
+                        
+                            <a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/" class="tag">CSS, </a>
+                        
+                            <a href="http://blog.kuranado.com/tag/Eb-3VtzRjb/" class="tag">HTML, </a>
+                        
+                            <a href="http://blog.kuranado.com/tag/AIzjXFqb32/" class="tag">前端, </a>
+                        
+                    </div>
+                
+            </span>
+            <h2 class="fh5co-article-title animate-box">CSS 基础总结.md</h2>
+            <ol class="breadcrumb fh5co-meta fh5co-date animate-box" style="margin-bottom:0; background-color:#f8f9fa">
+                <li>2020-09-26</li>
+                <li>2629字</li>
+                <li>11 min read</li>
+            </ol>
+
+            <div class="col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-left content-article">
+                <div class="row">
+                    <div class="col-md-12 animate-box post-content">
+                        <p> <p>[TOC]</p>
 <h2 id="css-引入方式">CSS 引入方式</h2>
 <ul>
 <li>内部样式表（嵌入式），<code>&lt;style&gt;&lt;/style&gt;</code> 标签放在 <code>&lt;head&gt;&lt;/head&gt;</code> 标签内，练习、测试时使用</li>
@@ -378,185 +557,162 @@ p {
     &lt;/ul&gt;
 &lt;/body&gt;
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[原地算法总结.md]]></title>
-        <id>http://blog.kuranado.com/post/yuan-di-suan-fa-zong-jie-md/</id>
-        <link href="http://blog.kuranado.com/post/yuan-di-suan-fa-zong-jie-md/">
-        </link>
-        <updated>2020-09-25T07:29:08.000Z</updated>
-        <content type="html"><![CDATA[<p>在做<a href="https://leetcode-cn.com/problems/game-of-life/">289. 生命游戏</a>这道题时，题目的进阶描述中提到了<code>原地算法</code>，头一次听说这个名词，做个总结</p>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601018996.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<blockquote>
-<p>在计算机科学中，一个原地算法（in-place algorithm）基本上不需要额外辅助的数据结构，然而，允许少量额外的辅助变量来转换数据的算法。当算法运行时，输入的数据通常会被要输出的部分覆盖掉。不是原地算法有时候称为非原地（not-in-place）或不得其所（out-of-place）。在计算复杂性理论中，原地算法包含使用<strong>O(1)空间复杂度</strong>的所有算法，DSPACE(1)类型。<br>
-一句话总结就是：原地算法不依赖额外的资源或者依赖少数的额外资源，仅依靠<strong>输出来覆盖输入</strong>的一种算法操作。<br>
-综上，当我们的输入数据没有其他用处时，可以考虑将输入数据覆盖掉，将覆盖后的结果作为输出。<br>
-下面为几个典型使用原地算法解决的例题：</p>
-</blockquote>
-<h2 id="例题一">例题一</h2>
-<p>给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。<br>
-不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。<br>
-示例 1:</p>
-<pre><code>给定数组 nums = [1,1,2],
-函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。
-你不需要考虑数组中超出新长度后面的元素。
-</code></pre>
-<p>示例2:</p>
-<pre><code>给定 nums = [0,0,1,1,1,2,2,3,3,4],
-函数应该返回新的长度 5, 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4。
-你不需要考虑数组中超出新长度后面的元素。
-</code></pre>
-<h3 id="代码实现">代码实现</h3>
-<pre><code class="language-java">public int removeDuplicates(int[] nums) {
+ </p>
+                    </div>
+                </div>
 
-    if (nums == null || nums.length == 0) {
-        return 0;
-    }
-    int pos = 0, count = 1;
-    for (int i = 0; i &lt; nums.length; i++) {
-        if (nums[pos] == nums[i]) {
-            nums[pos] = nums[i];
-        } else {
-            pos++;
-            nums[pos] = nums[i];
-            count++;
-        }
-    }
-    return count;
-}
-</code></pre>
-<h2 id="例题二">例题二</h2>
-<p>将具有 n 项内容的数组 a 翻转过来<br>
-看到这题的常规思路是创建一个大小相等的新数组，用适当的顺序填充副本，最后的新数组记为结果，如下面的伪代码：</p>
-<pre><code>function reverse(a[0..n-1])
-    allocate b[0..n-1] # 额外设定一个数组
-    for i from 0 to n-1 # 从 0 到 n-1 遍历数组 a
-        b[n -1 - i] := a[i] 
-    return b
-</code></pre>
-<p>这种方法虽然简单，但是需要 O(n) 的额外空间以使数组 a 和 b 同时可用。此外，分配存储空间和释放存储空间通常是缓慢的操作<br>
-其实本题完全可以不用新建数组，而是可以直接修改原数组达到题目要求效果，也就是使用原地算法，用它自己翻转的内容来覆盖掉原先的内容。这样，无论数组有多大，它都只需要辅助变量 i 和 tmp</p>
-<h3 id="代码实现-2">代码实现：</h3>
-<pre><code>function reverse_in_place(a[0..n-1])
-    for i from 0 to floor((n-2)/2)
-        tmp := a[i]
-        a[i] := a[n − 1 − i]
-        a[n − 1 − i] := tmp
-</code></pre>
-<h2 id="例题三">例题三</h2>
-<p><a href="https://leetcode-cn.com/problems/game-of-life/">生命游戏</a></p>
-<h2 id="参考">参考</h2>
-<ul>
-<li><a href="https://www.jianshu.com/p/567b1dc38db7">原地算法（in-place algorithm）</a></li>
-<li><a href="https://blog.csdn.net/m0_37941483/article/details/89814847">算法系列之原地算法(in-place algorithm)</a></li>
-</ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[nginx 安装 SSL 证书.md]]></title>
-        <id>http://blog.kuranado.com/post/nginx-an-zhuang-ssl-zheng-shu-md/</id>
-        <link href="http://blog.kuranado.com/post/nginx-an-zhuang-ssl-zheng-shu-md/">
-        </link>
-        <updated>2020-09-25T06:05:24.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="安全组开启-443-端口">安全组开启 443 端口</h2>
-<p><img src="http://image.kuranado.com/blog/1601013606.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-以腾讯云为例，<strong>入站规则</strong>和<strong>出站规则</strong>都需要添加 443<br>
-<img src="http://image.kuranado.com/blog/1601013628.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="下载证书">下载证书</h2>
-<p>腾讯云下载证书<br>
-<img src="http://image.kuranado.com/blog/1601013639.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="安装证书">安装证书</h2>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601013649.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>证书下载后解压，得到如下两个文件：</p>
-<ul>
-<li><code>1_kuranado.com_bundle.crt</code> 证书</li>
-<li><code>2_kuranado.com.key</code> 私钥</li>
-</ul>
-<p>将这两份文件上传到服务器，并保存在服务器 /usr/local/nginx/conf 目录下，即 Nginx 的安装目录，然后编辑 Nginx 配置文件，先来看下原有的配置：</p>
-<pre><code>server {
-    listen 80;
-    server_name kuranado.com www.kuranado.com emoji.kuranado.com;
+                <div class="row">
+                    <div class="col-md-12 animate-box">
+                        
+                            <div class="next-post">
+                                <div class="next">下一篇</div>
+                                <a href="http://blog.kuranado.com/post/yuan-di-suan-fa-zong-jie-md/">
+                                    <h3 class="post-title">
+                                        原地算法总结.md
+                                    </h3>
+                                </a>
+                            </div>
+                        
+                    </div>
+                </div>
 
-    location / {
-        root /home/jing/data/soft/emoji-web;
-        index index.html;
-    }
-}
-</code></pre>
-<p>原有的配置为 http 配置，可以不用对其做任何修改，下面增加证书配置：</p>
-<pre><code>server {
-    listen 443 ssl;
-    server_name kuranado.com www.kuranado.com;
-    ssl_certificate 1_kuranado.com_bundle.crt;
-    ssl_certificate_key 2_kuranado.com.key;
-    ssl_session_timeout 5m;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-    ssl_prefer_server_ciphers on;
-    location / {
-        root /home/jing/data/soft/emoji-web;
-        index index.html;
-    }
-}
-</code></pre>
-<p>增加了一个监听 443 端口的 server，因为我这里是在腾讯云申请的亚洲诚信免费 DV 版 SSL 证书，一个证书只能用于一个域名，所以 server_name 只能配置为申请证书时的域名（www.kuranado.com 和 kuranado.com 等价），而不能配置泛域名<br>
-配置添加完成后，<code>./sbin/nginx -s reload</code> 重新加载 Nginx 配置文件，可正常访问 https://kuranado.com 或 https://www.kuranado.com/，说明证书生效<br>
-<img src="http://image.kuranado.com/blog/1601013669.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<img src="http://image.kuranado.com/blog/1601013680.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<p>当然原先的 http 也可以正常使用</p>
-<h2 id="申请免费域名证书">申请免费域名证书</h2>
-<p><img src="http://image.kuranado.com/blog/1601013691.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<img src="http://image.kuranado.com/blog/1601013703.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<p>正如上面所见，同一主域可以申请 20 张 DV 版免费 SSL 证书，对于一个个人小型网站来说已经足够使用了，只是稍微有些麻烦，需要为每个子域名都申请一份证书配置到 Nginx 中</p>
-<p>如下面为访问 xxl-job 的 http 配置 <code>http://task.kuranado.com/xxl-job-admin</code>：</p>
-<pre><code>upstream task {
-    ip_hash;
-    server 127.0.0.1:10001 max_fails=3 fail_timeout=30s;
-}
+                <div class="row">
+    <div class="col-md-12 animate-box">
+        
+            
+                <div id="gitalk-container"></div>
+            
 
-server {
-    listen 80;
-    server_name task.kuranado.com;
+            
+        
+    </div>
+</div>
 
-    #charset koi8-r;
+            </div>
 
-    #access_log logs/host.access.log main;
+        </article>
+    </div>
+</div>
 
-    location /xxl-job-admin {
-        #root html;
-        #index index.html index.htm;
-        proxy_pass http://task;
-    }
-}
-</code></pre>
-<p>这时我们就可以为其申请一张免费的域名证书，申请时通用名称填写 <code>task.kuranado.com</code>，然后按照上面的证书安装方法在 Nginx 中增加如下配置：</p>
-<pre><code>server {
-    listen 443 ssl;
-    server_name task.kuranado.com;
-    ssl_certificate 1_task.kuranado.com_bundle.crt;
-    ssl_certificate_key 2_task.kuranado.com.key;
-    ssl_session_timeout 5m;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-    ssl_prefer_server_ciphers on;
     
-    location /xxl-job-admin {
-        #root html;
-        #index index.html index.htm;
-        proxy_pass http://task;
-    }
-}
-</code></pre>
-<p>重新加载 Nginx 配置文件，即可使用 <code>https://task.kuranado.com/xxl-job-admin</code> 访问 xxl-job<br>
-同理，为每个域名都申请免费证书（不超过 20 个），便可以实现全站 https 了，美滋滋<br>
-<img src="http://image.kuranado.com/blog/1601013716.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<img src="http://image.kuranado.com/blog/1601013728.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="参考">参考</h2>
+
+    <!-- 返回顶部 -->
+    <div class="back-to-top">
+    
+        <a href="#!" id="tool-toc" class="hidden-xs hidden-sm">
+            <i class="fa fa-map"></i>
+        </a>
+        <br>
+    
+    <a href="#top" class="hidden-xs hidden-sm"><i class="fa fa-paper-plane"></i></a>
+</div>
+
+<div class="post-toc animated fadeInRight hidden-xs hidden-sm" style="display: none;">
+    <ul class="markdownIt-TOC">
+<li>
 <ul>
-<li><a href="https://cloud.tencent.com/document/product/400/35244">腾讯云文档 - Nginx 服务器证书安装</a></li>
-<li><a href="https://blog.csdn.net/duyusean/article/details/79348613">nginx使用ssl模块配置支持HTTPS访问</a></li>
+<li><a href="#css-%E5%BC%95%E5%85%A5%E6%96%B9%E5%BC%8F">CSS 引入方式</a></li>
+<li><a href="#%E5%B1%9E%E6%80%A7">属性</a>
+<ul>
+<li><a href="#%E5%AE%BD%E9%AB%98">宽/高</a></li>
+<li><a href="#%E5%AD%97%E4%BD%93">字体</a></li>
+<li><a href="#%E6%96%87%E6%9C%AC">文本</a></li>
+<li><a href="#%E8%A1%8C%E9%AB%98">行高</a></li>
+<li><a href="#%E8%83%8C%E6%99%AF">背景</a></li>
+<li><a href="#%E6%98%BE%E7%A4%BA%E9%9A%90%E8%97%8F">显示/隐藏</a></li>
+<li><a href="#%E9%BC%A0%E6%A0%87">鼠标</a></li>
+<li><a href="#%E8%A1%A8%E5%8D%95">表单</a></li>
 </ul>
-]]></content>
-    </entry>
-</feed>
+</li>
+<li><a href="#%E7%BB%A7%E6%89%BF">继承</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+    
+<footer id="fh5co-footer">
+  <p>@Copyright 2020 <a href="http://emoji.kuranado.com">表情包网站</a></p>
+</footer>
+
+
+    <!-- jQuery -->
+<script src="http://blog.kuranado.com/media/scripts/jquery.min.js"></script>
+<!-- img lazy load -->
+<script src="http://blog.kuranado.com/media/scripts/jquery.lazyload.min.js"></script>
+<!-- jQuery Easing -->
+<script src="http://blog.kuranado.com/media/scripts/jquery.easing.1.3.js"></script>
+<!-- Bootstrap -->
+<script src="http://blog.kuranado.com/media/scripts/bootstrap.min.js"></script>
+<!-- Waypoints -->
+<script src="http://blog.kuranado.com/media/scripts/jquery.waypoints.min.js"></script>
+<!-- Main JS -->
+<script src="http://blog.kuranado.com/media/scripts/main.js"></script>
+<!-- Md5 Min JS -->
+<script src="http://blog.kuranado.com/media/scripts/md5.min.js"></script>
+<!-- katex -->
+<!--<script src="https://cdn.bootcss.com/KaTeX/0.11.1/katex.min.js"></script>-->
+<!-- highlight -->
+<script src="https://cdn.bootcss.com/highlight.js/9.15.8/highlight.min.js"></script>
+
+
+<script type="application/javascript">
+    // 代码高亮
+    hljs.initHighlightingOnLoad();
+
+    // img 懒加载
+    $(function () {
+        $("img.lazy").lazyload({
+            effect: "fadeIn",  // 懒加载动画
+            threshold: 180  // 在图片距离屏幕180px时提前载入
+        });
+        // tooltip
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // 目录
+        $('#tool-toc').click(function () {
+            $('.post-toc').toggle();
+        });
+    });
+
+    
+        var allImg = $("img");
+        allImg.on("contextmenu", function () {
+            return false;
+        });
+        allImg.on("dragstart", function () {
+            return false;
+        });
+    
+</script>
+
+
+
+    
+        <script src="https://cdn.bootcss.com/gitalk/1.5.0/gitalk.min.js"></script>
+        <script>
+
+            var gitalk = new Gitalk({
+                clientID: 'd5112611bb77c8d6bb88',
+                clientSecret: 'b064af1dd2e63f211b8517f1a57d71c1efc01b8e',
+                repo: 'kuranado2.github.io',
+                owner: 'kuranado2',
+                admin: ['kuranado2'],
+                id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+                distractionFreeMode: false  // Facebook-like distraction free mode
+            })
+
+            gitalk.render('gitalk-container')
+
+        </script>
+    
+
+    
+
+
+
+
+</body>
+</html>
