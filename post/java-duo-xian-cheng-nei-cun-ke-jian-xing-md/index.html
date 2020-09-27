@@ -1,0 +1,483 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Java 多线程 - 内存可见性.md | KURANADO</title>
+
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601218096715">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            KURANADO
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1601218096715" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Java 多线程 - 内存可见性.md
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-09-27 ·
+                    </time>
+                    
+                        <a href="http://blog.kuranado.com/tag/HKx0JV-2j/" class="post-tags">
+                            # 多线程
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/prbxfSBgl/" class="post-tags">
+                            # Java
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <h2 id="jmm">JMM</h2>
+<p><code>JMM(Java Memory Model)</code> 即 Java 内存模型，描述了 Java 程序中各种变量（线程共享变量）的访问规则，以及在 <code>JVM</code>中将变量存储到内存和从内存中读取出变量这样的底层细节，JMM 有如下几条规则：</p>
+<ul>
+<li>所有的变量都存储在<code>主内存</code>中</li>
+<li>每个线程都有自己独立的<code>工作内存</code>，里面保存该线程使用到的变量的副本（<code>主内存</code>中该变量的一份拷贝）</li>
+<li>线程对<code>共享变量</code>的所有操作都必须在自己的<code>工作内存</code>中进行，不能直接从<code>主内存</code>中读写</li>
+<li>不同线程之间无法直接访问其他线程<code>工作内存</code>中的变量，线程间变量值的传递需要通过<code>主内存</code>来完成</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="http://imgblog.kuranado.com/blog/1601218014.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>根据上图也可以发现：线程不能直接与<code>主内存</code>进行交互，<code>工作内存</code>负责与线程和<code>主内存</code>进行交互</p>
+<h2 id="共享变量">共享变量</h2>
+<p>如果一个变量在多个线程的<code>工作内存</code>中都存在副本，那么这个变量就是这几个线程的<code>共享变量</code></p>
+<h2 id="可见性">可见性</h2>
+<p>一个线程对<code>共享变量</code>值的修改，能够及时被其他线程看到则称这个<code>共享变量</code>在线程之间是可见的</p>
+<h2 id="重排序">重排序</h2>
+<p>代码书写的顺序与实际执行的顺序不同,指令重排序是编译器或处理器为了提高程序性能而做的优化</p>
+<h3 id="as-if-serial语义">as-if-serial语义</h3>
+<p>无论如何重排序，程序执行的结果应该与代码顺序执行的结果一致，Java 编译器、运行时和处理器都会保证 Java 在<strong>单线程下</strong>遵循 as-if-serial 语义，所以重排序不会给单线程带来内存可见性问题，但是在多线程中程序交错执行时，重排序可能会造成内存可见性问题</p>
+<pre><code>int num1 = 3;
+int num2 = 5;
+int sum = num1 + num2;
+</code></pre>
+<p>在单线程中，第 1 行和第 2 行代码可以进行重排序，但第 3 行代码不可以进行重排序，也就是说代码实际执行顺序可能是1 -&gt; 2 -&gt; 3 或 2 -&gt; 1 -&gt; 3，但绝不可能是3 -&gt; 1 -&gt; 2 或 3 -&gt; 2 -&gt; 1，因为这和代码顺序执行的结果不一致，不满足 as-if-serial 语义</p>
+<h2 id="实现共享变量可见性">实现共享变量可见性</h2>
+<p>要实现共享变量的可见性，必须保证两点：</p>
+<ol>
+<li>线程修改后的<code>共享变量</code>值能够及时从该线程的<code>工作内存</code>刷新到<code>主内存</code>中</li>
+<li>其他线程能够及时把<code>共享变量</code>的最新值从<code>主内存</code>更新到自己的<code>工作内存</code>中</li>
+</ol>
+<p>而 Java 保证<code>共享变量</code>可见性主要通过 <code>synchronized</code> 或 <code>volatile</code> 关键字实现：</p>
+<h3 id="synchronized">synchronized</h3>
+<p><code>synchronized</code> 能够实现：</p>
+<ul>
+<li>原子性（同步）</li>
+<li>内存可见性</li>
+</ul>
+<p><code>JMM</code> 关于 <code>synchronized</code> 的两条规定：</p>
+<ul>
+<li>线程解锁前，必须把<code>共享变量</code>的最新值刷新到<code>主内存</code>中</li>
+<li>线程加锁时，将清空<code>工作内存</code>中共享变量的值，从而使用<code>共享变量</code>时，需要从<code>主内存</code>中重新读取最新的值（注意：加锁与解锁需要是同一把锁）</li>
+</ul>
+<p>可见 <code>synchronized</code> 的这两条规定刚好满足要实现<code>共享变量</code>可见性所必须要保证的两点</p>
+<p><code>synchronized</code> 实现可见性过程如下：</p>
+<ol>
+<li>获得互斥锁</li>
+<li>清空<code>工作内存</code></li>
+<li>从<code>主内存</code>拷贝变量的最新副本到<code>工作内存</code></li>
+<li>执行代码</li>
+<li>将更改后的<code>共享变量</code>的值刷新到<code>主内存</code></li>
+<li>释放互斥锁</li>
+</ol>
+<p>下面上一段代码：</p>
+<pre><code>public class Synchronpublic class SynchronizedDemo {
+    // 共享变量
+    private boolean ready = false;
+    private int result = 0;
+    private int number = 1;
+    // 写操作
+    public void write(){
+        ready = true; // 1.1
+        number = 2; // 1.2
+    }
+    // 读操作
+    public void read(){
+        if(ready){ // 2.1
+            result = number * 3; // 2.2
+        }
+        System.out.println(&quot;result的值为：&quot; + result);
+    }
+
+    // 内部线程类
+    private class ReadWriteThread extends Thread {
+        // 根据构造方法中传入的flag参数，确定线程执行读操作还是写操作
+        private boolean flag;
+        public ReadWriteThread(boolean flag){
+            this.flag = flag;
+        }
+        @Override
+        public void run() {
+            if(flag){
+                // 构造方法中传入true，执行写操作
+                write();
+            }else{
+                // 构造方法中传入false，执行读操作
+                read();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        SynchronizedDemo synDemo = new SynchronizedDemo();
+        // 启动线程执行写操作
+        synDemo.new ReadWriteThread(true).start();
+
+        // 启动线程执行读操作
+        synDemo.new ReadWriteThread(false).start();
+    }
+}
+</code></pre>
+<p>执行这段代码输出结果可能为 6，可能为 0，也可能为 3，而不论哪种结果，都可能有多种执行顺序</p>
+<p>result = 6 1.1-&gt;1.2-&gt;2.1-&gt;2.2<br>
+result = 6 1.1-&gt;2.1-&gt;1.2-&gt;2.2<br>
+result = 6 1.2-&gt;1.1-&gt;2.1-&gt;2.2<br>
+result = 3 1.1-&gt;2.1-&gt;2.2-&gt;1.2<br>
+result = 0 1.2-&gt;2.1-&gt;2.2-&gt;1.1 （1.1 和 1.2 进行了重排序，先执行了 1.2，然后写线程让出 CPU 资源执行读线程 ）<br>
+result = 0 1.2-&gt;2.2-&gt;2.1-&gt;1.1 （1.1 和 1.2 进行了重排序，2.1 和 2.2 也进行了重排序）<br>
+...</p>
+<p>注：代码 2.1 和代码 2.2 也可以进行重排序，因为在单线程中，2.1 和 2.2 无论谁先执行，都不会影响 result 的值</p>
+<p>上面的例子简单说明了导致<code>共享变量</code>在线程中不可见的原因可能是线程的交叉执行或重排序，通过 <code>synchronized</code> 可以解决：</p>
+<p>导致共享变量在线程间不可见的原因|synchronized解决方案<br>
+-|<br>
+线程的交叉执行（比如先执行 1.1 后执行 2.1）|原子性，synchronized保证了锁内部代码的原子性，避免了锁内部代码在线程之间交叉执行<br>
+重排序结合线程交叉执行|原子性<br>
+共享变量更新后的值没有在工作内存与主内存之间及时更新|可见性</p>
+<p><code>synchroized</code> 实现可见性代码：</p>
+<pre><code>//写操作
+public synchronized void write(){
+    ready = true;	//1.1
+    number = 2;	//1.2
+}
+//读操作
+public synchronized void read(){
+    if(ready){	//2.1
+        result = number * 3;	//2.2
+    }
+    System.out.println(&quot;result的值为：&quot; + result);
+}
+</code></pre>
+<p>这样程序的输出结果将总是 6</p>
+<h3 id="volatile">volatile</h3>
+<p><code>volatile</code> 关键字：</p>
+<ul>
+<li>能够保证 volatile 变量的可见性</li>
+<li>在 JDK 1.5 之后，volatile 变量能够禁止指令重排序</li>
+<li>不能保证 volatile 变量复合操作的原子性</li>
+</ul>
+<p><code>volatile</code> 如何实现内存可见性：</p>
+<p>volatile 变量在每次被线程访问时，都强迫从主内存中重读该变量的值，而当该变量发生变化时，又会强迫线程将最新的值刷新到主内存，这样任何时刻，不同的线程总能看到该变量的最新值</p>
+<p>线程写 <code>volatile</code> 变量的过程:</p>
+<ol>
+<li>改变线程工作内存中 <code>volatile</code> 变量副本的值</li>
+<li>将改变后的副本的值从工作内存刷新到主内存</li>
+</ol>
+<p>线程读 <code>volatile</code> 变量的过程:</p>
+<ol>
+<li>从主内存中读取 <code>volatile</code> 变量的最新值到线程的工作内存中</li>
+<li>从工作内存中读取 <code>volatile</code> 变量的副本</li>
+</ol>
+<p>上代码：</p>
+<pre><code>public class VolatileDemo {
+
+    private volatile int number = 0;
+    private Lock lock = new ReentrantLock();
+
+    public void increase() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.number++;
+    }
+
+    public int getNumber() {
+        return this.number;
+    }
+
+    public static void main(String[] args) {
+        VolatileDemo volatileDemo = new VolatileDemo();
+        for (int i = 0; i &lt; 500; i ++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    volatileDemo.increase();
+                }
+            }).start();
+        }
+        //如果还有子线程在运行，主线程就让出CPU资源，
+        //直到所有子线程都运行完了，主线程再继续往下执行
+        while (Thread.activeCount() &gt; 2) { //在IDEA中设置大于2，在Eclipse中设置为大于1即可，因为IDEA除了主线程之外还会有一个监视线程在运行
+            Thread.yield();
+        }
+        System.out.println(&quot;number:&quot; + volatileDemo.getNumber());
+    }
+
+}
+</code></pre>
+<p>这段代码的执行结果可能为 500，也可能小于 500，而问题就出在 <code>number ++;</code> 上，因为 <code>number ++</code> 实际要分为如下 3 步执行：</p>
+<ol>
+<li>读取 number 的值</li>
+<li>将 number 的值加 1</li>
+<li>写入最新的 number 值</li>
+</ol>
+<p>而 <code>volatile</code> 虽然能够保证<code>共享变量</code>的内存可见性，但却不能保证复合操作的原子性，假设有两个线程 A 和 B，volatile int number = 5，线程 A 和 B 并发执行 <code>number ++;</code> 操作时就可能产生下面的执行顺序：</p>
+<ol>
+<li>线程 A 从主内存读取 number 的值</li>
+<li>线程 B 从主内存读取 number 的值</li>
+<li>线程 B 执行加 1 操作</li>
+<li>线程 B 向主内存写入最新的 number 值</li>
+<li>线程 A 执行加 1 操作</li>
+<li>线程 A 向主内存写入最新的 number 值</li>
+</ol>
+<p>两个线程都执行了 <code>number ++;</code>，但主内存中共享变量 <code>number</code> 的值却是 6 而不是 7</p>
+<p>解决办法有两种，一是通过 <code>synchronized</code> 加锁保证自增操作原子性，二是通过 <code>ReentrantLock</code> 对象加锁保证自增操作原子性</p>
+<ol>
+<li>使用 synchronized 关键字保证 number 自增操作的原子性</li>
+</ol>
+<pre><code>public synchronized void increase() {
+    try {
+        Thread.sleep(100);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+    this.number++;
+}
+</code></pre>
+<p>当然加锁的范围应该尽量更小一些：</p>
+<pre><code>public void increase() {
+    try {
+        Thread.sleep(100);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+    synchronized (this) {
+        this.number++;
+    }
+}
+</code></pre>
+<ol start="2">
+<li>使用 <code>ReentrantLock</code> 保证 number 自增操作的原子性</li>
+</ol>
+<pre><code>public void increase() {
+    try {
+        Thread.sleep(100);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+    lock.lock(); // 加锁
+    try {
+        this.number ++;
+    } finally {
+        lock.unlock(); // 释放锁
+    }
+}
+</code></pre>
+<p>使用上面两种方法的任意一种输出结果将总是 500</p>
+<p><code>synchronized</code> 和 <code>volatile</code> 比较：</p>
+<ul>
+<li><code>volatile</code> 不需要加锁，比 <code>synchronized</code> 更轻量级，不会阻塞线<br>
+程，执行效率更高</li>
+<li><code>synchronized</code> 既能保证<code>共享变量</code>的可见性，又能保证<code>共享变量</code>的原子性，而 <code>volatile</code>只能保证<code>共享变量</code>的可见性，无法保证<code>共享变量</code>的原子性。</li>
+</ul>
+<p>最后，我们知道 Java 中 long 和 double 都是64 位的数据类型，而 <code>JMM</code> 允许 JVM 将没有被 <code>volatile</code> 修饰的 64 位数据类型的读写操作划分为两次 32 位的读写操作来进行，这就可能会导致读取到“半个变量”的情况，为了预防这种情况，最好为 long 和 double 类型的变量加上 <code>volatile</code> 关键字</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://www.imooc.com/learn/352">细说Java多线程之内存可见性</a></li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/dan-li-mo-shi-md/" class="post-title gt-a-link">
+                    单例模式.md
+                </a>
+            </div>
+        
+
+        
+
+        
+            
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+<script>
+    // md5.min.js
+    !function(n){
+        "use strict";
+        function d(n,t){var r=(65535&n)+(65535&t);return(n>>16)+(t>>16)+(r>>16)<<16|65535&r}
+        function f(n,t,r,e,o,u){return d((c=d(d(t,n),d(e,u)))<<(f=o)|c>>>32-f,r);var c,f}
+        function l(n,t,r,e,o,u,c){return f(t&r|~t&e,n,t,o,u,c)}
+        function v(n,t,r,e,o,u,c){return f(t&e|r&~e,n,t,o,u,c)}
+        function g(n,t,r,e,o,u,c){return f(t^r^e,n,t,o,u,c)}
+        function m(n,t,r,e,o,u,c){return f(r^(t|~e),n,t,o,u,c)}
+        function i(n,t){var r,e,o,u,c;n[t>>5]|=128<<t%32,n[14+(t+64>>>9<<4)]=t;var f=1732584193,i=-271733879,a=-1732584194,h=271733878;for(r=0;r<n.length;r+=16)f=l(e=f,o=i,u=a,c=h,n[r],7,-680876936),h=l(h,f,i,a,n[r+1],12,-389564586),a=l(a,h,f,i,n[r+2],17,606105819),i=l(i,a,h,f,n[r+3],22,-1044525330),f=l(f,i,a,h,n[r+4],7,-176418897),h=l(h,f,i,a,n[r+5],12,1200080426),a=l(a,h,f,i,n[r+6],17,-1473231341),i=l(i,a,h,f,n[r+7],22,-45705983),f=l(f,i,a,h,n[r+8],7,1770035416),h=l(h,f,i,a,n[r+9],12,-1958414417),a=l(a,h,f,i,n[r+10],17,-42063),i=l(i,a,h,f,n[r+11],22,-1990404162),f=l(f,i,a,h,n[r+12],7,1804603682),h=l(h,f,i,a,n[r+13],12,-40341101),a=l(a,h,f,i,n[r+14],17,-1502002290),f=v(f,i=l(i,a,h,f,n[r+15],22,1236535329),a,h,n[r+1],5,-165796510),h=v(h,f,i,a,n[r+6],9,-1069501632),a=v(a,h,f,i,n[r+11],14,643717713),i=v(i,a,h,f,n[r],20,-373897302),f=v(f,i,a,h,n[r+5],5,-701558691),h=v(h,f,i,a,n[r+10],9,38016083),a=v(a,h,f,i,n[r+15],14,-660478335),i=v(i,a,h,f,n[r+4],20,-405537848),f=v(f,i,a,h,n[r+9],5,568446438),h=v(h,f,i,a,n[r+14],9,-1019803690),a=v(a,h,f,i,n[r+3],14,-187363961),i=v(i,a,h,f,n[r+8],20,1163531501),f=v(f,i,a,h,n[r+13],5,-1444681467),h=v(h,f,i,a,n[r+2],9,-51403784),a=v(a,h,f,i,n[r+7],14,1735328473),f=g(f,i=v(i,a,h,f,n[r+12],20,-1926607734),a,h,n[r+5],4,-378558),h=g(h,f,i,a,n[r+8],11,-2022574463),a=g(a,h,f,i,n[r+11],16,1839030562),i=g(i,a,h,f,n[r+14],23,-35309556),f=g(f,i,a,h,n[r+1],4,-1530992060),h=g(h,f,i,a,n[r+4],11,1272893353),a=g(a,h,f,i,n[r+7],16,-155497632),i=g(i,a,h,f,n[r+10],23,-1094730640),f=g(f,i,a,h,n[r+13],4,681279174),h=g(h,f,i,a,n[r],11,-358537222),a=g(a,h,f,i,n[r+3],16,-722521979),i=g(i,a,h,f,n[r+6],23,76029189),f=g(f,i,a,h,n[r+9],4,-640364487),h=g(h,f,i,a,n[r+12],11,-421815835),a=g(a,h,f,i,n[r+15],16,530742520),f=m(f,i=g(i,a,h,f,n[r+2],23,-995338651),a,h,n[r],6,-198630844),h=m(h,f,i,a,n[r+7],10,1126891415),a=m(a,h,f,i,n[r+14],15,-1416354905),i=m(i,a,h,f,n[r+5],21,-57434055),f=m(f,i,a,h,n[r+12],6,1700485571),h=m(h,f,i,a,n[r+3],10,-1894986606),a=m(a,h,f,i,n[r+10],15,-1051523),i=m(i,a,h,f,n[r+1],21,-2054922799),f=m(f,i,a,h,n[r+8],6,1873313359),h=m(h,f,i,a,n[r+15],10,-30611744),a=m(a,h,f,i,n[r+6],15,-1560198380),i=m(i,a,h,f,n[r+13],21,1309151649),f=m(f,i,a,h,n[r+4],6,-145523070),h=m(h,f,i,a,n[r+11],10,-1120210379),a=m(a,h,f,i,n[r+2],15,718787259),i=m(i,a,h,f,n[r+9],21,-343485551),f=d(f,e),i=d(i,o),a=d(a,u),h=d(h,c);return[f,i,a,h]}
+        function a(n){var t,r="",e=32*n.length;for(t=0;t<e;t+=8)r+=String.fromCharCode(n[t>>5]>>>t%32&255);return r}
+        function h(n){var t,r=[];for(r[(n.length>>2)-1]=void 0,t=0;t<r.length;t+=1)r[t]=0;var e=8*n.length;for(t=0;t<e;t+=8)r[t>>5]|=(255&n.charCodeAt(t/8))<<t%32;return r}
+        function e(n){var t,r,e="0123456789abcdef",o="";for(r=0;r<n.length;r+=1)t=n.charCodeAt(r),o+=e.charAt(t>>>4&15)+e.charAt(15&t);return o}
+        function r(n){return unescape(encodeURIComponent(n))}
+        function o(n){return a(i(h(t=r(n)),8*t.length));var t}
+        function u(n,t){return function(n,t){var r,e,o=h(n),u=[],c=[];for(u[15]=c[15]=void 0,16<o.length&&(o=i(o,8*n.length)),r=0;r<16;r+=1)u[r]=909522486^o[r],c[r]=1549556828^o[r];return e=i(u.concat(h(t)),512+8*t.length),a(i(c.concat(e),640))}(r(n),r(t))}
+        function t(n,t,r){return t?r?u(t,n):e(u(t,n)):r?o(n):e(o(n))}
+        "function"==typeof define&&define.amd?define(function(){return t}):"object"==typeof module&&module.exports?module.exports=t:n.md5=t;
+    }(this);
+</script>
+
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd5112611bb77c8d6bb88',
+    clientSecret: 'b064af1dd2e63f211b8517f1a57d71c1efc01b8e',
+    repo: 'kuranado2.github.io',
+    owner: 'kuranado2',
+    admin: ['kuranado2'],
+    id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false       // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+            
+
+            
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">笔记/博客</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KURANADO2" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+                <a href="https://www.zhihu.com/people/jing-xin-ling-32" target="_blank">
+                    <i class="fab fa-zhihu gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        @Copyright 2020 <a href="http://emoji.kuranado.com">表情包网站</a>
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="http://blog.kuranado.com/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

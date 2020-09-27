@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-09-27T13:36:59.463Z</updated>
+    <updated>2020-09-27T14:48:59.095Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,839 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[Java 多线程 - 内存可见性.md]]></title>
+        <id>http://blog.kuranado.com/post/java-duo-xian-cheng-nei-cun-ke-jian-xing-md/</id>
+        <link href="http://blog.kuranado.com/post/java-duo-xian-cheng-nei-cun-ke-jian-xing-md/">
+        </link>
+        <updated>2020-09-27T14:45:25.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="jmm">JMM</h2>
+<p><code>JMM(Java Memory Model)</code> 即 Java 内存模型，描述了 Java 程序中各种变量（线程共享变量）的访问规则，以及在 <code>JVM</code>中将变量存储到内存和从内存中读取出变量这样的底层细节，JMM 有如下几条规则：</p>
+<ul>
+<li>所有的变量都存储在<code>主内存</code>中</li>
+<li>每个线程都有自己独立的<code>工作内存</code>，里面保存该线程使用到的变量的副本（<code>主内存</code>中该变量的一份拷贝）</li>
+<li>线程对<code>共享变量</code>的所有操作都必须在自己的<code>工作内存</code>中进行，不能直接从<code>主内存</code>中读写</li>
+<li>不同线程之间无法直接访问其他线程<code>工作内存</code>中的变量，线程间变量值的传递需要通过<code>主内存</code>来完成</li>
+</ul>
+<figure data-type="image" tabindex="1"><img src="http://imgblog.kuranado.com/blog/1601218014.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>根据上图也可以发现：线程不能直接与<code>主内存</code>进行交互，<code>工作内存</code>负责与线程和<code>主内存</code>进行交互</p>
+<h2 id="共享变量">共享变量</h2>
+<p>如果一个变量在多个线程的<code>工作内存</code>中都存在副本，那么这个变量就是这几个线程的<code>共享变量</code></p>
+<h2 id="可见性">可见性</h2>
+<p>一个线程对<code>共享变量</code>值的修改，能够及时被其他线程看到则称这个<code>共享变量</code>在线程之间是可见的</p>
+<h2 id="重排序">重排序</h2>
+<p>代码书写的顺序与实际执行的顺序不同,指令重排序是编译器或处理器为了提高程序性能而做的优化</p>
+<h3 id="as-if-serial语义">as-if-serial语义</h3>
+<p>无论如何重排序，程序执行的结果应该与代码顺序执行的结果一致，Java 编译器、运行时和处理器都会保证 Java 在<strong>单线程下</strong>遵循 as-if-serial 语义，所以重排序不会给单线程带来内存可见性问题，但是在多线程中程序交错执行时，重排序可能会造成内存可见性问题</p>
+<pre><code>int num1 = 3;
+int num2 = 5;
+int sum = num1 + num2;
+</code></pre>
+<p>在单线程中，第 1 行和第 2 行代码可以进行重排序，但第 3 行代码不可以进行重排序，也就是说代码实际执行顺序可能是1 -&gt; 2 -&gt; 3 或 2 -&gt; 1 -&gt; 3，但绝不可能是3 -&gt; 1 -&gt; 2 或 3 -&gt; 2 -&gt; 1，因为这和代码顺序执行的结果不一致，不满足 as-if-serial 语义</p>
+<h2 id="实现共享变量可见性">实现共享变量可见性</h2>
+<p>要实现共享变量的可见性，必须保证两点：</p>
+<ol>
+<li>线程修改后的<code>共享变量</code>值能够及时从该线程的<code>工作内存</code>刷新到<code>主内存</code>中</li>
+<li>其他线程能够及时把<code>共享变量</code>的最新值从<code>主内存</code>更新到自己的<code>工作内存</code>中</li>
+</ol>
+<p>而 Java 保证<code>共享变量</code>可见性主要通过 <code>synchronized</code> 或 <code>volatile</code> 关键字实现：</p>
+<h3 id="synchronized">synchronized</h3>
+<p><code>synchronized</code> 能够实现：</p>
+<ul>
+<li>原子性（同步）</li>
+<li>内存可见性</li>
+</ul>
+<p><code>JMM</code> 关于 <code>synchronized</code> 的两条规定：</p>
+<ul>
+<li>线程解锁前，必须把<code>共享变量</code>的最新值刷新到<code>主内存</code>中</li>
+<li>线程加锁时，将清空<code>工作内存</code>中共享变量的值，从而使用<code>共享变量</code>时，需要从<code>主内存</code>中重新读取最新的值（注意：加锁与解锁需要是同一把锁）</li>
+</ul>
+<p>可见 <code>synchronized</code> 的这两条规定刚好满足要实现<code>共享变量</code>可见性所必须要保证的两点</p>
+<p><code>synchronized</code> 实现可见性过程如下：</p>
+<ol>
+<li>获得互斥锁</li>
+<li>清空<code>工作内存</code></li>
+<li>从<code>主内存</code>拷贝变量的最新副本到<code>工作内存</code></li>
+<li>执行代码</li>
+<li>将更改后的<code>共享变量</code>的值刷新到<code>主内存</code></li>
+<li>释放互斥锁</li>
+</ol>
+<p>下面上一段代码：</p>
+<pre><code>public class Synchronpublic class SynchronizedDemo {
+    // 共享变量
+    private boolean ready = false;
+    private int result = 0;
+    private int number = 1;
+    // 写操作
+    public void write(){
+        ready = true; // 1.1
+        number = 2; // 1.2
+    }
+    // 读操作
+    public void read(){
+        if(ready){ // 2.1
+            result = number * 3; // 2.2
+        }
+        System.out.println(&quot;result的值为：&quot; + result);
+    }
+
+    // 内部线程类
+    private class ReadWriteThread extends Thread {
+        // 根据构造方法中传入的flag参数，确定线程执行读操作还是写操作
+        private boolean flag;
+        public ReadWriteThread(boolean flag){
+            this.flag = flag;
+        }
+        @Override
+        public void run() {
+            if(flag){
+                // 构造方法中传入true，执行写操作
+                write();
+            }else{
+                // 构造方法中传入false，执行读操作
+                read();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        SynchronizedDemo synDemo = new SynchronizedDemo();
+        // 启动线程执行写操作
+        synDemo.new ReadWriteThread(true).start();
+
+        // 启动线程执行读操作
+        synDemo.new ReadWriteThread(false).start();
+    }
+}
+</code></pre>
+<p>执行这段代码输出结果可能为 6，可能为 0，也可能为 3，而不论哪种结果，都可能有多种执行顺序</p>
+<p>result = 6 1.1-&gt;1.2-&gt;2.1-&gt;2.2<br>
+result = 6 1.1-&gt;2.1-&gt;1.2-&gt;2.2<br>
+result = 6 1.2-&gt;1.1-&gt;2.1-&gt;2.2<br>
+result = 3 1.1-&gt;2.1-&gt;2.2-&gt;1.2<br>
+result = 0 1.2-&gt;2.1-&gt;2.2-&gt;1.1 （1.1 和 1.2 进行了重排序，先执行了 1.2，然后写线程让出 CPU 资源执行读线程 ）<br>
+result = 0 1.2-&gt;2.2-&gt;2.1-&gt;1.1 （1.1 和 1.2 进行了重排序，2.1 和 2.2 也进行了重排序）<br>
+...</p>
+<p>注：代码 2.1 和代码 2.2 也可以进行重排序，因为在单线程中，2.1 和 2.2 无论谁先执行，都不会影响 result 的值</p>
+<p>上面的例子简单说明了导致<code>共享变量</code>在线程中不可见的原因可能是线程的交叉执行或重排序，通过 <code>synchronized</code> 可以解决：</p>
+<p>导致共享变量在线程间不可见的原因|synchronized解决方案<br>
+-|<br>
+线程的交叉执行（比如先执行 1.1 后执行 2.1）|原子性，synchronized保证了锁内部代码的原子性，避免了锁内部代码在线程之间交叉执行<br>
+重排序结合线程交叉执行|原子性<br>
+共享变量更新后的值没有在工作内存与主内存之间及时更新|可见性</p>
+<p><code>synchroized</code> 实现可见性代码：</p>
+<pre><code>//写操作
+public synchronized void write(){
+    ready = true;	//1.1
+    number = 2;	//1.2
+}
+//读操作
+public synchronized void read(){
+    if(ready){	//2.1
+        result = number * 3;	//2.2
+    }
+    System.out.println(&quot;result的值为：&quot; + result);
+}
+</code></pre>
+<p>这样程序的输出结果将总是 6</p>
+<h3 id="volatile">volatile</h3>
+<p><code>volatile</code> 关键字：</p>
+<ul>
+<li>能够保证 volatile 变量的可见性</li>
+<li>在 JDK 1.5 之后，volatile 变量能够禁止指令重排序</li>
+<li>不能保证 volatile 变量复合操作的原子性</li>
+</ul>
+<p><code>volatile</code> 如何实现内存可见性：</p>
+<p>volatile 变量在每次被线程访问时，都强迫从主内存中重读该变量的值，而当该变量发生变化时，又会强迫线程将最新的值刷新到主内存，这样任何时刻，不同的线程总能看到该变量的最新值</p>
+<p>线程写 <code>volatile</code> 变量的过程:</p>
+<ol>
+<li>改变线程工作内存中 <code>volatile</code> 变量副本的值</li>
+<li>将改变后的副本的值从工作内存刷新到主内存</li>
+</ol>
+<p>线程读 <code>volatile</code> 变量的过程:</p>
+<ol>
+<li>从主内存中读取 <code>volatile</code> 变量的最新值到线程的工作内存中</li>
+<li>从工作内存中读取 <code>volatile</code> 变量的副本</li>
+</ol>
+<p>上代码：</p>
+<pre><code>public class VolatileDemo {
+
+    private volatile int number = 0;
+    private Lock lock = new ReentrantLock();
+
+    public void increase() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        this.number++;
+    }
+
+    public int getNumber() {
+        return this.number;
+    }
+
+    public static void main(String[] args) {
+        VolatileDemo volatileDemo = new VolatileDemo();
+        for (int i = 0; i &lt; 500; i ++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    volatileDemo.increase();
+                }
+            }).start();
+        }
+        //如果还有子线程在运行，主线程就让出CPU资源，
+        //直到所有子线程都运行完了，主线程再继续往下执行
+        while (Thread.activeCount() &gt; 2) { //在IDEA中设置大于2，在Eclipse中设置为大于1即可，因为IDEA除了主线程之外还会有一个监视线程在运行
+            Thread.yield();
+        }
+        System.out.println(&quot;number:&quot; + volatileDemo.getNumber());
+    }
+
+}
+</code></pre>
+<p>这段代码的执行结果可能为 500，也可能小于 500，而问题就出在 <code>number ++;</code> 上，因为 <code>number ++</code> 实际要分为如下 3 步执行：</p>
+<ol>
+<li>读取 number 的值</li>
+<li>将 number 的值加 1</li>
+<li>写入最新的 number 值</li>
+</ol>
+<p>而 <code>volatile</code> 虽然能够保证<code>共享变量</code>的内存可见性，但却不能保证复合操作的原子性，假设有两个线程 A 和 B，volatile int number = 5，线程 A 和 B 并发执行 <code>number ++;</code> 操作时就可能产生下面的执行顺序：</p>
+<ol>
+<li>线程 A 从主内存读取 number 的值</li>
+<li>线程 B 从主内存读取 number 的值</li>
+<li>线程 B 执行加 1 操作</li>
+<li>线程 B 向主内存写入最新的 number 值</li>
+<li>线程 A 执行加 1 操作</li>
+<li>线程 A 向主内存写入最新的 number 值</li>
+</ol>
+<p>两个线程都执行了 <code>number ++;</code>，但主内存中共享变量 <code>number</code> 的值却是 6 而不是 7</p>
+<p>解决办法有两种，一是通过 <code>synchronized</code> 加锁保证自增操作原子性，二是通过 <code>ReentrantLock</code> 对象加锁保证自增操作原子性</p>
+<ol>
+<li>使用 synchronized 关键字保证 number 自增操作的原子性</li>
+</ol>
+<pre><code>public synchronized void increase() {
+    try {
+        Thread.sleep(100);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+    this.number++;
+}
+</code></pre>
+<p>当然加锁的范围应该尽量更小一些：</p>
+<pre><code>public void increase() {
+    try {
+        Thread.sleep(100);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+    synchronized (this) {
+        this.number++;
+    }
+}
+</code></pre>
+<ol start="2">
+<li>使用 <code>ReentrantLock</code> 保证 number 自增操作的原子性</li>
+</ol>
+<pre><code>public void increase() {
+    try {
+        Thread.sleep(100);
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+    }
+    lock.lock(); // 加锁
+    try {
+        this.number ++;
+    } finally {
+        lock.unlock(); // 释放锁
+    }
+}
+</code></pre>
+<p>使用上面两种方法的任意一种输出结果将总是 500</p>
+<p><code>synchronized</code> 和 <code>volatile</code> 比较：</p>
+<ul>
+<li><code>volatile</code> 不需要加锁，比 <code>synchronized</code> 更轻量级，不会阻塞线<br>
+程，执行效率更高</li>
+<li><code>synchronized</code> 既能保证<code>共享变量</code>的可见性，又能保证<code>共享变量</code>的原子性，而 <code>volatile</code>只能保证<code>共享变量</code>的可见性，无法保证<code>共享变量</code>的原子性。</li>
+</ul>
+<p>最后，我们知道 Java 中 long 和 double 都是64 位的数据类型，而 <code>JMM</code> 允许 JVM 将没有被 <code>volatile</code> 修饰的 64 位数据类型的读写操作划分为两次 32 位的读写操作来进行，这就可能会导致读取到“半个变量”的情况，为了预防这种情况，最好为 long 和 double 类型的变量加上 <code>volatile</code> 关键字</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://www.imooc.com/learn/352">细说Java多线程之内存可见性</a></li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[单例模式.md]]></title>
+        <id>http://blog.kuranado.com/post/dan-li-mo-shi-md/</id>
+        <link href="http://blog.kuranado.com/post/dan-li-mo-shi-md/">
+        </link>
+        <updated>2020-09-27T14:36:55.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="什么是单例模式">什么是单例模式</h2>
+<p>所谓单例模式即单例类只能有一个实例，并向外部提供一个访问该实例的全局访问点。</p>
+<p>单例模式优点：</p>
+<ul>
+<li>可以避免类的频繁创建与销毁</li>
+<li>只创建一个实例，节省系统资源</li>
+</ul>
+<h2 id="饱汉式-单线程">饱汉式-单线程</h2>
+<p>饱汉式又称懒汉式（吃饱了可不就懒得动弹了嘛）：</p>
+<pre><code>public class Test {
+
+    public static void main(String[] args) {
+        Singleton singleton = Singleton.getSingleton();
+        Singleton singleton2 = Singleton.getSingleton();
+        // 输出 true
+        System.out.println(singleton == singleton2);
+    }
+
+}
+class Singleton {
+
+    private static Singleton singleton;
+
+    private Singleton () {}
+
+    public static Singleton getSingleton() {
+
+        if (singleton == null) {
+            singleton = new Singleton();
+        }
+
+        return singleton;
+    }
+}
+</code></pre>
+<p>这就是最简单的单例模式，为了防止外部通过 <code>new</code> 创建多个 Singleton 类的对象，将构造方法设为 <code>private</code>；向外部提供 <code>getSingleton</code> 方法，通过 <code>if</code> 判断，即便外部多次调用该方法也只会创建一次实例；因为 new 关键字已被禁用，无法通过 <code>new Singleton().getSingleton()</code> 的形式创建实例，所以该方法为静态方法，可以直接通过 <code>Singleton.getSingleton()</code> 调用该方法创建实例；因为静态方法不能访问普通变量，所以 Singleton 变量也使用 <code>static</code> 修饰。</p>
+<h2 id="饱汉式-多线程">饱汉式-多线程</h2>
+<p>饱汉式-单线程的代码在单线程下的执行效率很高，同时也实现了懒加载（外部调用 getInstance() 方法时才创建 Singleton 类的实例），但缺点也很明显，那就是在多线程情况下，并不能保证只创建一次实例，如两个线程 A 和 B，A 执行完 <code>if (singleton == null)</code> 后，线程 B 获得处理器资源也执行到 <code>if (singleton == null)</code> ，这样线程 A 和 B 将都会创建一次实例。解决办法也很简单，使用 <code>synchronized</code> 修饰 <code>getSingleton</code> 方法即可：</p>
+<pre><code>public static synchronized Singleton getSingleton() {
+
+    if (singleton == null) {
+        singleton = new Singleton();
+    }
+
+    return singleton;
+}
+</code></pre>
+<p>这样即可保证多线程下也只会创建一次实例，但同样存在很大的缺陷：加锁会影响效率，实际应该在创建完第一个实例后就解锁，否则每个线程调用 <code>getSingleton</code> 时都要上锁阻塞其他线程，导致执行效率极低。</p>
+<h2 id="双重检验锁double-checked-locking">双重检验锁(Double Checked Locking)</h2>
+<p>双重检验锁是对饱汉式-多线程的优化，做到一旦创建完第一个实例后就不再加锁的效果：</p>
+<pre><code>class Singleton {
+
+    private volatile static Singleton singleton;
+    
+    private Singleton () {}
+
+    public static Singleton getSingleton() {
+        // 可能会有多个线程都进入了此 if
+        if (singleton == null) { // 第一次检查
+            // 加锁
+            synchronized (Singleton.class) {
+                // 第一个进入锁内的线程才会进入此 if
+                if (singleton == null) { // 第二次检查
+                    singleton = new Singleton();
+                }
+            }
+        }
+
+        return singleton;
+    }
+}
+</code></pre>
+<p>关键点在于 <code>volatile</code> 关键字的使用，此处为何要使用 <code>volatile</code> 关键字呢？</p>
+<p>问题在于 <code>singleton = new Singleton();</code> 这行代码上，这行代码在底层可以粗略的分为以下几步执行：</p>
+<ol>
+<li>栈内存开辟空间给 singleton 引用</li>
+<li>堆内存开辟空间准备初始化对象</li>
+<li>初始化对象</li>
+<li>栈中引用指向这个堆内存空间地址</li>
+</ol>
+<p>因为指令重排序的原因，这行代码的执行顺序可能是 1 -&gt; 2 -&gt; 3 -&gt; 4，也可能是 1 -&gt; 2 -&gt; 4 -&gt; 3。在某个时刻，确实可以保证只有一个线程进入同步代码块，如果进入同步代码块的线程刚好执行到 1 -&gt; 2 -&gt; 4，并没有执行到 3，但此时 singleton 已经非空，如果这时还有一个线程抢占资源调用 getInstance() 方法，则该线程执行到第一个 <code>if</code> 判断时，由于 singleton 非空，直接返回该 singleton，而实际上，该 singleton 所指向的堆内存空间地址并没有存放初始化后的对象，造成我们并没有拿到正确的对象实例。</p>
+<p><code>volatile</code> 刚好可以解决上述问题，我们知道 <code>volatile</code> 有 3 个特点：</p>
+<ol>
+<li>能够保证 <code>volatile</code> 变量的可见性</li>
+<li>在 JDK 1.5 之后，<code>volatile</code> 变量能够禁止指令重排序</li>
+<li>不能保证 <code>volatile</code> 变量复合操作的原子性。</li>
+</ol>
+<p>其中禁止指令重排序的特性正是我们所需要的。</p>
+<h2 id="饥汉式">饥汉式</h2>
+<p>饥汉式又称饿汉式，实现代码最为简单：</p>
+<pre><code>class Singleton {
+
+    private static Singleton singleton = new Singleton();
+
+    private Singleton () {}
+
+    public static Singleton getSingleton() {
+        return singleton;
+    }
+}
+</code></pre>
+<p>饥汉式一上来就在类加载时创建好对象，由于 Java 的类加载机制避免了多线程的同步问题（类的加载方式是按需加载，且只加载一次，因为这个类在整个生命周期中只会被加载一次，所以只会创建一个实例），所以执行效率非常高。但饥汉式也存在如下两个缺点：</p>
+<ol>
+<li>没有实现懒加载，即便根本没有人主动调用 getSingleton 方法，不管三七二十一，也会在类加载时就创建 Singleton 类实例。假设 Singleton 类实例的创建非常消耗系统资源的话，则会造成系统资源浪费。</li>
+<li>像 Spring 等框架的设计中也都用到了单例模式，但这些框架常常需要通过参数进行配置，如果直接像饥汉式一样 <code>private static Singleton singleton = new Singleton();</code> 将创建对象写死，将无法传入配置参数。</li>
+</ol>
+<h2 id="静态内部类">静态内部类</h2>
+<pre><code>class Singleton {
+
+    private Singleton() {}
+    
+    // 私有静态内部类，用到时才加载，所以时懒加载
+    private static class SingletonHolder {
+        private static final Singleton INSTANCE = new Singleton();
+    }
+
+    public static Singleton getSingleton() {
+        return SingletonHolder.INSTANCE;
+    }
+}
+</code></pre>
+<p>静态内部类的加载不需要依附外部类，在使用到静态内部类时才加载，所以实现了懒加载。同时和饥汉式一样，类加载时就创建好对象，Java 的类加载机制也避免了多线程的同步问题，区别只在于这里是内部类</p>
+<h2 id="枚举">枚举</h2>
+<p>常有人说实现单例模式的最佳方法是使用枚举，这是因为枚举拥有以下特性，且代码实现简洁：</p>
+<ul>
+<li>枚举类的构造器只能使用 <code>private</code> 修饰，若省略 <code>private</code>，则默认也是使用 <code>private</code> 修饰，如果省略构造器，默认也会提供一个 <code>private</code> 修饰的构造器，这和我们前面 5 种写法完全吻合</li>
+<li>枚举类的每个实例系统都会自动为其添加 <code>public static final</code> 修饰，保证了枚举中的实例都只会被实例化一次</li>
+<li>线程安全</li>
+</ul>
+<pre><code>public class Test {
+
+    public static void main(String[] args) {
+        Singleton singleton = Singleton.SINGLETON;
+        Singleton singleton2 = Singleton.SINGLETON;
+        // 输出 true
+        System.out.println(singleton == singleton2);
+    }
+
+}
+
+enum Singleton {
+    SINGLETON
+}
+</code></pre>
+<p>遗憾的是枚举类加载时就开始加载枚举实例，所以并没有实现懒加载。</p>
+<h2 id="总结">总结</h2>
+<p>各种写法特性总结如下：</p>
+<table>
+<thead>
+<tr>
+<th>s</th>
+<th>饱汉式-单线程</th>
+<th>饱汉式-多线程</th>
+<th>双重检验锁</th>
+<th>饥汉式</th>
+<th>静态内部类</th>
+<th>枚举</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>支持多线程</td>
+<td>✘</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+</tr>
+<tr>
+<td>懒加载</td>
+<td>✔</td>
+<td>✔</td>
+<td>✔</td>
+<td>✘</td>
+<td>✔</td>
+<td>✘</td>
+</tr>
+<tr>
+<td>效率</td>
+<td>高</td>
+<td>低</td>
+<td>高</td>
+<td>高</td>
+<td>高</td>
+<td>高</td>
+</tr>
+</tbody>
+</table>
+<p>综合来说我更倾向于使用双重检验锁方式，但每种写法各有其优缺点，在开发中应该根据需求选择，引用一段话：</p>
+<blockquote>
+<p>既应当考虑到需求可能出现的扩展与变化，也应该避免无谓的提升设计、实现复杂度，最终反而会带来工期、性能和稳定性的损失，设计不足与设计过度都是危害，正所谓：没有最好的单例模式，只有最合适的单例模式。</p>
+</blockquote>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>《Java 疯狂讲义》</li>
+<li><a href="http://www.runoob.com/design-pattern/singleton-pattern.html">菜鸟教程单例模式</a></li>
+<li><a href="http://wuchong.me/blog/2014/08/28/how-to-correctly-write-singleton-pattern/">如何正确地写出单例模式</a></li>
+<li><a href="http://www.importnew.com/23535.html">Java并发：volatile内存可见性和指令重排</a></li>
+<li><a href="http://www.kuranado.com/2018/03/27/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E5%86%85%E5%AD%98%E5%8F%AF%E8%A7%81%E6%80%A7/">Java多线程之内存可见性</a></li>
+<li><a href="https://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html">The &quot;Double-Checked Locking is Broken&quot; Declaration</a></li>
+<li><a href="https://www.cnblogs.com/cielosun/p/6596475.html">Java枚举enum以及应用：枚举实现单例模式</a></li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[毒鸡汤.md]]></title>
+        <id>http://blog.kuranado.com/post/du-ji-tang-md/</id>
+        <link href="http://blog.kuranado.com/post/du-ji-tang-md/">
+        </link>
+        <updated>2020-09-27T14:32:26.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>做人如果没点追求，那么，该多轻松啊…</li>
+<li>做一天的好人并不难，难的是做一辈子有钱人。</li>
+<li>你每天都那么努力，忍受了那么多的寂寞和痛苦。可我也没见你有多优秀！</li>
+<li>今天的事不用放在今天做，万一明天死了呢，就可以不用做了。</li>
+<li>其实只要不要脸，很多人生难题都能迎刃而解。</li>
+<li>做人要谦虚，多听听他人的意见，然后认真记下他们的名字。</li>
+<li>真正的吃货，是可以把月供看成月饼的。</li>
+<li>总是在重复，尤其是错误！</li>
+<li>很多时候，乐观的态度和好听的话帮不了你。</li>
+<li>狗是人类最好的朋友。 然而狗最好的朋友是「屎」。</li>
+<li>最怕你一生碌碌无为，还安慰自己说平凡可贵。</li>
+<li>当你觉得生活对你不公时，秤秤体重，照照镜子，你会觉得一切又合乎情理。</li>
+<li>谁说我不会乐器？我退堂鼓打的可好了。</li>
+<li>世界这么大，我想去看看，什么地方要饭比较方便！</li>
+<li>知道为何自古红颜多薄命吗？因为没人在意丑的人活多久。</li>
+<li>别人问你有谈恋爱吗？就说现在没有。可以机智地掩盖过去也没有的事实。</li>
+<li>做事一定要考虑别人的感受，千万不能让他们太开心了。</li>
+<li>就算睡得晚，不会找你的人还是不会找你！</li>
+<li>纵然人生坎坷，但我从不向命运屈服！我通常都是直接屈膝Orz。</li>
+<li>曾经我也是打算靠脸吃饭的，后来差点饿死才放弃的。</li>
+<li>众里寻她千百度，蓦然回首，那人依旧对我不屑一顾。</li>
+<li>做人要安安稳稳本本分分，因为，你也根本搞不出什么幺蛾子。</li>
+<li>没有人能让那你放弃减肥，你自己想想就会放弃了。</li>
+<li>做梦梦到自己在考试，然后被吓醒，发现自己真的在考试。</li>
+<li>白天嘈杂得不愿意醒，夜晚安静得舍不得睡。</li>
+<li>人生不如意，十之有十！</li>
+<li>做政治试卷，是我这辈子，说谎最多的时候。</li>
+<li>转角一般不会遇到爱，只会遇到乞丐。</li>
+<li>总结一下你的2018，留下你的不开心，让大家开心开心。</li>
+<li>做好人没希望，做坏人不擅长。</li>
+<li>如果十年之后你未娶，我未嫁，那真是太惨了！</li>
+<li>别看我平时对你漠不关心，其实私下里我每天都盼着你出事！</li>
+<li>只有努力过的人才知道，背景是多么重要！</li>
+<li>真正努力过的人，就会明白，天赋是有多么重要。</li>
+<li>做了一个风险非常大的投资，要是成功一下就能挣几个亿，要失败我这两块就打水漂了。</li>
+<li>总是在凌晨想通很多事情，又在天亮之后，忘得一干二净。</li>
+<li>装逼只是瞬间，不要脸那才是永恒。</li>
+<li>總以為退一步海闊天空，沒想到腳下落空。</li>
+<li>你多努力一点，获得的打击就多一点。</li>
+<li>做好万全的准备，就是为了当机会来临时，你可以巧妙地避开它。</li>
+<li>生活不止眼前的苟且，还有读不懂的诗和到不了的远方。</li>
+<li>再不疯狂就老了，疯狂过后发现老的更快。</li>
+<li>作为失败的典型，你实在是太成功了。</li>
+<li>诗和远方越远越脏 以梦为马越骑越傻！</li>
+<li>那些年立下的FLAG自己删了吧，反正也没人记得。</li>
+<li>给你的梦想插上翅膀，虽然不一定飞得很远，但肯定摔的很重！</li>
+<li>世界上本没有鸡汤，鸡死了，便做成了鸡汤。</li>
+<li>上帝为你关上一道防盗门，还会顺手给你上了一把钛合金锁。</li>
+<li>做任何事情一定要坚持下去，总会让你看到，失败的那一天。</li>
+<li>没有什么事情能把人一次击倒，只要足够坚强，它会持续的把你击倒！</li>
+<li>所有抱怨社会不公和制度的人翻译过来只有一句话：请给我金钱，女人和社会地位。</li>
+<li>昨天一个小偷，来我家偷钱，我们一起找了一晚上。</li>
+<li>谢谢你，在我每次需要你的时候都掉链子</li>
+<li>厉害的不是你有多少后台，而是你能成为多少人的后台！</li>
+<li>最近改掉了熬夜的壞習慣，改通宵了。</li>
+<li>只要努力的时间足够长，搞不好，你还可以失败的更彻底。</li>
+<li>自由从来不是什么理所当然的东西，而是一项需要极高成本的特权。</li>
+<li>这年头放个假真不容易，连放假都要沾老祖宗的光。</li>
+<li>虽然我学得慢，但是我放弃的快啊！</li>
+<li>喜欢就去表白，不然你不会知道自己长得多丑。</li>
+<li>只有努力过了才知道，智商上的差距是不可逾越的。</li>
+<li>知道为什么天妒英才吗？ 因为没人去管笨蛋活了多久。</li>
+<li>人人都想拯救世界，却没人帮妈妈洗碗。</li>
+<li>做题前，先想想出题者的用意，我觉得他想我死。</li>
+<li>最近一个月，总有那么三十天很不顺。</li>
+<li>昨天遇见小学同班同学，没想到他混的这么差，只往我碗里放了一块钱。</li>
+<li>不要以为世界抛弃了你，世界根本没空搭理你！</li>
+<li>如果所有人都理解你，那你得普通成什么样！</li>
+<li>终于中了500万，兑奖的时候，笑醒了。</li>
+<li>先生，你这张卡上的钱也不够……</li>
+<li>赚钱就像便秘 — 老难了，花钱就像拉稀 — 憋不住。</li>
+<li>打趴下就不要爬起来了，反正还是会被打到趴下！</li>
+<li>只要锄头挥得好，没有墙角挖不倒。</li>
+<li>抱怨不会改变生活，但是钱可以！</li>
+<li>死并不可怕，怕的是再也不能活了。</li>
+<li>只有努力过了才知道，智商上的差距，是不可逾越的。</li>
+<li>只是因为在人群中，多看了你一眼，你就以为我要坐你的摩的。</li>
+<li>一些年轻人，通过高端消费来营造自己高端收入的形象。</li>
+<li>一个姑娘的介绍：思想上的女流氓，生活中的好姑娘。 然而给我的感觉是：心思活络的丑逼。</li>
+<li>自古情深留不住，总是套路得人心。</li>
+<li>只有在车站大排长龙时，才能真正意识到，自己是龙的传人。</li>
+<li>只要功夫深铁杵磨成针，但真把铁杵磨成针的，绝对是大傻瓜。</li>
+<li>只要是石头，到哪里都不会发光。</li>
+<li>别总骂恨铁不成钢，是你自己忘了，铁本来就不能成钢的啊。</li>
+<li>女人假装高潮来维持恋爱，而男人假装恋爱以获得高潮。</li>
+<li>正月初五迎财神，那都是有钱人的事，你就洗洗睡吧。</li>
+<li>知识给你力量，无知会给你更强大无畏，且无法预测的力量。</li>
+<li>长的美与不美不重要，想的美才是真的美！</li>
+<li>只要有快递还在路上，就感觉这生活，还算有点希望。</li>
+<li>只要能用钱解决的事情，我一件都解决不了。</li>
+<li>只有多替领导背锅，领导才会把你，当成傻子啊。</li>
+<li>只要坚持不懈，嘲笑你的人，迟早会被你笑死。</li>
+<li>扎心？不存在的！心都没有扎哪里？</li>
+<li>注重细节，从小事做起，因为你根本做不了大事。</li>
+<li>正在输入…，给了多少人希望，又给了多少人失望。</li>
+<li>只要选对了人生的方向，很容易就成功了，让我们恭喜只要和很容易。</li>
+<li>至少在夏天，富得流油你已经做到了一半。</li>
+<li>长得好看的才叫吃货，长得不好看的那叫饭桶！</li>
+<li>只要你肯吃苦，肯努力，肯放下身段，去要饭，总会有人赶的</li>
+<li>只要我肯努力，没什么事情是我搞不砸的。</li>
+<li>这世上没谁离不开谁，就算是一条鱼离开水，也能烤着吃。</li>
+<li>长的丑不是我的错，只是我在落地时太匆忙了，来不急打扮。</li>
+<li>早睡早起身体好，可是晚睡晚起真的心情好。</li>
+<li>这一秒不放弃，下一秒，就更绝望了。</li>
+<li>挣钱是一种能力，花钱是一种技术，我能力有限技术却很高。</li>
+<li>长的好看的才能叫吃货，长的不好看的只能叫饭桶。</li>
+<li>真希望有一天我的钱包，可以和我的脸皮一样厚。</li>
+<li>长得丑怎么了？我自己又看不到，恶心的是你们！</li>
+<li>真正努力过的人才知道，智商上的差距是不可逾越的。</li>
+<li>只有在，请假扣工资时，才觉得自己工资高。</li>
+<li>只要我吃的夠快，体重绝对追不上我！</li>
+<li>这么多年没掉入桃色陷阱，靠的就是两个字，没钱。</li>
+<li>所谓成长，就是在听到波涛汹涌四个字，再也联想不到大海了。</li>
+<li>余生不想请你指教了，领教够了</li>
+<li>只要你每天坚持学习，最终胜利肯定是属于，在考场上发挥好的人。</li>
+<li>早晨起来照镜子，安慰自己说没事，还有比我更丑的。</li>
+<li>这辈子这么苦，别太拼，下辈子还会更苦的。</li>
+<li>这次期末考，我会用实力告诉你，我们年级共有多少人。</li>
+<li>这世上如果有什么真理，那就是活该！</li>
+<li>这辈子最灿烂的笑容，大概都奉献给，我的手机屏幕了。</li>
+<li>遇到喜欢的女生要勇敢表白，只有你主动了，才知道她名花有主。</li>
+<li>真正的勇士，敢于直面银行卡上的余额，敢于正视磅秤上的数字。</li>
+<li>在你最需要帮助的时候，只有鬼才来帮你。</li>
+<li>愚人节，只是给说谎的人，一个说真话的机会。</li>
+<li>这孩子不是笨，就是学习方法不对。学习方法都找不对还不是笨啊？</li>
+<li>这年头有些人靠脸吃饭，而有些人，靠不要脸吃饭。</li>
+<li>这年头，哪有不分手的恋爱，只有不伤手的立白。遇事得看开一点。</li>
+<li>仗义每从屠狗辈，负心多是读书人。</li>
+<li>再也沒有任何事情，比晚睡更快樂了，除了晚起。</li>
+<li>攒了一年头皮屑，只为给你下场雪。</li>
+<li>找对象还是眼光高点好，你总得为，没有人喜欢你找个借口吧。</li>
+<li>这个年纪会在你耳边唱歌，喜欢你的肉体还会送你包的，只剩下蚊子了。</li>
+<li>这两天雨水多，下雨记得打伞，否则脑袋容易进水。</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Java 浅拷贝和深拷贝.md]]></title>
+        <id>http://blog.kuranado.com/post/java-qian-kao-bei-he-shen-kao-bei-md/</id>
+        <link href="http://blog.kuranado.com/post/java-qian-kao-bei-he-shen-kao-bei-md/">
+        </link>
+        <updated>2020-09-27T13:59:45.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="最普通的引用复制">最普通的引用复制：</h2>
+<pre><code>import lombok.Data;
+
+/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-20 12:57
+ */
+@Data
+public class Student {
+
+    private int no;
+}
+</code></pre>
+<pre><code>/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-20 12:58
+ */
+public class Test {
+
+    public static void main(String[] args)  {
+
+        Student student = new Student();
+        student.setNo(1);
+
+        // 复制对象引用
+        Student student2 = student;
+        student2.setNo(2);
+
+        System.out.println(student);
+        System.out.println(student2);
+    }
+}
+</code></pre>
+<p>输出结果如下：</p>
+<pre><code>Student(no=2)
+Student(no=2)
+</code></pre>
+<p>更改一个 student 的 no 值，影响到了另一个 student 的 no</p>
+<h2 id="浅拷贝">浅拷贝</h2>
+<p>被拷贝的类需要实现 <code>Cloneable</code> 接口，并重写  <code>clone</code> 方法：</p>
+<pre><code>import lombok.Data;
+
+/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-20 12:57
+ */
+@Data
+public class Student implements Cloneable {
+
+    private int no;
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}
+</code></pre>
+<pre><code>/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-20 12:58
+ */
+public class Test {
+
+    public static void main(String[] args) throws CloneNotSupportedException {
+
+        Student student = new Student();
+        student.setNo(1);
+
+        Student student2 = (Student) student.clone();
+        student2.setNo(2);
+
+        System.out.println(student);
+        System.out.println(student2);
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code>Student(no=1)
+Student(no=2)
+</code></pre>
+<p>更改一个 student 的 no 值，不会影响另一个 student 的 no</p>
+<h2 id="深拷贝">深拷贝</h2>
+<pre><code>import lombok.Data;
+
+/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-20 12:57
+ */
+@Data
+public class Student implements Cloneable {
+
+    private int no;
+    private Teacher teacher;
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}
+</code></pre>
+<pre><code>import lombok.Data;
+
+/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-20 13:03
+ */
+@Data
+public class Teacher {
+
+    private String name;
+}
+</code></pre>
+<pre><code>/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-20 12:58
+ */
+public class Test {
+
+    public static void main(String[] args) throws CloneNotSupportedException {
+
+        Student student = new Student();
+        Teacher teacher = new Teacher();
+        teacher.setName(&quot;汪老师&quot;);
+        student.setNo(1);
+        student.setTeacher(teacher);
+
+        Student student2 = (Student) student.clone();
+        student2.setNo(2);
+        student2.getTeacher().setName(&quot;井老师&quot;);
+        System.out.println(student);
+        System.out.println(student2);
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code>Student(no=1, teacher=Teacher(name=井老师))
+Student(no=2, teacher=Teacher(name=井老师))
+</code></pre>
+<p>两个 student 的 no 不同，但 teacher 却一起被改变了，说明 teacher 使用的是同一个引用。这是因为 Student 类下的 <code>super.clone()</code> 仅能拷贝 Student <strong>类本身及其中包含的值类型的成员变量，并不能拷贝引用类型的成员对象</strong></p>
+<p>修改 Teacher 类如下：</p>
+<pre><code>import lombok.Data;
+
+/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-20 13:03
+ */
+@Data
+public class Teacher implements Cloneable {
+
+    private String name;
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+}
+</code></pre>
+<p>修改 Student 类如下：</p>
+<pre><code>import lombok.Data;
+
+/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-20 12:57
+ */
+@Data
+public class Student implements Cloneable {
+
+    private int no;
+    private Teacher teacher;
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Student student = (Student) super.clone();
+        student.setTeacher((Teacher) teacher.clone());
+        return student;
+    }
+}
+</code></pre>
+<pre><code>/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-20 12:58
+ */
+public class Test {
+
+    public static void main(String[] args) throws CloneNotSupportedException {
+
+        Student student = new Student();
+        Teacher teacher = new Teacher();
+        teacher.setName(&quot;汪老师&quot;);
+        student.setNo(1);
+        student.setTeacher(teacher);
+
+        Student student2 = (Student) student.clone();
+        student2.setNo(2);
+        student2.getTeacher().setName(&quot;井老师&quot;);
+        System.out.println(student);
+        System.out.println(student2);
+    }
+
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code>Student(no=1, teacher=Teacher(name=汪老师))
+Student(no=2, teacher=Teacher(name=井老师))
+</code></pre>
+<p>一个 student 的 teacher 改变并不会影响另一个 student 的 teacher</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[土味情话.md]]></title>
         <id>http://blog.kuranado.com/post/tu-wei-qing-hua-md/</id>
