@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-09-27T14:48:59.095Z</updated>
+    <updated>2020-09-27T14:59:00.355Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -24,7 +24,7 @@
 <li>线程对<code>共享变量</code>的所有操作都必须在自己的<code>工作内存</code>中进行，不能直接从<code>主内存</code>中读写</li>
 <li>不同线程之间无法直接访问其他线程<code>工作内存</code>中的变量，线程间变量值的传递需要通过<code>主内存</code>来完成</li>
 </ul>
-<figure data-type="image" tabindex="1"><img src="http://imgblog.kuranado.com/blog/1601218014.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601218014.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 <p>根据上图也可以发现：线程不能直接与<code>主内存</code>进行交互，<code>工作内存</code>负责与线程和<code>主内存</code>进行交互</p>
 <h2 id="共享变量">共享变量</h2>
 <p>如果一个变量在多个线程的<code>工作内存</code>中都存在副本，那么这个变量就是这几个线程的<code>共享变量</code></p>
