@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-09-28T05:41:15.884Z</updated>
+    <updated>2020-09-28T09:31:56.468Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,204 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[Java 泛型总结.md]]></title>
+        <id>http://blog.kuranado.com/post/java-fan-xing-zong-jie-md/</id>
+        <link href="http://blog.kuranado.com/post/java-fan-xing-zong-jie-md/">
+        </link>
+        <updated>2020-09-28T09:30:54.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="泛型类">泛型类</h2>
+<p>我们知道使用泛型可以使类型错误在编译时就被检测到，从而能够增加程序的健壮性。</p>
+<h3 id="定义泛型类">定义泛型类</h3>
+<pre><code>public class Generic&lt;T&gt; {
+
+    private T key;
+
+    public Generic(T key) {
+        this.key = key;
+    }
+
+    public T getKey() {
+        return key;
+    }
+
+    public void setKey(T key) {
+        this.key = key;
+    }
+}
+</code></pre>
+<h3 id="实例化泛型类">实例化泛型类</h3>
+<pre><code>Generic&lt;String&gt; genericString = new Generic&lt;&gt;(&quot;abc&quot;);
+Generic&lt;Integer&gt; genericInteger = new Generic&lt;&gt;(123);
+System.out.println(genericString.getKey());
+System.out.println(genericInteger.getKey());
+</code></pre>
+<p>需要注意的是泛型的类型参数必须是<code>引用类型</code>（类、接口、数组等都是 <code>引用类型</code>）而不能是简单类型，如 <code>Generic&lt;int&gt; generic = new Generic&lt;&gt;(123);</code> 是不允许的。</p>
+<p>当然和 List 等一样，实例化泛型类可以传入任意类型而并不一定非要传入泛型类实参，只不过既然我们将类定义为泛型类，其目的就是希望开发者们能够传入确定的类型实参，以增加程序健壮性：</p>
+<pre><code>Generic generic = new Generic(&quot;abc&quot;);
+Generic generic2 = new Generic(123);
+Generic generic3 = new Generic(true);
+</code></pre>
+<h2 id="泛型接口">泛型接口</h2>
+<h3 id="定义泛型接口">定义泛型接口</h3>
+<pre><code>public interface Generator&lt;T&gt; {
+    public T fun();
+}
+</code></pre>
+<h3 id="实现泛型接口">实现泛型接口</h3>
+<pre><code>public class PersonGenerator&lt;T&gt; implements Generator&lt;T&gt; {
+    @Override
+    public T fun() {
+        return null;
+    }
+}
+</code></pre>
+<p>可见当类实现泛型接口时若没有传入泛型实参，则需要将泛型也加到类的定义中，否则像下面的代码将会出现编译错误：</p>
+<pre><code>public class PersonGenerator implements Generator&lt;T&gt; {
+    @Override
+    public T fun() {
+        return null;
+    }
+}
+</code></pre>
+<p>如果实现泛型接口时传入了泛型实参，则该类中所有使用泛型的地方都要替换成传入的泛型实参：</p>
+<pre><code>public class PersonGenerator implements Generator&lt;String&gt; {
+    @Override
+    public String fun() {
+        return null;
+    }
+}
+</code></pre>
+<h2 id="泛型方法">泛型方法</h2>
+<p>为了判断数组中是否包含某值写了如下两个重载方法：</p>
+<pre><code>public static void main(String[] args) {
+    Integer[] integers = new Integer[]{1, 2, 3};
+    String[] strings = new String[]{&quot;a&quot;, &quot;b&quot;, &quot;c&quot;};
+    System.out.println(contains(2, integers));
+    System.out.println(contains(&quot;b&quot;, strings));
+}
+public static boolean contains(Integer integer, Integer[] integers) {
+    return Arrays.asList(integers).contains(integer);
+}
+public static boolean contains(String s, String[] strings) {
+    return Arrays.asList(strings).contains(s);
+}
+</code></pre>
+<p>但如果还想要判断 Float 类型的数组中是否包含某个值就有需要编写一个重载方法，好在我们可以通过泛型方法有效的避免这些冗余的方法：</p>
+<pre><code>public static void main(String[] args) {
+    Integer[] integers = new Integer[]{1, 2, 3};
+    String[] strings = new String[]{&quot;a&quot;, &quot;b&quot;, &quot;c&quot;};
+    Float[] floats = new Float[]{0.1f, 0.2f, 0.3f};
+    System.out.println(contains(2, integers));
+    System.out.println(contains(&quot;b&quot;, strings));
+    System.out.println(contains(0.2f, floats));
+}
+public static &lt;T&gt; boolean contains(T t, T[] ts) {
+    return Arrays.asList(ts).contains(t);
+}
+</code></pre>
+<p>需要注意的是方法返回值前需要包含形式参数，如 <code>&lt;T&gt;</code>， <strong>否则该方法不能被称为泛型方法</strong>，编译也将出错。<br>
+值得一提的是，如果同时保留以下两个方法：</p>
+<pre><code>public static &lt;T&gt; boolean contains(T t, T[] ts) {
+    return Arrays.asList(ts).contains(t);
+}
+public static boolean contains(Integer integer, Integer[] integers) {
+    return Arrays.asList(integers).contains(integer);
+}
+</code></pre>
+<p><code>contains(&quot;b&quot;, strings)</code> 会自动匹配泛型方法，而 <code>contains(2, integers)</code> 匹配的是普通方法而不是泛型方法。</p>
+<h2 id="泛型通配符">泛型通配符</h2>
+<h3 id="无限定通配符-unbounded-wildcard">无限定通配符-Unbounded Wildcard</h3>
+<p>我们知道 Integer、Double、Float 等都是 Number 类的子类，所以下面的代码完全没问题：</p>
+<pre><code>public static void main(String[] args) {
+    printMsg(123);
+}
+public static void printMsg(Number number) {
+    System.out.println(number);
+}
+</code></pre>
+<p>基本类型 123 被自动装箱成 Integer 类型，而 Integer 又是 Number 类的子类，所以可以作为 printMsg 方法的实参。</p>
+<p>但泛型类 <code>Generic&lt;Number&gt;</code> 和 <code>Generic&lt;Integer&gt;</code> 可以认为是两个完全没有关联的新类型，两者之间不具有任何继承关系，所以下面的代码会出现编译错误：</p>
+<pre><code>public static void main(String[] args) {
+    Generic&lt;Number&gt; genericNumber = new Generic&lt;&gt;(123);
+    Generic&lt;Integer&gt; genericInteger = new Generic&lt;&gt;(123);
+    printMsg(genericNumber);  // 编译通过
+    printMsg(genericInteger); // 编译出错，因为 Generic&lt;Integer&gt; 和 Generic&lt;Number&gt; 二者之间没有任何继承关系
+}
+public static void printMsg(Generic&lt;Number&gt; generic) {
+    System.out.println(generic.getKey());
+}
+</code></pre>
+<p>而如果就是希望 printMsg 方法既能接收 <code>Generic&lt;Number&gt;</code> 又能够接收 <code>Generic&lt;Integer&gt;</code>类型，甚至是能够接收传入了任意实参类型的 <code>Generic</code> 泛型类（如 <code>Generic&lt;String&gt;</code>、<code>Generic&lt;Random&gt;</code>等），则需要用到泛型通配符 <code>?</code> 了：</p>
+<pre><code>public static void main(String[] args) {
+    Generic&lt;Number&gt; genericNumber = new Generic&lt;&gt;(123);
+    Generic&lt;Integer&gt; genericInteger = new Generic&lt;&gt;(123);
+    printMsg(genericNumber);  // 编译通过
+    printMsg(genericInteger); // 编译通过
+}
+public static void printMsg(Generic&lt;?&gt; generic) {
+    System.out.println(generic.getKey());
+}
+</code></pre>
+<h3 id="上限通配符-upper-bounded-wildcard">上限通配符-Upper Bounded Wildcard</h3>
+<p>为泛型添加上边界，即传入的类型实参必须是指定类型或指定类型的子类。使用 <code>extends</code> 指定上限通配符</p>
+<pre><code>public static void main(String[] args) {
+    Generic&lt;Number&gt; genericNumber = new Generic&lt;&gt;(123);
+    Generic&lt;Integer&gt; genericInteger = new Generic&lt;&gt;(123);
+    Generic&lt;Float&gt; genericFloat = new Generic&lt;&gt;(0.5f);
+    Generic&lt;String&gt; genericString = new Generic&lt;&gt;(&quot;Hello&quot;);
+    printMsg(genericNumber);  // 编译通过
+    printMsg(genericInteger); // 编译通过
+    printMsg(genericFloat);   // 编译通过
+    printMsg(genericString);  // 编译出错
+}
+public static void printMsg(Generic&lt;? extends Number&gt; generic) {
+    System.out.println(generic.getKey());
+}
+</code></pre>
+<p>因为 <code>Generic&lt;? extends Number&gt; generic</code> 指定了传入的类型实参必须是 Number 类或 Number 类的子类，所以<code>printMsg(genericString);</code> 出错，因为 String 不是 Number 的子类</p>
+<h3 id="下限通配符-lower-bounded-wildcard">下限通配符-Lower Bounded Wildcard</h3>
+<p>和上限通配符类似，下限通配符使用 <code>super</code> 关键字实现：</p>
+<pre><code>public static void main(String[] args) {
+    Generic&lt;Number&gt; genericNumber = new Generic&lt;&gt;(123);
+    Generic&lt;Integer&gt; genericInteger = new Generic&lt;&gt;(123);
+    Generic&lt;Float&gt; genericFloat = new Generic&lt;&gt;(0.5f);
+    Generic&lt;String&gt; genericString = new Generic&lt;&gt;(&quot;Hello&quot;);
+    printMsg(genericNumber);  // 编译通过
+    printMsg(genericInteger); // 编译通过
+    printMsg(genericFloat);   // 编译出错
+    printMsg(genericString);  // 编译出错
+}
+public static void printMsg(Generic&lt;? super Integer&gt; generic) {
+    System.out.println(generic.getKey());
+}
+</code></pre>
+<p>因为 <code>Generic&lt;? super Integer&gt; generic</code> 指定了传入的类型实参必须是 Integer 类或 Integer 类的父类，所以 <code>printMsg(genericFloat);</code> 和 <code>printMsg(genericString);</code> 出现编译错误，因为 Float 和 String 都不是 Integer 类的父类</p>
+<h2 id="类型擦除-type-erasure">类型擦除-Type Erasure</h2>
+<p>Java 的泛型只在编译阶段有效，编译过程中正确检验泛型结果后，会将泛型相关信息擦除，并且在对象进入和离开方法的边界处添加类型检查和类型转换的方法，即泛型信息不回进入运行时阶段：</p>
+<pre><code>public static void main(String[] args) {
+    Generic&lt;Integer&gt; genericInteger = new Generic&lt;&gt;(123);
+    Generic&lt;String&gt; genericString= new Generic&lt;&gt;(&quot;Hello&quot;);
+    System.out.println(genericInteger.getClass() == genericString.getClass());  // 返回 true
+}
+</code></pre>
+<p>结果返回 <code>true</code> ，说明虽然编译时 <code>Generic&lt;Integer&gt;</code> 和 <code>Generic&lt;String&gt;</code> 是不同的类型，但因为泛型的类型擦除，所以编译后 <code>genericInteger</code> 和 <code>genericString</code> 为相同的类型</p>
+<h2 id="命名规则">命名规则</h2>
+<p>JDK 中文档经常能看到 <code>T</code>、<code>K</code>、<code>V</code>、<code>E</code>、<code>N</code> 等类型参数，而我们在编写泛型相关代码时，这些符号都可以随意使用，实际上还可以使用 JDK 文档中从来没用过的符号，如 <code>A</code>、<code>B</code>、<code>C</code> 等，但却极力不推荐这样做</p>
+<p>JDK 文档中各符号的含义：</p>
+<ul>
+<li>T：类型</li>
+<li>K：键</li>
+<li>V：值</li>
+<li>E：元素（如集合类中的元素全部用该符号表示）</li>
+<li>N：Number</li>
+</ul>
+<p>我们应该遵循 JDK 中已有的规范</p>
+<h2 id="参考资料">参考资料</h2>
+<p><a href="https://blog.csdn.net/u012152619/article/details/47253811">java泛型详解</a><br>
+<a href="https://blog.csdn.net/s10461/article/details/53941091/">java 泛型详解-绝对是对泛型方法讲解最详细的，没有之一</a></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[适配器模式.md]]></title>
         <id>http://blog.kuranado.com/post/gua-pei-qi-mo-shi-md/</id>
@@ -42,6 +240,7 @@
 <figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1601268890.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 <p>最终如愿以偿的用上了新键盘</p>
 <figure data-type="image" tabindex="5"><img src="http://image.kuranado.com/blog/1601268901.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>好了，就以这个场景为例，简单写下代码吧：</p>
 <h3 id="adaptee">Adaptee</h3>
 <p>拥有 PS2 接口的键盘是需要被适配的类</p>
 <pre><code>package com.kuranado.adaptor;
@@ -2034,7 +2233,7 @@ p {
 ]]></content>
     </entry>
     <entry>
-        <title type="html"><![CDATA[nginx 安装 SSL 证书.md]]></title>
+        <title type="html"><![CDATA[Nginx 安装 SSL 证书.md]]></title>
         <id>http://blog.kuranado.com/post/nginx-an-zhuang-ssl-zheng-shu-md/</id>
         <link href="http://blog.kuranado.com/post/nginx-an-zhuang-ssl-zheng-shu-md/">
         </link>
