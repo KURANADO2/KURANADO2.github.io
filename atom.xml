@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-09-27T14:59:00.355Z</updated>
+    <updated>2020-09-28T05:41:15.884Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,459 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[适配器模式.md]]></title>
+        <id>http://blog.kuranado.com/post/gua-pei-qi-mo-shi-md/</id>
+        <link href="http://blog.kuranado.com/post/gua-pei-qi-mo-shi-md/">
+        </link>
+        <updated>2020-09-28T04:52:46.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>适配器模式又叫 Adapter 模式</p>
+</blockquote>
+<h2 id="什么是适配器模式">什么是适配器模式</h2>
+<blockquote>
+<p>将一个类的接口转换成客户希望的另一个接口。Adapter 模式使得原本由于接口不兼容而不能一起工作的类可以在一起工作</p>
+</blockquote>
+<p>适配器模式中的角色：</p>
+<ul>
+<li>Target：目标接口。客户所期望的接口，可以是具体的类，也可以是抽象类或接口</li>
+<li>Adaptee：需要适配的类</li>
+<li>Adapter：适配器。通过包装一个需要适配的对象，把原接口转换成目标接口</li>
+</ul>
+<h2 id="栗子">栗子</h2>
+<p>网购一块键盘，收到货时却是这样的：</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601268804.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>......，黑心店家竟然发了块 PS2 接口的键盘</p>
+<p>可把我给气坏了！！！</p>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1601268819.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>因为笔记本接口是这样的：</p>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1601268843.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>只有 USB 接口</p>
+<p>黑心店家不给退货，没办法，翻箱倒柜，DIY 了一个 PS2 转 USB 的转换器：</p>
+<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1601268890.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>最终如愿以偿的用上了新键盘</p>
+<figure data-type="image" tabindex="5"><img src="http://image.kuranado.com/blog/1601268901.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h3 id="adaptee">Adaptee</h3>
+<p>拥有 PS2 接口的键盘是需要被适配的类</p>
+<pre><code>package com.kuranado.adaptor;
+
+/**
+ * PS2 键盘（要被适配的对象）
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 13:28
+ */
+public class PS2KeyboardAdaptee {
+
+    public void specificRequest() {
+        System.out.println(&quot;处理打字请求&quot;);
+    }
+
+}
+</code></pre>
+<h3 id="target">Target</h3>
+<p>客户（也就是笔记本）所期望的 USB 接口</p>
+<pre><code>package com.kuranado.adaptor;
+
+/**
+ * USB 接口（目标接口，客户所期望的接口）
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 13:33
+ */
+public interface USBTarget {
+
+    void handleRequest();
+
+}
+</code></pre>
+<h3 id="adapter">Adapter</h3>
+<p>PS2 和 USB 的转换器，通过组合的方式包装了被适配的对象，并调用被适配对象所具有的功能。<br>
+因为客户端只关心 USB 接口的使用，所以需要实现 USBTarget</p>
+<pre><code>package com.kuranado.adaptor;
+
+/**
+ * PS2 到 USB 转接口（适配器）
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 13:43
+ */
+public class PS22USBAdapter implements USBTarget {
+
+    private PS2KeyboardAdaptee adaptee;
+
+    @Override
+    public void handleRequest() {
+        adaptee.specificRequest();
+    }
+
+    public PS22USBAdapter(PS2KeyboardAdaptee adaptee) {
+        this.adaptee = adaptee;
+    }
+}
+</code></pre>
+<h3 id="client">Client</h3>
+<p>客户端调用 Target 接口</p>
+<pre><code>package com.kuranado.adaptor;
+
+/**
+ * 电脑客户端类
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 13:31
+ */
+public class ComputerClient {
+
+    public void test(USBTarget target) {
+        target.handleRequest();
+    }
+
+    public static void main(String[] args) {
+        ComputerClient client = new ComputerClient();
+        PS2KeyboardAdaptee adaptee = new PS2KeyboardAdaptee();
+        USBTarget target = new PS22USBAdapter(adaptee);
+        client.test(target);
+    }
+}
+</code></pre>
+<p>程序运行效果：</p>
+<pre><code>处理打字请求
+</code></pre>
+<p>总结适配器模式各个角色的的关系如下图：</p>
+<figure data-type="image" tabindex="6"><img src="http://image.kuranado.com/blog/1601268916.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="实际业务中的栗子">实际业务中的栗子</h2>
+<p>上面的例子比较简单，但真正业务中该如何应用适配器模式呢？此处把《研磨设计模式》中的例子拿过来与大家一起学习</p>
+<h3 id="1-logmodel日志类用于保存日志相关信息">1. LogModel：日志类，用于保存日志相关信息：</h3>
+<pre><code>/**
+ * 日志类
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:01
+ */
+@Data
+public class LogModel implements Serializable {
+
+    private static final long serialVersionUID = -2324527735778406382L;
+   
+    private String logId;
+    /**
+     * 日志内容
+     */
+    private String logContent;
+    /**
+     * 操作人
+     */
+    private String operateUser;
+    /**
+     * 操作时间
+     */
+    private String operateTime;
+
+    public LogModel() {
+    }
+
+    public LogModel(String logId, String logContent, String operateUser, String operateTime) {
+        this.logId = logId;
+        this.logContent = logContent;
+        this.operateUser = operateUser;
+        this.operateTime = operateTime;
+    }
+}
+</code></pre>
+<h3 id="2-logfileoperateapi从文件中读取日志或向文件中写入日志的接口">2. LogFileOperateApi：从文件中读取日志或向文件中写入日志的接口：</h3>
+<pre><code>/**
+ *
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:08
+ */
+public interface LogFileOperateApi {
+
+    List&lt;LogModel&gt; readLogFile();
+
+    void writeLogFile(List&lt;LogModel&gt; logModels);
+}
+</code></pre>
+<h3 id="3-logfileoperateapi-接口的实现类">3. LogFileOperateApi 接口的实现类：</h3>
+<pre><code>/**
+ *
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:10
+ */
+public class LogFileOperateApiImpl implements LogFileOperateApi {
+
+    // 默认的日志路径
+    private String logFilePathName = &quot;/Users/jing/Code/GitHub/DesignPatterns/src/main/resources/AdaptorLog.log&quot;;
+
+    public LogFileOperateApiImpl(String logFilePathName) {
+        if (logFilePathName != null &amp;&amp; logFilePathName.trim().length() &gt; 0) {
+            this.logFilePathName = logFilePathName;
+        }
+    }
+
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public List&lt;LogModel&gt; readLogFile() {
+        File file;
+        ObjectInputStream objectInputStream = null;
+        List&lt;LogModel&gt; logModels = null;
+        try {
+            file = new File(logFilePathName);
+            if (file.exists()) {
+                InputStream inputStream = new FileInputStream(file);
+                if (inputStream.available() != 0) {
+                    objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
+                    logModels = (List&lt;LogModel&gt;) objectInputStream.readObject();
+                } else {
+                    return null;
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (objectInputStream != null) {
+                try {
+                    objectInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return logModels;
+    }
+
+    @Override
+    public void writeLogFile(List&lt;LogModel&gt; logModels) {
+        ObjectOutputStream objectOutputStream = null;
+        File file;
+        try {
+            file = new File(logFilePathName);
+            objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+            objectOutputStream.writeObject(logModels);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (objectOutputStream != null) {
+                try {
+                    objectOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<h3 id="4-client">4. Client:</h3>
+<pre><code>/**
+ * 客户端
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:01
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        LogModel logModel = new LogModel(&quot;0001&quot;, &quot;这是第一条测试日志&quot;, &quot;JING&quot;, &quot;2018-08-03 09:44:35&quot;);
+
+        List&lt;LogModel&gt; logModels = new ArrayList&lt;&gt;();
+        logModels.add(logModel);
+
+        LogFileOperateApi logFileOperateApi = new LogFileOperateApiImpl(&quot;&quot;);
+        logFileOperateApi.writeLogFile(logModels);
+        List&lt;LogModel&gt; models = logFileOperateApi.readLogFile();
+        System.out.println(models);
+    }
+}
+</code></pre>
+<p>客户端创建了一个日志对象，并将该日志对象写入了文件，然后从文件中读取出日志，并打印出来：</p>
+<pre><code>[LogModel(logId=0001, logContent=这是第一条测试日志, operateUser=JING, operateTime=2018-08-03 09:44:35)]
+</code></pre>
+<p>这样程序正常运行着，可是突然有一天 leader 说为了方便日志管理，要求把日志存储到数据库中，于是你快速定义了将日志存取到数据库的接口：</p>
+<h3 id="5-logdboperateapi">5. LogDbOperateApi:</h3>
+<pre><code>/**
+ *
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:15
+ */
+public interface LogDbOperateApi {
+
+    /**
+     * 将日志保存到数据库
+     * @param logModel
+     */
+    void createLog(LogModel logModel);
+
+    /**
+     * 更新数据库中的日志
+     * @param logModel
+     */
+    void updateLog(LogModel logModel);
+
+    /**
+     * 删除数据库中的日志
+     * @param logModel
+     */
+    void removeLog(LogModel logModel);
+
+    /**
+     * 获取数据库中的所有日志
+     * @return
+     */
+    List&lt;LogModel&gt; getAllLog();
+
+}
+</code></pre>
+<p>然后实现该接口：</p>
+<h3 id="6-logdboperateapiimpl">6. LogDbOperateApiImpl：</h3>
+<pre><code>/**
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:48
+ */
+public class LogDbOperateApiImpl implements LogDbOperateApi {
+
+    @Override
+    public void createLog(LogModel logModel) {
+        System.out.println(&quot;成功插入日志:&quot; + logModel.toString() + &quot;到数据库中&quot;);
+    }
+
+    @Override
+    public void updateLog(LogModel logModel) {
+        System.out.println(&quot;成功更新数据库中日志:&quot; + logModel.toString());
+    }
+
+    @Override
+    public void removeLog(LogModel logModel) {
+        System.out.println(&quot;成功删除数据库中日志:&quot; + logModel.toString() + &quot;到数据库中&quot;);
+    }
+
+    @Override
+    public List&lt;LogModel&gt; getAllLog() {
+        System.out.println(&quot;已找到数据库中的所有日志&quot;);
+        return null;
+    }
+}
+</code></pre>
+<h3 id="7-client">7. Client:</h3>
+<pre><code>/**
+ * 客户端
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:01
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        LogModel logModel = new LogModel(&quot;0001&quot;, &quot;这是一条测试日志&quot;, &quot;JING&quot;, &quot;2018-08-03 09:44:35&quot;);
+        LogDbOperateApi logDbOperateApi = new LogDbOperateApiImpl();
+        logDbOperateApi.createLog(logModel);
+    }
+}
+</code></pre>
+<p>程序运行结果：</p>
+<pre><code>成功插入日志:LogModel(logId=0001, logContent=这是一条测试日志, operateUser=JING, operateTime=2018-08-03 09:44:35)到数据库中
+</code></pre>
+<p><strong>到这里我们把 LogFileOperateApi 叫做第一版接口，LogDbOperateApi 叫做第二版接口</strong></p>
+<p>好啦，所有的工作都做完了，终于可以开开心心的去撩妹啦</p>
+<p>刚和妹子约好晚上共度良宵，leader 却又找到了你，因为他觉得还 是 把 日 志 存 储 到 文 件 中 比 较 好！！！</p>
+<figure data-type="image" tabindex="7"><img src="http://imgblog.kuranado.com/womeishengqi.jpeg" alt="" loading="lazy"></figure>
+<p>此刻内心想法：I have a line of MMP to tell you when the perfect timing comes to us. （╯' - ')╯︵ ┻━┻</p>
+<p>工作还得继续，硬着头皮想到了这么几个解决办法：</p>
+<ul>
+<li>方法一：修改客户端调用，重新修改为调用第一版的接口</li>
+<li>方法二：按照第二版的接口重新实现一个将日志存取到文件的实现类</li>
+<li>方法三：不修改客户端调用，编写一个适配器，将第二版的接口适配到第一版的实现上，也就是使用适配器模式</li>
+</ul>
+<p>这三个方法哪个更可取呢？</p>
+<ul>
+<li>方法一：现在所有的业务都使用第二版接口，要更改为第一版接口的话，即要更改整个项目所有地方，费时费力</li>
+<li>方法二：已经完成的功能何必再重做一遍呢</li>
+<li>方法三：复用已有代码，省时省力</li>
+</ul>
+<h3 id="8-adapter">8. Adapter</h3>
+<pre><code>/**
+ *
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:59
+ */
+public class Adapter implements LogDbOperateApi {
+
+    private LogFileOperateApi adaptee;
+
+    public Adapter(LogFileOperateApi adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    @Override
+    public void createLog(LogModel logModel) {
+        List&lt;LogModel&gt; logModels = adaptee.readLogFile();
+        logModels.add(logModel);
+        adaptee.writeLogFile(logModels);
+    }
+
+    @Override
+    public void updateLog(LogModel logModel) {
+        List&lt;LogModel&gt; logModels = adaptee.readLogFile();
+        for (int i = 0; i &lt; logModels.size(); i ++) {
+            if (logModels.get(i).getLogId().equals(logModel.getLogId())) {
+                logModels.set(i, logModel);
+                break;
+            }
+        }
+        adaptee.writeLogFile(logModels);
+    }
+
+    @Override
+    public void removeLog(LogModel logModel) {
+        List&lt;LogModel&gt; logModels = adaptee.readLogFile();
+        logModels.remove(logModel);
+    }
+
+    @Override
+    public List&lt;LogModel&gt; getAllLog() {
+        return adaptee.readLogFile();
+    }
+}
+</code></pre>
+<h3 id="9-client">9. Client</h3>
+<p>此时客户端只要做一点小修改即可：</p>
+<pre><code>/**
+ * 客户端
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:01
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        LogModel logModel = new LogModel(&quot;0002&quot;, &quot;这是第二条测试日志&quot;, &quot;JING&quot;, &quot;2019-09-04 10:55:46&quot;);
+        List&lt;LogModel&gt; logModels = new ArrayList&lt;&gt;();
+        logModels.add(logModel);
+        LogFileOperateApi logFileOperateApi = new LogFileOperateApiImpl(&quot;&quot;);
+        LogDbOperateApi target = new Adapter(logFileOperateApi);
+        target.createLog(logModel);
+        System.out.println(target.getAllLog());
+    }
+}
+</code></pre>
+<pre><code>[LogModel(logId=0001, logContent=这是第一条测试日志, operateUser=JING, operateTime=2018-08-03 09:44:35), LogModel(logId=0002, logContent=这是第二条测试日志, operateUser=JING, operateTime=2019-09-04 10:55:46)]
+</code></pre>
+<p>整体结构：</p>
+<figure data-type="image" tabindex="8"><img src="http://image.kuranado.com/blog/1601271526.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>第二版接口对应适配器中的 Target，第一版的实现扮演适配器中的 Adaptee。整个适配器模式中最关键的就是 Adapter，它需要实现第二版的接口，但在内部实现的时候通过对象组合的方式调用第一版已经实现的功能。</p>
+<p>好啦，这回终于可以结束工作，时间也还早，可以放心的去陪妹子逛街啦！</p>
+<h2 id="工作中的应用场景">工作中的应用场景</h2>
+<ul>
+<li>旧系统的改造和升级</li>
+<li>系统维护</li>
+</ul>
+<h2 id="常见实现">常见实现</h2>
+<h3 id="java-io">Java IO</h3>
+<ul>
+<li>java.io.InputStreamReader(InputStream)：通过适配器将字节流转换为我们需要的字符流</li>
+</ul>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=HKVZNuZwVhQ&amp;t=1280s&amp;list=PLkQ01vCRt9bUFnXOD66dabj2NM9Wbjhoc&amp;index=7">【GOF23设计模式】 适配器模式</a></li>
+<li><a href="https://mrdear.cn/2018/03/14/experience/design_patterns--adapter/">学长博客</a></li>
+<li>《研磨设计模式》</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Java 多线程 - 内存可见性.md]]></title>
         <id>http://blog.kuranado.com/post/java-duo-xian-cheng-nei-cun-ke-jian-xing-md/</id>

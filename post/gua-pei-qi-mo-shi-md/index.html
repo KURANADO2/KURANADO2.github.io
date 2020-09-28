@@ -1,0 +1,671 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>适配器模式.md | KURANADO</title>
+
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601271614671">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            KURANADO
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1601271614671" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    适配器模式.md
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-09-28 ·
+                    </time>
+                    
+                        <a href="http://blog.kuranado.com/tag/e80F3R9Pc/" class="post-tags">
+                            # 设计模式
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/prbxfSBgl/" class="post-tags">
+                            # Java
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <blockquote>
+<p>适配器模式又叫 Adapter 模式</p>
+</blockquote>
+<h2 id="什么是适配器模式">什么是适配器模式</h2>
+<blockquote>
+<p>将一个类的接口转换成客户希望的另一个接口。Adapter 模式使得原本由于接口不兼容而不能一起工作的类可以在一起工作</p>
+</blockquote>
+<p>适配器模式中的角色：</p>
+<ul>
+<li>Target：目标接口。客户所期望的接口，可以是具体的类，也可以是抽象类或接口</li>
+<li>Adaptee：需要适配的类</li>
+<li>Adapter：适配器。通过包装一个需要适配的对象，把原接口转换成目标接口</li>
+</ul>
+<h2 id="栗子">栗子</h2>
+<p>网购一块键盘，收到货时却是这样的：</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601268804.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>......，黑心店家竟然发了块 PS2 接口的键盘</p>
+<p>可把我给气坏了！！！</p>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1601268819.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>因为笔记本接口是这样的：</p>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1601268843.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>只有 USB 接口</p>
+<p>黑心店家不给退货，没办法，翻箱倒柜，DIY 了一个 PS2 转 USB 的转换器：</p>
+<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1601268890.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>最终如愿以偿的用上了新键盘</p>
+<figure data-type="image" tabindex="5"><img src="http://image.kuranado.com/blog/1601268901.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h3 id="adaptee">Adaptee</h3>
+<p>拥有 PS2 接口的键盘是需要被适配的类</p>
+<pre><code>package com.kuranado.adaptor;
+
+/**
+ * PS2 键盘（要被适配的对象）
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 13:28
+ */
+public class PS2KeyboardAdaptee {
+
+    public void specificRequest() {
+        System.out.println(&quot;处理打字请求&quot;);
+    }
+
+}
+</code></pre>
+<h3 id="target">Target</h3>
+<p>客户（也就是笔记本）所期望的 USB 接口</p>
+<pre><code>package com.kuranado.adaptor;
+
+/**
+ * USB 接口（目标接口，客户所期望的接口）
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 13:33
+ */
+public interface USBTarget {
+
+    void handleRequest();
+
+}
+</code></pre>
+<h3 id="adapter">Adapter</h3>
+<p>PS2 和 USB 的转换器，通过组合的方式包装了被适配的对象，并调用被适配对象所具有的功能。<br>
+因为客户端只关心 USB 接口的使用，所以需要实现 USBTarget</p>
+<pre><code>package com.kuranado.adaptor;
+
+/**
+ * PS2 到 USB 转接口（适配器）
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 13:43
+ */
+public class PS22USBAdapter implements USBTarget {
+
+    private PS2KeyboardAdaptee adaptee;
+
+    @Override
+    public void handleRequest() {
+        adaptee.specificRequest();
+    }
+
+    public PS22USBAdapter(PS2KeyboardAdaptee adaptee) {
+        this.adaptee = adaptee;
+    }
+}
+</code></pre>
+<h3 id="client">Client</h3>
+<p>客户端调用 Target 接口</p>
+<pre><code>package com.kuranado.adaptor;
+
+/**
+ * 电脑客户端类
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 13:31
+ */
+public class ComputerClient {
+
+    public void test(USBTarget target) {
+        target.handleRequest();
+    }
+
+    public static void main(String[] args) {
+        ComputerClient client = new ComputerClient();
+        PS2KeyboardAdaptee adaptee = new PS2KeyboardAdaptee();
+        USBTarget target = new PS22USBAdapter(adaptee);
+        client.test(target);
+    }
+}
+</code></pre>
+<p>程序运行效果：</p>
+<pre><code>处理打字请求
+</code></pre>
+<p>总结适配器模式各个角色的的关系如下图：</p>
+<figure data-type="image" tabindex="6"><img src="http://image.kuranado.com/blog/1601268916.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="实际业务中的栗子">实际业务中的栗子</h2>
+<p>上面的例子比较简单，但真正业务中该如何应用适配器模式呢？此处把《研磨设计模式》中的例子拿过来与大家一起学习</p>
+<h3 id="1-logmodel日志类用于保存日志相关信息">1. LogModel：日志类，用于保存日志相关信息：</h3>
+<pre><code>/**
+ * 日志类
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:01
+ */
+@Data
+public class LogModel implements Serializable {
+
+    private static final long serialVersionUID = -2324527735778406382L;
+   
+    private String logId;
+    /**
+     * 日志内容
+     */
+    private String logContent;
+    /**
+     * 操作人
+     */
+    private String operateUser;
+    /**
+     * 操作时间
+     */
+    private String operateTime;
+
+    public LogModel() {
+    }
+
+    public LogModel(String logId, String logContent, String operateUser, String operateTime) {
+        this.logId = logId;
+        this.logContent = logContent;
+        this.operateUser = operateUser;
+        this.operateTime = operateTime;
+    }
+}
+</code></pre>
+<h3 id="2-logfileoperateapi从文件中读取日志或向文件中写入日志的接口">2. LogFileOperateApi：从文件中读取日志或向文件中写入日志的接口：</h3>
+<pre><code>/**
+ *
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:08
+ */
+public interface LogFileOperateApi {
+
+    List&lt;LogModel&gt; readLogFile();
+
+    void writeLogFile(List&lt;LogModel&gt; logModels);
+}
+</code></pre>
+<h3 id="3-logfileoperateapi-接口的实现类">3. LogFileOperateApi 接口的实现类：</h3>
+<pre><code>/**
+ *
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:10
+ */
+public class LogFileOperateApiImpl implements LogFileOperateApi {
+
+    // 默认的日志路径
+    private String logFilePathName = &quot;/Users/jing/Code/GitHub/DesignPatterns/src/main/resources/AdaptorLog.log&quot;;
+
+    public LogFileOperateApiImpl(String logFilePathName) {
+        if (logFilePathName != null &amp;&amp; logFilePathName.trim().length() &gt; 0) {
+            this.logFilePathName = logFilePathName;
+        }
+    }
+
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public List&lt;LogModel&gt; readLogFile() {
+        File file;
+        ObjectInputStream objectInputStream = null;
+        List&lt;LogModel&gt; logModels = null;
+        try {
+            file = new File(logFilePathName);
+            if (file.exists()) {
+                InputStream inputStream = new FileInputStream(file);
+                if (inputStream.available() != 0) {
+                    objectInputStream = new ObjectInputStream(new BufferedInputStream(new FileInputStream(file)));
+                    logModels = (List&lt;LogModel&gt;) objectInputStream.readObject();
+                } else {
+                    return null;
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (objectInputStream != null) {
+                try {
+                    objectInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return logModels;
+    }
+
+    @Override
+    public void writeLogFile(List&lt;LogModel&gt; logModels) {
+        ObjectOutputStream objectOutputStream = null;
+        File file;
+        try {
+            file = new File(logFilePathName);
+            objectOutputStream = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+            objectOutputStream.writeObject(logModels);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (objectOutputStream != null) {
+                try {
+                    objectOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+</code></pre>
+<h3 id="4-client">4. Client:</h3>
+<pre><code>/**
+ * 客户端
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:01
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        LogModel logModel = new LogModel(&quot;0001&quot;, &quot;这是第一条测试日志&quot;, &quot;JING&quot;, &quot;2018-08-03 09:44:35&quot;);
+
+        List&lt;LogModel&gt; logModels = new ArrayList&lt;&gt;();
+        logModels.add(logModel);
+
+        LogFileOperateApi logFileOperateApi = new LogFileOperateApiImpl(&quot;&quot;);
+        logFileOperateApi.writeLogFile(logModels);
+        List&lt;LogModel&gt; models = logFileOperateApi.readLogFile();
+        System.out.println(models);
+    }
+}
+</code></pre>
+<p>客户端创建了一个日志对象，并将该日志对象写入了文件，然后从文件中读取出日志，并打印出来：</p>
+<pre><code>[LogModel(logId=0001, logContent=这是第一条测试日志, operateUser=JING, operateTime=2018-08-03 09:44:35)]
+</code></pre>
+<p>这样程序正常运行着，可是突然有一天 leader 说为了方便日志管理，要求把日志存储到数据库中，于是你快速定义了将日志存取到数据库的接口：</p>
+<h3 id="5-logdboperateapi">5. LogDbOperateApi:</h3>
+<pre><code>/**
+ *
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:15
+ */
+public interface LogDbOperateApi {
+
+    /**
+     * 将日志保存到数据库
+     * @param logModel
+     */
+    void createLog(LogModel logModel);
+
+    /**
+     * 更新数据库中的日志
+     * @param logModel
+     */
+    void updateLog(LogModel logModel);
+
+    /**
+     * 删除数据库中的日志
+     * @param logModel
+     */
+    void removeLog(LogModel logModel);
+
+    /**
+     * 获取数据库中的所有日志
+     * @return
+     */
+    List&lt;LogModel&gt; getAllLog();
+
+}
+</code></pre>
+<p>然后实现该接口：</p>
+<h3 id="6-logdboperateapiimpl">6. LogDbOperateApiImpl：</h3>
+<pre><code>/**
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:48
+ */
+public class LogDbOperateApiImpl implements LogDbOperateApi {
+
+    @Override
+    public void createLog(LogModel logModel) {
+        System.out.println(&quot;成功插入日志:&quot; + logModel.toString() + &quot;到数据库中&quot;);
+    }
+
+    @Override
+    public void updateLog(LogModel logModel) {
+        System.out.println(&quot;成功更新数据库中日志:&quot; + logModel.toString());
+    }
+
+    @Override
+    public void removeLog(LogModel logModel) {
+        System.out.println(&quot;成功删除数据库中日志:&quot; + logModel.toString() + &quot;到数据库中&quot;);
+    }
+
+    @Override
+    public List&lt;LogModel&gt; getAllLog() {
+        System.out.println(&quot;已找到数据库中的所有日志&quot;);
+        return null;
+    }
+}
+</code></pre>
+<h3 id="7-client">7. Client:</h3>
+<pre><code>/**
+ * 客户端
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:01
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        LogModel logModel = new LogModel(&quot;0001&quot;, &quot;这是一条测试日志&quot;, &quot;JING&quot;, &quot;2018-08-03 09:44:35&quot;);
+        LogDbOperateApi logDbOperateApi = new LogDbOperateApiImpl();
+        logDbOperateApi.createLog(logModel);
+    }
+}
+</code></pre>
+<p>程序运行结果：</p>
+<pre><code>成功插入日志:LogModel(logId=0001, logContent=这是一条测试日志, operateUser=JING, operateTime=2018-08-03 09:44:35)到数据库中
+</code></pre>
+<p><strong>到这里我们把 LogFileOperateApi 叫做第一版接口，LogDbOperateApi 叫做第二版接口</strong></p>
+<p>好啦，所有的工作都做完了，终于可以开开心心的去撩妹啦</p>
+<p>刚和妹子约好晚上共度良宵，leader 却又找到了你，因为他觉得还 是 把 日 志 存 储 到 文 件 中 比 较 好！！！</p>
+<figure data-type="image" tabindex="7"><img src="http://imgblog.kuranado.com/womeishengqi.jpeg" alt="" loading="lazy"></figure>
+<p>此刻内心想法：I have a line of MMP to tell you when the perfect timing comes to us. （╯' - ')╯︵ ┻━┻</p>
+<p>工作还得继续，硬着头皮想到了这么几个解决办法：</p>
+<ul>
+<li>方法一：修改客户端调用，重新修改为调用第一版的接口</li>
+<li>方法二：按照第二版的接口重新实现一个将日志存取到文件的实现类</li>
+<li>方法三：不修改客户端调用，编写一个适配器，将第二版的接口适配到第一版的实现上，也就是使用适配器模式</li>
+</ul>
+<p>这三个方法哪个更可取呢？</p>
+<ul>
+<li>方法一：现在所有的业务都使用第二版接口，要更改为第一版接口的话，即要更改整个项目所有地方，费时费力</li>
+<li>方法二：已经完成的功能何必再重做一遍呢</li>
+<li>方法三：复用已有代码，省时省力</li>
+</ul>
+<h3 id="8-adapter">8. Adapter</h3>
+<pre><code>/**
+ *
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:59
+ */
+public class Adapter implements LogDbOperateApi {
+
+    private LogFileOperateApi adaptee;
+
+    public Adapter(LogFileOperateApi adaptee) {
+        this.adaptee = adaptee;
+    }
+
+    @Override
+    public void createLog(LogModel logModel) {
+        List&lt;LogModel&gt; logModels = adaptee.readLogFile();
+        logModels.add(logModel);
+        adaptee.writeLogFile(logModels);
+    }
+
+    @Override
+    public void updateLog(LogModel logModel) {
+        List&lt;LogModel&gt; logModels = adaptee.readLogFile();
+        for (int i = 0; i &lt; logModels.size(); i ++) {
+            if (logModels.get(i).getLogId().equals(logModel.getLogId())) {
+                logModels.set(i, logModel);
+                break;
+            }
+        }
+        adaptee.writeLogFile(logModels);
+    }
+
+    @Override
+    public void removeLog(LogModel logModel) {
+        List&lt;LogModel&gt; logModels = adaptee.readLogFile();
+        logModels.remove(logModel);
+    }
+
+    @Override
+    public List&lt;LogModel&gt; getAllLog() {
+        return adaptee.readLogFile();
+    }
+}
+</code></pre>
+<h3 id="9-client">9. Client</h3>
+<p>此时客户端只要做一点小修改即可：</p>
+<pre><code>/**
+ * 客户端
+ * @Author: Xinling Jing
+ * @Date: 2018-12-23 19:01
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        LogModel logModel = new LogModel(&quot;0002&quot;, &quot;这是第二条测试日志&quot;, &quot;JING&quot;, &quot;2019-09-04 10:55:46&quot;);
+        List&lt;LogModel&gt; logModels = new ArrayList&lt;&gt;();
+        logModels.add(logModel);
+        LogFileOperateApi logFileOperateApi = new LogFileOperateApiImpl(&quot;&quot;);
+        LogDbOperateApi target = new Adapter(logFileOperateApi);
+        target.createLog(logModel);
+        System.out.println(target.getAllLog());
+    }
+}
+</code></pre>
+<pre><code>[LogModel(logId=0001, logContent=这是第一条测试日志, operateUser=JING, operateTime=2018-08-03 09:44:35), LogModel(logId=0002, logContent=这是第二条测试日志, operateUser=JING, operateTime=2019-09-04 10:55:46)]
+</code></pre>
+<p>整体结构：</p>
+<figure data-type="image" tabindex="8"><img src="http://image.kuranado.com/blog/1601271526.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>第二版接口对应适配器中的 Target，第一版的实现扮演适配器中的 Adaptee。整个适配器模式中最关键的就是 Adapter，它需要实现第二版的接口，但在内部实现的时候通过对象组合的方式调用第一版已经实现的功能。</p>
+<p>好啦，这回终于可以结束工作，时间也还早，可以放心的去陪妹子逛街啦！</p>
+<h2 id="工作中的应用场景">工作中的应用场景</h2>
+<ul>
+<li>旧系统的改造和升级</li>
+<li>系统维护</li>
+</ul>
+<h2 id="常见实现">常见实现</h2>
+<h3 id="java-io">Java IO</h3>
+<ul>
+<li>java.io.InputStreamReader(InputStream)：通过适配器将字节流转换为我们需要的字符流</li>
+</ul>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=HKVZNuZwVhQ&amp;t=1280s&amp;list=PLkQ01vCRt9bUFnXOD66dabj2NM9Wbjhoc&amp;index=7">【GOF23设计模式】 适配器模式</a></li>
+<li><a href="https://mrdear.cn/2018/03/14/experience/design_patterns--adapter/">学长博客</a></li>
+<li>《研磨设计模式》</li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/java-duo-xian-cheng-nei-cun-ke-jian-xing-md/" class="post-title gt-a-link">
+                    Java 多线程 - 内存可见性.md
+                </a>
+            </div>
+        
+
+        
+
+        
+            
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+<script>
+    // md5.min.js
+    !function(n){
+        "use strict";
+        function d(n,t){var r=(65535&n)+(65535&t);return(n>>16)+(t>>16)+(r>>16)<<16|65535&r}
+        function f(n,t,r,e,o,u){return d((c=d(d(t,n),d(e,u)))<<(f=o)|c>>>32-f,r);var c,f}
+        function l(n,t,r,e,o,u,c){return f(t&r|~t&e,n,t,o,u,c)}
+        function v(n,t,r,e,o,u,c){return f(t&e|r&~e,n,t,o,u,c)}
+        function g(n,t,r,e,o,u,c){return f(t^r^e,n,t,o,u,c)}
+        function m(n,t,r,e,o,u,c){return f(r^(t|~e),n,t,o,u,c)}
+        function i(n,t){var r,e,o,u,c;n[t>>5]|=128<<t%32,n[14+(t+64>>>9<<4)]=t;var f=1732584193,i=-271733879,a=-1732584194,h=271733878;for(r=0;r<n.length;r+=16)f=l(e=f,o=i,u=a,c=h,n[r],7,-680876936),h=l(h,f,i,a,n[r+1],12,-389564586),a=l(a,h,f,i,n[r+2],17,606105819),i=l(i,a,h,f,n[r+3],22,-1044525330),f=l(f,i,a,h,n[r+4],7,-176418897),h=l(h,f,i,a,n[r+5],12,1200080426),a=l(a,h,f,i,n[r+6],17,-1473231341),i=l(i,a,h,f,n[r+7],22,-45705983),f=l(f,i,a,h,n[r+8],7,1770035416),h=l(h,f,i,a,n[r+9],12,-1958414417),a=l(a,h,f,i,n[r+10],17,-42063),i=l(i,a,h,f,n[r+11],22,-1990404162),f=l(f,i,a,h,n[r+12],7,1804603682),h=l(h,f,i,a,n[r+13],12,-40341101),a=l(a,h,f,i,n[r+14],17,-1502002290),f=v(f,i=l(i,a,h,f,n[r+15],22,1236535329),a,h,n[r+1],5,-165796510),h=v(h,f,i,a,n[r+6],9,-1069501632),a=v(a,h,f,i,n[r+11],14,643717713),i=v(i,a,h,f,n[r],20,-373897302),f=v(f,i,a,h,n[r+5],5,-701558691),h=v(h,f,i,a,n[r+10],9,38016083),a=v(a,h,f,i,n[r+15],14,-660478335),i=v(i,a,h,f,n[r+4],20,-405537848),f=v(f,i,a,h,n[r+9],5,568446438),h=v(h,f,i,a,n[r+14],9,-1019803690),a=v(a,h,f,i,n[r+3],14,-187363961),i=v(i,a,h,f,n[r+8],20,1163531501),f=v(f,i,a,h,n[r+13],5,-1444681467),h=v(h,f,i,a,n[r+2],9,-51403784),a=v(a,h,f,i,n[r+7],14,1735328473),f=g(f,i=v(i,a,h,f,n[r+12],20,-1926607734),a,h,n[r+5],4,-378558),h=g(h,f,i,a,n[r+8],11,-2022574463),a=g(a,h,f,i,n[r+11],16,1839030562),i=g(i,a,h,f,n[r+14],23,-35309556),f=g(f,i,a,h,n[r+1],4,-1530992060),h=g(h,f,i,a,n[r+4],11,1272893353),a=g(a,h,f,i,n[r+7],16,-155497632),i=g(i,a,h,f,n[r+10],23,-1094730640),f=g(f,i,a,h,n[r+13],4,681279174),h=g(h,f,i,a,n[r],11,-358537222),a=g(a,h,f,i,n[r+3],16,-722521979),i=g(i,a,h,f,n[r+6],23,76029189),f=g(f,i,a,h,n[r+9],4,-640364487),h=g(h,f,i,a,n[r+12],11,-421815835),a=g(a,h,f,i,n[r+15],16,530742520),f=m(f,i=g(i,a,h,f,n[r+2],23,-995338651),a,h,n[r],6,-198630844),h=m(h,f,i,a,n[r+7],10,1126891415),a=m(a,h,f,i,n[r+14],15,-1416354905),i=m(i,a,h,f,n[r+5],21,-57434055),f=m(f,i,a,h,n[r+12],6,1700485571),h=m(h,f,i,a,n[r+3],10,-1894986606),a=m(a,h,f,i,n[r+10],15,-1051523),i=m(i,a,h,f,n[r+1],21,-2054922799),f=m(f,i,a,h,n[r+8],6,1873313359),h=m(h,f,i,a,n[r+15],10,-30611744),a=m(a,h,f,i,n[r+6],15,-1560198380),i=m(i,a,h,f,n[r+13],21,1309151649),f=m(f,i,a,h,n[r+4],6,-145523070),h=m(h,f,i,a,n[r+11],10,-1120210379),a=m(a,h,f,i,n[r+2],15,718787259),i=m(i,a,h,f,n[r+9],21,-343485551),f=d(f,e),i=d(i,o),a=d(a,u),h=d(h,c);return[f,i,a,h]}
+        function a(n){var t,r="",e=32*n.length;for(t=0;t<e;t+=8)r+=String.fromCharCode(n[t>>5]>>>t%32&255);return r}
+        function h(n){var t,r=[];for(r[(n.length>>2)-1]=void 0,t=0;t<r.length;t+=1)r[t]=0;var e=8*n.length;for(t=0;t<e;t+=8)r[t>>5]|=(255&n.charCodeAt(t/8))<<t%32;return r}
+        function e(n){var t,r,e="0123456789abcdef",o="";for(r=0;r<n.length;r+=1)t=n.charCodeAt(r),o+=e.charAt(t>>>4&15)+e.charAt(15&t);return o}
+        function r(n){return unescape(encodeURIComponent(n))}
+        function o(n){return a(i(h(t=r(n)),8*t.length));var t}
+        function u(n,t){return function(n,t){var r,e,o=h(n),u=[],c=[];for(u[15]=c[15]=void 0,16<o.length&&(o=i(o,8*n.length)),r=0;r<16;r+=1)u[r]=909522486^o[r],c[r]=1549556828^o[r];return e=i(u.concat(h(t)),512+8*t.length),a(i(c.concat(e),640))}(r(n),r(t))}
+        function t(n,t,r){return t?r?u(t,n):e(u(t,n)):r?o(n):e(o(n))}
+        "function"==typeof define&&define.amd?define(function(){return t}):"object"==typeof module&&module.exports?module.exports=t:n.md5=t;
+    }(this);
+</script>
+
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd5112611bb77c8d6bb88',
+    clientSecret: 'b064af1dd2e63f211b8517f1a57d71c1efc01b8e',
+    repo: 'kuranado2.github.io',
+    owner: 'kuranado2',
+    admin: ['kuranado2'],
+    id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false       // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+            
+
+            
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">笔记/博客</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KURANADO2" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+                <a href="https://www.zhihu.com/people/jing-xin-ling-32" target="_blank">
+                    <i class="fab fa-zhihu gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        @Copyright 2020 <a href="http://emoji.kuranado.com">表情包网站</a>
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="http://blog.kuranado.com/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
