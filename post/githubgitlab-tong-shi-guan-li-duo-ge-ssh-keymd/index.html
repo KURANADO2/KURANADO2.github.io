@@ -1,10 +1,10 @@
-<html lang="zh">
+<html>
 <head>
     <meta charset="utf-8"/>
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>关于 - KURANADO</title>
+<title>GitHub/GitLab 同时管理多个 SSH  Key.md | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601342510944">
 
@@ -25,7 +25,7 @@
 
 
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
 </head>
 <body>
 <div class="main gt-bg-theme-color-first">
@@ -94,18 +94,104 @@
 </nav>
 
     <div class="post-container">
-        <div class="post-detail">
+        <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
+                <h2 class="post-title">
+                    GitHub/GitLab 同时管理多个 SSH  Key.md
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-09-29 ·
+                    </time>
+                    
+                        <a href="http://blog.kuranado.com/tag/KEvXXqyGi/" class="post-tags">
+                            # GitHub
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/iBGG1CIPiI/" class="post-tags">
+                            # Git
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/rhqlRu4val/" class="post-tags">
+                            # SSH
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/I0TyN-vcJQ/" class="post-tags">
+                            # RSA
+                        </a>
+                    
+                </div>
                 <div class="post-content">
-                    <h2 id="欢迎来到-kuranado-的技术小站">欢迎来到 KURANADO 的技术小站</h2>
-<p>这里分享技术总结、生活，很高兴在这里遇见你！</p>
-<h2 id="我的其它网站">我的其它网站</h2>
-<h3 id="表情包网站"><a href="http://emoji.kuranado.com">表情包网站</a></h3>
+                    <p>平时在 GitHub 拉取、提交代码时都是通过本地放置 <code>~/.ssh/id_rsa</code> 私钥，GitHub 账号下配置公钥 <code>id_rsa.pub</code> 完成的<br>
+但除了 GitHub，有时候还需要用到 GitLab、Gitee 等代码托管平台，如何在同一台电脑上配置多对秘钥呢？</p>
+<h2 id="生成-ssh-key">生成 ssh key</h2>
+<p>生成并添加第一个ssh key</p>
+<pre><code>cd ~/.ssh
+ssh-keygen -t rsa -C &quot;youremail@163.com&quot;
+</code></pre>
+<p>这时可以一路回车，不输入任何字符，将自动生成 id_rsa 和 id_rsa.pub 文件<br>
+然后把 id_rsa.pub 内容添加到 GitHub 账号下，私钥保留在 <code>~/.ssh</code> 目录</p>
+<p>生成并添加第二个ssh key</p>
+<pre><code>$ ssh-keygen -t rsa -C &quot;youremail@163.com&quot;
+</code></pre>
+<p>注意，这时不能一路回车，否则邮箱将覆盖上一次生成的 ssh key，给这个文件起一个名字， 比如叫 id_rsa_gitlab, 相应的也会生成一个 id_rsa_gitlab.pub 文件。</p>
+<p>此时查看 <code>~/.ssh</code> 下的目录文件，发现多了 id_rsa_gitlab 和 id_rsa_gitlab.pub 两个文件<br>
+同样，将 id_rsa_gitlab.pub 文件内容复制到 GitLab 账号下，id_rsa_gitlab 文件留在 <code>~/.ssh</code> 目录下</p>
+<h2 id="增加修改配置文件">增加/修改配置文件</h2>
+<p>在 <code>~/.ssh</code> 目录下新建一个 config 文件</p>
+<pre><code>touch config
+</code></pre>
+<p>并添加以下内容</p>
+<pre><code># gitlab
+Host gitlab.com
+    HostName gitlab.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa
+# github
+Host github.com
+    HostName github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa_github
+</code></pre>
+<p><strong>需要注意的是，公司一般都是自建 GitLab，如公司自建 GitLab 地址为 <code>http://gitlab.companyname.com</code>，则 Host 和 HostName 就需要配置为 <code>gitlab.companyname.com</code> 才可以</strong>：</p>
+<pre><code># github
+Host github.com
+    HostName github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa
+# gitlab
+Host gitlab.companyname.com
+    HostName gitlab.companyname.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa_gitlab
+</code></pre>
+<p>同理可以继续为其它代码托管平台生成公私钥</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601342260.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="测试">测试</h2>
+<pre><code>$ ssh -T git@github.com
+</code></pre>
+<p>如果输出：Hi xxx You've successfully authenticated, but GitHub does not provide shell access.，说明成功的连上 github 了，以后可以自由从 GitHub 克隆、拉取、提交代码<br>
+但是如果提示：Bad owner or permissions on /home/jing/.ssh/config，则是因为 <code>~/.ssh/config</code> 文件的权限不对，执行 <code>chmod 600 ~/.ssh/config</code> 修改权限即可</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="http://xuyuan923.github.io/2014/11/04/github-gitlab-ssh/">GitHub/GitLab 同时管理多个ssh key</a></li>
+</ul>
 
                 </div>
             </article>
         </div>
-        <br>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/java-fan-xing-zong-jie-md/" class="post-title gt-a-link">
+                    Java 泛型总结.md
+                </a>
+            </div>
+        
+
+        
+
         
             
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
@@ -152,11 +238,11 @@
 </script>
 
             
+
             
         
 
         
-
 
         <div class="site-footer gt-c-content-color-first">
     <div class="slogan gt-c-content-color-first">笔记/博客</div>

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-09-28T09:31:56.468Z</updated>
+    <updated>2020-09-29T01:22:30.550Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,68 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[GitHub/GitLab 同时管理多个 SSH  Key.md]]></title>
+        <id>http://blog.kuranado.com/post/githubgitlab-tong-shi-guan-li-duo-ge-ssh-keymd/</id>
+        <link href="http://blog.kuranado.com/post/githubgitlab-tong-shi-guan-li-duo-ge-ssh-keymd/">
+        </link>
+        <updated>2020-09-29T01:17:21.000Z</updated>
+        <content type="html"><![CDATA[<p>平时在 GitHub 拉取、提交代码时都是通过本地放置 <code>~/.ssh/id_rsa</code> 私钥，GitHub 账号下配置公钥 <code>id_rsa.pub</code> 完成的<br>
+但除了 GitHub，有时候还需要用到 GitLab、Gitee 等代码托管平台，如何在同一台电脑上配置多对秘钥呢？</p>
+<h2 id="生成-ssh-key">生成 ssh key</h2>
+<p>生成并添加第一个ssh key</p>
+<pre><code>cd ~/.ssh
+ssh-keygen -t rsa -C &quot;youremail@163.com&quot;
+</code></pre>
+<p>这时可以一路回车，不输入任何字符，将自动生成 id_rsa 和 id_rsa.pub 文件<br>
+然后把 id_rsa.pub 内容添加到 GitHub 账号下，私钥保留在 <code>~/.ssh</code> 目录</p>
+<p>生成并添加第二个ssh key</p>
+<pre><code>$ ssh-keygen -t rsa -C &quot;youremail@163.com&quot;
+</code></pre>
+<p>注意，这时不能一路回车，否则邮箱将覆盖上一次生成的 ssh key，给这个文件起一个名字， 比如叫 id_rsa_gitlab, 相应的也会生成一个 id_rsa_gitlab.pub 文件。</p>
+<p>此时查看 <code>~/.ssh</code> 下的目录文件，发现多了 id_rsa_gitlab 和 id_rsa_gitlab.pub 两个文件<br>
+同样，将 id_rsa_gitlab.pub 文件内容复制到 GitLab 账号下，id_rsa_gitlab 文件留在 <code>~/.ssh</code> 目录下</p>
+<h2 id="增加修改配置文件">增加/修改配置文件</h2>
+<p>在 <code>~/.ssh</code> 目录下新建一个 config 文件</p>
+<pre><code>touch config
+</code></pre>
+<p>并添加以下内容</p>
+<pre><code># gitlab
+Host gitlab.com
+    HostName gitlab.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa
+# github
+Host github.com
+    HostName github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa_github
+</code></pre>
+<p><strong>需要注意的是，公司一般都是自建 GitLab，如公司自建 GitLab 地址为 <code>http://gitlab.companyname.com</code>，则 Host 和 HostName 就需要配置为 <code>gitlab.companyname.com</code> 才可以</strong>：</p>
+<pre><code># github
+Host github.com
+    HostName github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa
+# gitlab
+Host gitlab.companyname.com
+    HostName gitlab.companyname.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa_gitlab
+</code></pre>
+<p>同理可以继续为其它代码托管平台生成公私钥</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601342260.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="测试">测试</h2>
+<pre><code>$ ssh -T git@github.com
+</code></pre>
+<p>如果输出：Hi xxx You've successfully authenticated, but GitHub does not provide shell access.，说明成功的连上 github 了，以后可以自由从 GitHub 克隆、拉取、提交代码<br>
+但是如果提示：Bad owner or permissions on /home/jing/.ssh/config，则是因为 <code>~/.ssh/config</code> 文件的权限不对，执行 <code>chmod 600 ~/.ssh/config</code> 修改权限即可</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="http://xuyuan923.github.io/2014/11/04/github-gitlab-ssh/">GitHub/GitLab 同时管理多个ssh key</a></li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Java 泛型总结.md]]></title>
         <id>http://blog.kuranado.com/post/java-fan-xing-zong-jie-md/</id>
@@ -2229,112 +2291,6 @@ p {
 <ul>
 <li><a href="https://www.jianshu.com/p/567b1dc38db7">原地算法（in-place algorithm）</a></li>
 <li><a href="https://blog.csdn.net/m0_37941483/article/details/89814847">算法系列之原地算法(in-place algorithm)</a></li>
-</ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Nginx 安装 SSL 证书.md]]></title>
-        <id>http://blog.kuranado.com/post/nginx-an-zhuang-ssl-zheng-shu-md/</id>
-        <link href="http://blog.kuranado.com/post/nginx-an-zhuang-ssl-zheng-shu-md/">
-        </link>
-        <updated>2020-09-25T06:05:24.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="安全组开启-443-端口">安全组开启 443 端口</h2>
-<p><img src="http://image.kuranado.com/blog/1601013606.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-以腾讯云为例，<strong>入站规则</strong>和<strong>出站规则</strong>都需要添加 443<br>
-<img src="http://image.kuranado.com/blog/1601013628.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="下载证书">下载证书</h2>
-<p>腾讯云下载证书<br>
-<img src="http://image.kuranado.com/blog/1601013639.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="安装证书">安装证书</h2>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601013649.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>证书下载后解压，得到如下两个文件：</p>
-<ul>
-<li><code>1_kuranado.com_bundle.crt</code> 证书</li>
-<li><code>2_kuranado.com.key</code> 私钥</li>
-</ul>
-<p>将这两份文件上传到服务器，并保存在服务器 /usr/local/nginx/conf 目录下，即 Nginx 的安装目录，然后编辑 Nginx 配置文件，先来看下原有的配置：</p>
-<pre><code>server {
-    listen 80;
-    server_name kuranado.com www.kuranado.com emoji.kuranado.com;
-
-    location / {
-        root /home/jing/data/soft/emoji-web;
-        index index.html;
-    }
-}
-</code></pre>
-<p>原有的配置为 http 配置，可以不用对其做任何修改，下面增加证书配置：</p>
-<pre><code>server {
-    listen 443 ssl;
-    server_name kuranado.com www.kuranado.com;
-    ssl_certificate 1_kuranado.com_bundle.crt;
-    ssl_certificate_key 2_kuranado.com.key;
-    ssl_session_timeout 5m;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-    ssl_prefer_server_ciphers on;
-    location / {
-        root /home/jing/data/soft/emoji-web;
-        index index.html;
-    }
-}
-</code></pre>
-<p>增加了一个监听 443 端口的 server，因为我这里是在腾讯云申请的亚洲诚信免费 DV 版 SSL 证书，一个证书只能用于一个域名，所以 server_name 只能配置为申请证书时的域名（www.kuranado.com 和 kuranado.com 等价），而不能配置泛域名<br>
-配置添加完成后，<code>./sbin/nginx -s reload</code> 重新加载 Nginx 配置文件，可正常访问 https://kuranado.com 或 https://www.kuranado.com/，说明证书生效<br>
-<img src="http://image.kuranado.com/blog/1601013669.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<img src="http://image.kuranado.com/blog/1601013680.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<p>当然原先的 http 也可以正常使用</p>
-<h2 id="申请免费域名证书">申请免费域名证书</h2>
-<p><img src="http://image.kuranado.com/blog/1601013691.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<img src="http://image.kuranado.com/blog/1601013703.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<p>正如上面所见，同一主域可以申请 20 张 DV 版免费 SSL 证书，对于一个个人小型网站来说已经足够使用了，只是稍微有些麻烦，需要为每个子域名都申请一份证书配置到 Nginx 中</p>
-<p>如下面为访问 xxl-job 的 http 配置 <code>http://task.kuranado.com/xxl-job-admin</code>：</p>
-<pre><code>upstream task {
-    ip_hash;
-    server 127.0.0.1:10001 max_fails=3 fail_timeout=30s;
-}
-
-server {
-    listen 80;
-    server_name task.kuranado.com;
-
-    #charset koi8-r;
-
-    #access_log logs/host.access.log main;
-
-    location /xxl-job-admin {
-        #root html;
-        #index index.html index.htm;
-        proxy_pass http://task;
-    }
-}
-</code></pre>
-<p>这时我们就可以为其申请一张免费的域名证书，申请时通用名称填写 <code>task.kuranado.com</code>，然后按照上面的证书安装方法在 Nginx 中增加如下配置：</p>
-<pre><code>server {
-    listen 443 ssl;
-    server_name task.kuranado.com;
-    ssl_certificate 1_task.kuranado.com_bundle.crt;
-    ssl_certificate_key 2_task.kuranado.com.key;
-    ssl_session_timeout 5m;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-    ssl_prefer_server_ciphers on;
-    
-    location /xxl-job-admin {
-        #root html;
-        #index index.html index.htm;
-        proxy_pass http://task;
-    }
-}
-</code></pre>
-<p>重新加载 Nginx 配置文件，即可使用 <code>https://task.kuranado.com/xxl-job-admin</code> 访问 xxl-job<br>
-同理，为每个域名都申请免费证书（不超过 20 个），便可以实现全站 https 了，美滋滋<br>
-<img src="http://image.kuranado.com/blog/1601013716.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<img src="http://image.kuranado.com/blog/1601013728.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="参考">参考</h2>
-<ul>
-<li><a href="https://cloud.tencent.com/document/product/400/35244">腾讯云文档 - Nginx 服务器证书安装</a></li>
-<li><a href="https://blog.csdn.net/duyusean/article/details/79348613">nginx使用ssl模块配置支持HTTPS访问</a></li>
 </ul>
 ]]></content>
     </entry>
