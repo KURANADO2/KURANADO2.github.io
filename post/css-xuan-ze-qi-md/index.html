@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>单例模式.md | KURANADO</title>
+<title>CSS 选择器.md | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601427907577">
 
@@ -97,225 +97,198 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    单例模式.md
+                    CSS 选择器.md
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-09-27 ·
+                        · 2020-09-30 ·
                     </time>
                     
-                        <a href="http://blog.kuranado.com/tag/e80F3R9Pc/" class="post-tags">
-                            # 设计模式
+                        <a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/" class="post-tags">
+                            # CSS
                         </a>
                     
-                        <a href="http://blog.kuranado.com/tag/prbxfSBgl/" class="post-tags">
-                            # Java
+                        <a href="http://blog.kuranado.com/tag/Eb-3VtzRjb/" class="post-tags">
+                            # HTML
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/AIzjXFqb32/" class="post-tags">
+                            # 前端
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <h2 id="什么是单例模式">什么是单例模式</h2>
-<p>所谓单例模式即单例类只能有一个实例，并向外部提供一个访问该实例的全局访问点。</p>
-<p>单例模式优点：</p>
+                    <p>[TOC]</p>
+<h2 id="基础选择器">基础选择器</h2>
+<h3 id="标签选择器">标签选择器</h3>
+<pre><code>/** 选择所有 p 标签 **/
+p {
+    color: red;
+}
+</code></pre>
+<h3 id="类选择器">类选择器</h3>
+<pre><code>/** 选择所有 class 属性值为 red 的标签 **/
+.red {
+    color: red;
+}
+&lt;p class=&quot;red&quot;&gt;Hello&lt;/p&gt;
+</code></pre>
+<h3 id="类选择器-多类名">类选择器-多类名</h3>
+<pre><code>.box {
+    width: 100px;
+    height: 100px;
+    font-size: 35px;
+}
+.red {
+    color: red;
+}
+.green {
+    color: green;
+}
+&lt;div class=&quot;box red&quot;&gt;红色&lt;/div&gt;
+&lt;div class=&quot;box green&quot;&gt;绿色&lt;/div&gt;
+&lt;div class=&quot;box red&quot;&gt;红色&lt;/div&gt;
+</code></pre>
+<h3 id="id-选择器">ID 选择器</h3>
+<pre><code>#pink {
+    color: pink;
+}
+&lt;p id=&quot;pink&quot;&gt;Hello&lt;/p&gt;
+</code></pre>
+<h3 id="通配符选择器">通配符选择器</h3>
+<pre><code>/** 选择页面所有标签 **/
+* {
+    maring: 0;
+    padding: 0;
+}
+</code></pre>
+<h2 id="复合选择器">复合选择器</h2>
+<h3 id="后代选择器又称包含选择器重要">后代选择器（又称包含选择器，重要）</h3>
+<pre><code>/** 选择 ol 下的所有 li 标签（包括子元素、孙子元素、重孙等） **/
+ol li {
+    color: pink;
+}
+</code></pre>
+<h3 id="子选择器重要">子选择器（重要）</h3>
+<pre><code>/** 只选择第一代子元素（只选择亲儿子） **/
+div &gt; a {
+    color: red;
+}
+</code></pre>
+<h3 id="并集选择器重要">并集选择器（重要）</h3>
+<pre><code>/** 选择 div 标签、 p 标签和 .nav 下的 ul 下的 li 标签 **/
+div, 
+p, 
+.nav ul li {
+    color: red;
+}
+</code></pre>
+<h3 id="伪类选择器">伪类选择器</h3>
+<h4 id="链接伪类选择器">链接伪类选择器</h4>
+<pre><code>/** 选择所有未被点击过的链接（不常用，一般直接用 a 标签选择器选择） **/
+a:link {
+    color: black;
+}
+/** 选择所有点击过的链接 **/
+a:visited {
+    color: orange;
+}
+/** 选择鼠标悬浮的链接，最常用 **/
+a:hover {
+    color: blue;
+}
+/** 选择鼠标按下，还没有抬起的链接 **/
+a:active {
+    color: green;
+}
+</code></pre>
+<p>一般只会用到 a:hover 选择器，如果 4 个链接伪类选择器都要使用，则一定要按照 <strong>LVHA</strong> 的先后顺序定义，否则将不会生效</p>
+<h4 id="focus-伪类选择器">focus 伪类选择器</h4>
+<pre><code>/** 选择获取焦点的表单元素 **/
+input:focus {
+    background-color: yellow;
+}
+</code></pre>
+<h2 id="选择器权重优先级">选择器权重（优先级）</h2>
 <ul>
-<li>可以避免类的频繁创建与销毁</li>
-<li>只创建一个实例，节省系统资源</li>
+<li>!import &gt; 行内样式 &gt; ID 选择器 &gt; 类选择器，伪类选择器 &gt; 标签选择器 &gt; 继承或者 <code>*</code></li>
 </ul>
-<h2 id="饱汉式-单线程">饱汉式-单线程</h2>
-<p>饱汉式又称懒汉式（吃饱了可不就懒得动弹了嘛）：</p>
-<pre><code>public class Test {
-
-    public static void main(String[] args) {
-        Singleton singleton = Singleton.getSingleton();
-        Singleton singleton2 = Singleton.getSingleton();
-        // 输出 true
-        System.out.println(singleton == singleton2);
-    }
-
-}
-class Singleton {
-
-    private static Singleton singleton;
-
-    private Singleton () {}
-
-    public static Singleton getSingleton() {
-
-        if (singleton == null) {
-            singleton = new Singleton();
-        }
-
-        return singleton;
-    }
-}
-</code></pre>
-<p>这就是最简单的单例模式，为了防止外部通过 <code>new</code> 创建多个 Singleton 类的对象，将构造方法设为 <code>private</code>；向外部提供 <code>getSingleton</code> 方法，通过 <code>if</code> 判断，即便外部多次调用该方法也只会创建一次实例；因为 new 关键字已被禁用，无法通过 <code>new Singleton().getSingleton()</code> 的形式创建实例，所以该方法为静态方法，可以直接通过 <code>Singleton.getSingleton()</code> 调用该方法创建实例；因为静态方法不能访问普通变量，所以 Singleton 变量也使用 <code>static</code> 修饰。</p>
-<h2 id="饱汉式-多线程">饱汉式-多线程</h2>
-<p>饱汉式-单线程的代码在单线程下的执行效率很高，同时也实现了懒加载（外部调用 getInstance() 方法时才创建 Singleton 类的实例），但缺点也很明显，那就是在多线程情况下，并不能保证只创建一次实例，如两个线程 A 和 B，A 执行完 <code>if (singleton == null)</code> 后，线程 B 获得处理器资源也执行到 <code>if (singleton == null)</code> ，这样线程 A 和 B 将都会创建一次实例。解决办法也很简单，使用 <code>synchronized</code> 修饰 <code>getSingleton</code> 方法即可：</p>
-<pre><code>public static synchronized Singleton getSingleton() {
-
-    if (singleton == null) {
-        singleton = new Singleton();
-    }
-
-    return singleton;
-}
-</code></pre>
-<p>这样即可保证多线程下也只会创建一次实例，但同样存在很大的缺陷：加锁会影响效率，实际应该在创建完第一个实例后就解锁，否则每个线程调用 <code>getSingleton</code> 时都要上锁阻塞其他线程，导致执行效率极低。</p>
-<h2 id="双重检验锁double-checked-locking">双重检验锁(Double Checked Locking)</h2>
-<p>双重检验锁是对饱汉式-多线程的优化，做到一旦创建完第一个实例后就不再加锁的效果：</p>
-<pre><code>class Singleton {
-
-    private volatile static Singleton singleton;
-    
-    private Singleton () {}
-
-    public static Singleton getSingleton() {
-        // 可能会有多个线程都进入了此 if
-        if (singleton == null) { // 第一次检查
-            // 加锁
-            synchronized (Singleton.class) {
-                // 第一个进入锁内的线程才会进入此 if
-                if (singleton == null) { // 第二次检查
-                    singleton = new Singleton();
-                }
-            }
-        }
-
-        return singleton;
-    }
-}
-</code></pre>
-<p>关键点在于 <code>volatile</code> 关键字的使用，此处为何要使用 <code>volatile</code> 关键字呢？</p>
-<p>问题在于 <code>singleton = new Singleton();</code> 这行代码上，这行代码在底层可以粗略的分为以下几步执行：</p>
-<ol>
-<li>栈内存开辟空间给 singleton 引用</li>
-<li>堆内存开辟空间准备初始化对象</li>
-<li>初始化对象</li>
-<li>栈中引用指向这个堆内存空间地址</li>
-</ol>
-<p>因为指令重排序的原因，这行代码的执行顺序可能是 1 -&gt; 2 -&gt; 3 -&gt; 4，也可能是 1 -&gt; 2 -&gt; 4 -&gt; 3。在某个时刻，确实可以保证只有一个线程进入同步代码块，如果进入同步代码块的线程刚好执行到 1 -&gt; 2 -&gt; 4，并没有执行到 3，但此时 singleton 已经非空，如果这时还有一个线程抢占资源调用 getInstance() 方法，则该线程执行到第一个 <code>if</code> 判断时，由于 singleton 非空，直接返回该 singleton，而实际上，该 singleton 所指向的堆内存空间地址并没有存放初始化后的对象，造成我们并没有拿到正确的对象实例。</p>
-<p><code>volatile</code> 刚好可以解决上述问题，我们知道 <code>volatile</code> 有 3 个特点：</p>
-<ol>
-<li>能够保证 <code>volatile</code> 变量的可见性</li>
-<li>在 JDK 1.5 之后，<code>volatile</code> 变量能够禁止指令重排序</li>
-<li>不能保证 <code>volatile</code> 变量复合操作的原子性。</li>
-</ol>
-<p>其中禁止指令重排序的特性正是我们所需要的。</p>
-<h2 id="饥汉式">饥汉式</h2>
-<p>饥汉式又称饿汉式，实现代码最为简单：</p>
-<pre><code>class Singleton {
-
-    private static Singleton singleton = new Singleton();
-
-    private Singleton () {}
-
-    public static Singleton getSingleton() {
-        return singleton;
-    }
-}
-</code></pre>
-<p>饥汉式一上来就在类加载时创建好对象，由于 Java 的类加载机制避免了多线程的同步问题（类的加载方式是按需加载，且只加载一次，因为这个类在整个生命周期中只会被加载一次，所以只会创建一个实例），所以执行效率非常高。但饥汉式也存在如下两个缺点：</p>
-<ol>
-<li>没有实现懒加载，即便根本没有人主动调用 getSingleton 方法，不管三七二十一，也会在类加载时就创建 Singleton 类实例。假设 Singleton 类实例的创建非常消耗系统资源的话，则会造成系统资源浪费。</li>
-<li>像 Spring 等框架的设计中也都用到了单例模式，但这些框架常常需要通过参数进行配置，如果直接像饥汉式一样 <code>private static Singleton singleton = new Singleton();</code> 将创建对象写死，将无法传入配置参数。</li>
-</ol>
-<h2 id="静态内部类">静态内部类</h2>
-<pre><code>class Singleton {
-
-    private Singleton() {}
-    
-    // 私有静态内部类，用到时才加载，所以时懒加载
-    private static class SingletonHolder {
-        private static final Singleton INSTANCE = new Singleton();
-    }
-
-    public static Singleton getSingleton() {
-        return SingletonHolder.INSTANCE;
-    }
-}
-</code></pre>
-<p>静态内部类的加载不需要依附外部类，在使用到静态内部类时才加载，所以实现了懒加载。同时和饥汉式一样，类加载时就创建好对象，Java 的类加载机制也避免了多线程的同步问题，区别只在于这里是内部类</p>
-<h2 id="枚举">枚举</h2>
-<p>常有人说实现单例模式的最佳方法是使用枚举，这是因为枚举拥有以下特性，且代码实现简洁：</p>
-<ul>
-<li>枚举类的构造器只能使用 <code>private</code> 修饰，若省略 <code>private</code>，则默认也是使用 <code>private</code> 修饰，如果省略构造器，默认也会提供一个 <code>private</code> 修饰的构造器，这和我们前面 5 种写法完全吻合</li>
-<li>枚举类的每个实例系统都会自动为其添加 <code>public static final</code> 修饰，保证了枚举中的实例都只会被实例化一次</li>
-<li>线程安全</li>
-</ul>
-<pre><code>public class Test {
-
-    public static void main(String[] args) {
-        Singleton singleton = Singleton.SINGLETON;
-        Singleton singleton2 = Singleton.SINGLETON;
-        // 输出 true
-        System.out.println(singleton == singleton2);
-    }
-
-}
-
-enum Singleton {
-    SINGLETON
-}
-</code></pre>
-<p>遗憾的是枚举类加载时就开始加载枚举实例，所以并没有实现懒加载。</p>
-<h2 id="总结">总结</h2>
-<p>各种写法特性总结如下：</p>
 <table>
 <thead>
 <tr>
-<th>s</th>
-<th>饱汉式-单线程</th>
-<th>饱汉式-多线程</th>
-<th>双重检验锁</th>
-<th>饥汉式</th>
-<th>静态内部类</th>
-<th>枚举</th>
+<th>选择器</th>
+<th>权重</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>支持多线程</td>
-<td>✘</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
+<td>继承或者 <code>*</code></td>
+<td>0 0 0 0</td>
 </tr>
 <tr>
-<td>懒加载</td>
-<td>✔</td>
-<td>✔</td>
-<td>✔</td>
-<td>✘</td>
-<td>✔</td>
-<td>✘</td>
+<td>标签选择器，伪元素选择器</td>
+<td>0 0 0 1</td>
 </tr>
 <tr>
-<td>效率</td>
-<td>高</td>
-<td>低</td>
-<td>高</td>
-<td>高</td>
-<td>高</td>
-<td>高</td>
+<td>类选择器，伪类选择器，属性选择器（CSS3）</td>
+<td>0 0 1 0</td>
+</tr>
+<tr>
+<td>ID 选择器</td>
+<td>0 1 0 0</td>
+</tr>
+<tr>
+<td>行内样式</td>
+<td>1 0 0 0</td>
+</tr>
+<tr>
+<td>!import</td>
+<td>无穷大</td>
 </tr>
 </tbody>
 </table>
-<p>综合来说我更倾向于使用双重检验锁方式，但每种写法各有其优缺点，在开发中应该根据需求选择，引用一段话：</p>
-<blockquote>
-<p>既应当考虑到需求可能出现的扩展与变化，也应该避免无谓的提升设计、实现复杂度，最终反而会带来工期、性能和稳定性的损失，设计不足与设计过度都是危害，正所谓：没有最好的单例模式，只有最合适的单例模式。</p>
-</blockquote>
-<h2 id="参考资料">参考资料</h2>
 <ul>
-<li>《Java 疯狂讲义》</li>
-<li><a href="http://www.runoob.com/design-pattern/singleton-pattern.html">菜鸟教程单例模式</a></li>
-<li><a href="http://wuchong.me/blog/2014/08/28/how-to-correctly-write-singleton-pattern/">如何正确地写出单例模式</a></li>
-<li><a href="http://www.importnew.com/23535.html">Java并发：volatile内存可见性和指令重排</a></li>
-<li><a href="http://www.kuranado.com/2018/03/27/Java%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B9%8B%E5%86%85%E5%AD%98%E5%8F%AF%E8%A7%81%E6%80%A7/">Java多线程之内存可见性</a></li>
-<li><a href="https://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html">The &quot;Double-Checked Locking is Broken&quot; Declaration</a></li>
-<li><a href="https://www.cnblogs.com/cielosun/p/6596475.html">Java枚举enum以及应用：枚举实现单例模式</a></li>
+<li>浏览器为 a 标签默认指定了蓝色、带下划线的样式，如：</li>
+</ul>
+<pre><code>body {
+    color: red;
+}
+&lt;body&gt;
+    &lt;!-- 显示为蓝色带下划线，因为浏览器默认为 a 标签指定了蓝色下划线，而标签选择器优先级 &gt; 继承，所以最终显示为蓝色带下划线 --&gt;
+    &lt;a href=&quot;#&quot;&gt;链接&lt;/a&gt;
+&lt;/body&gt;
+</code></pre>
+<ul>
+<li>复合选择器会有权重叠加，如：</li>
+</ul>
+<pre><code>ul li {
+    color: red;
+}
+li {
+    color: green;
+}
+&lt;ul&gt;
+    &lt;!-- 显示为红色，而不是绿色，因为标签选择器的权重为 0 0 0 1，所以复合选择器 ul li 的权重为 0 0 0 1 + 0 0 0 1 = 0 0 0 2，0 0 0 2 &gt; 标签选择器 li 的权重 0 0 0 1，所以最后显示为红色而不是绿色 --&gt;
+    &lt;li&gt;Hello&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<p>再如：</p>
+<pre><code>.nav li {
+    color: pink;
+}
+ul li {
+    color: red;
+}
+li {
+    color: green;
+}
+&lt;ul class=&quot;nav&quot;&gt;
+    &lt;!-- 显示为粉色，不是红色也不是绿色，复合选择器 .nav li 的权重为 0 0 1 0 + 0 0 0 1 = 0 0 1 1，该值大于复合选择器 ul li 的权重 0 0 0 2，也大于标签选择器 li 的权重 0 0 0 1，所以最后显示为粉色 --&gt;
+    &lt;li&gt;Hello&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<ul>
+<li>权重虽然会有叠加，但一定不会有进位，如 0 0 0 9 + 0 0 0 2 = 0 0 0 11 而不是 0 0 1 1</li>
 </ul>
 
                 </div>
@@ -325,8 +298,8 @@ enum Singleton {
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="http://blog.kuranado.com/post/du-ji-tang-md/" class="post-title gt-a-link">
-                    毒鸡汤.md
+                <a href="http://blog.kuranado.com/post/githubgitlab-tong-shi-guan-li-duo-ge-ssh-keymd/" class="post-title gt-a-link">
+                    同时管理 GitHub/GitLab/Gitee 等多个 SSH  Key.md
                 </a>
             </div>
         

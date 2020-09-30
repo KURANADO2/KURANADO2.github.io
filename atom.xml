@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-09-29T01:22:30.550Z</updated>
+    <updated>2020-09-30T01:05:26.126Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -11,7 +11,187 @@
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
     <entry>
-        <title type="html"><![CDATA[GitHub/GitLab 同时管理多个 SSH  Key.md]]></title>
+        <title type="html"><![CDATA[CSS 选择器.md]]></title>
+        <id>http://blog.kuranado.com/post/css-xuan-ze-qi-md/</id>
+        <link href="http://blog.kuranado.com/post/css-xuan-ze-qi-md/">
+        </link>
+        <updated>2020-09-30T03:14:07.000Z</updated>
+        <content type="html"><![CDATA[<p>[TOC]</p>
+<h2 id="基础选择器">基础选择器</h2>
+<h3 id="标签选择器">标签选择器</h3>
+<pre><code>/** 选择所有 p 标签 **/
+p {
+    color: red;
+}
+</code></pre>
+<h3 id="类选择器">类选择器</h3>
+<pre><code>/** 选择所有 class 属性值为 red 的标签 **/
+.red {
+    color: red;
+}
+&lt;p class=&quot;red&quot;&gt;Hello&lt;/p&gt;
+</code></pre>
+<h3 id="类选择器-多类名">类选择器-多类名</h3>
+<pre><code>.box {
+    width: 100px;
+    height: 100px;
+    font-size: 35px;
+}
+.red {
+    color: red;
+}
+.green {
+    color: green;
+}
+&lt;div class=&quot;box red&quot;&gt;红色&lt;/div&gt;
+&lt;div class=&quot;box green&quot;&gt;绿色&lt;/div&gt;
+&lt;div class=&quot;box red&quot;&gt;红色&lt;/div&gt;
+</code></pre>
+<h3 id="id-选择器">ID 选择器</h3>
+<pre><code>#pink {
+    color: pink;
+}
+&lt;p id=&quot;pink&quot;&gt;Hello&lt;/p&gt;
+</code></pre>
+<h3 id="通配符选择器">通配符选择器</h3>
+<pre><code>/** 选择页面所有标签 **/
+* {
+    maring: 0;
+    padding: 0;
+}
+</code></pre>
+<h2 id="复合选择器">复合选择器</h2>
+<h3 id="后代选择器又称包含选择器重要">后代选择器（又称包含选择器，重要）</h3>
+<pre><code>/** 选择 ol 下的所有 li 标签（包括子元素、孙子元素、重孙等） **/
+ol li {
+    color: pink;
+}
+</code></pre>
+<h3 id="子选择器重要">子选择器（重要）</h3>
+<pre><code>/** 只选择第一代子元素（只选择亲儿子） **/
+div &gt; a {
+    color: red;
+}
+</code></pre>
+<h3 id="并集选择器重要">并集选择器（重要）</h3>
+<pre><code>/** 选择 div 标签、 p 标签和 .nav 下的 ul 下的 li 标签 **/
+div, 
+p, 
+.nav ul li {
+    color: red;
+}
+</code></pre>
+<h3 id="伪类选择器">伪类选择器</h3>
+<h4 id="链接伪类选择器">链接伪类选择器</h4>
+<pre><code>/** 选择所有未被点击过的链接（不常用，一般直接用 a 标签选择器选择） **/
+a:link {
+    color: black;
+}
+/** 选择所有点击过的链接 **/
+a:visited {
+    color: orange;
+}
+/** 选择鼠标悬浮的链接，最常用 **/
+a:hover {
+    color: blue;
+}
+/** 选择鼠标按下，还没有抬起的链接 **/
+a:active {
+    color: green;
+}
+</code></pre>
+<p>一般只会用到 a:hover 选择器，如果 4 个链接伪类选择器都要使用，则一定要按照 <strong>LVHA</strong> 的先后顺序定义，否则将不会生效</p>
+<h4 id="focus-伪类选择器">focus 伪类选择器</h4>
+<pre><code>/** 选择获取焦点的表单元素 **/
+input:focus {
+    background-color: yellow;
+}
+</code></pre>
+<h2 id="选择器权重优先级">选择器权重（优先级）</h2>
+<ul>
+<li>!import &gt; 行内样式 &gt; ID 选择器 &gt; 类选择器，伪类选择器 &gt; 标签选择器 &gt; 继承或者 <code>*</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>选择器</th>
+<th>权重</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>继承或者 <code>*</code></td>
+<td>0 0 0 0</td>
+</tr>
+<tr>
+<td>标签选择器，伪元素选择器</td>
+<td>0 0 0 1</td>
+</tr>
+<tr>
+<td>类选择器，伪类选择器，属性选择器（CSS3）</td>
+<td>0 0 1 0</td>
+</tr>
+<tr>
+<td>ID 选择器</td>
+<td>0 1 0 0</td>
+</tr>
+<tr>
+<td>行内样式</td>
+<td>1 0 0 0</td>
+</tr>
+<tr>
+<td>!import</td>
+<td>无穷大</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>浏览器为 a 标签默认指定了蓝色、带下划线的样式，如：</li>
+</ul>
+<pre><code>body {
+    color: red;
+}
+&lt;body&gt;
+    &lt;!-- 显示为蓝色带下划线，因为浏览器默认为 a 标签指定了蓝色下划线，而标签选择器优先级 &gt; 继承，所以最终显示为蓝色带下划线 --&gt;
+    &lt;a href=&quot;#&quot;&gt;链接&lt;/a&gt;
+&lt;/body&gt;
+</code></pre>
+<ul>
+<li>复合选择器会有权重叠加，如：</li>
+</ul>
+<pre><code>ul li {
+    color: red;
+}
+li {
+    color: green;
+}
+&lt;ul&gt;
+    &lt;!-- 显示为红色，而不是绿色，因为标签选择器的权重为 0 0 0 1，所以复合选择器 ul li 的权重为 0 0 0 1 + 0 0 0 1 = 0 0 0 2，0 0 0 2 &gt; 标签选择器 li 的权重 0 0 0 1，所以最后显示为红色而不是绿色 --&gt;
+    &lt;li&gt;Hello&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<p>再如：</p>
+<pre><code>.nav li {
+    color: pink;
+}
+ul li {
+    color: red;
+}
+li {
+    color: green;
+}
+&lt;ul class=&quot;nav&quot;&gt;
+    &lt;!-- 显示为粉色，不是红色也不是绿色，复合选择器 .nav li 的权重为 0 0 1 0 + 0 0 0 1 = 0 0 1 1，该值大于复合选择器 ul li 的权重 0 0 0 2，也大于标签选择器 li 的权重 0 0 0 1，所以最后显示为粉色 --&gt;
+    &lt;li&gt;Hello&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<ul>
+<li>权重虽然会有叠加，但一定不会有进位，如 0 0 0 9 + 0 0 0 2 = 0 0 0 11 而不是 0 0 1 1</li>
+</ul>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[同时管理 GitHub/GitLab/Gitee 等多个 SSH  Key.md]]></title>
         <id>http://blog.kuranado.com/post/githubgitlab-tong-shi-guan-li-duo-ge-ssh-keymd/</id>
         <link href="http://blog.kuranado.com/post/githubgitlab-tong-shi-guan-li-duo-ge-ssh-keymd/">
         </link>
@@ -2219,79 +2399,6 @@ p {
     &lt;/ul&gt;
 &lt;/body&gt;
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[原地算法总结.md]]></title>
-        <id>http://blog.kuranado.com/post/yuan-di-suan-fa-zong-jie-md/</id>
-        <link href="http://blog.kuranado.com/post/yuan-di-suan-fa-zong-jie-md/">
-        </link>
-        <updated>2020-09-25T07:29:08.000Z</updated>
-        <content type="html"><![CDATA[<p>在做<a href="https://leetcode-cn.com/problems/game-of-life/">289. 生命游戏</a>这道题时，题目的进阶描述中提到了<code>原地算法</code>，头一次听说这个名词，做个总结</p>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601018996.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<blockquote>
-<p>在计算机科学中，一个原地算法（in-place algorithm）基本上不需要额外辅助的数据结构，然而，允许少量额外的辅助变量来转换数据的算法。当算法运行时，输入的数据通常会被要输出的部分覆盖掉。不是原地算法有时候称为非原地（not-in-place）或不得其所（out-of-place）。在计算复杂性理论中，原地算法包含使用<strong>O(1)空间复杂度</strong>的所有算法，DSPACE(1)类型。<br>
-一句话总结就是：原地算法不依赖额外的资源或者依赖少数的额外资源，仅依靠<strong>输出来覆盖输入</strong>的一种算法操作。<br>
-综上，当我们的输入数据没有其他用处时，可以考虑将输入数据覆盖掉，将覆盖后的结果作为输出。<br>
-下面为几个典型使用原地算法解决的例题：</p>
-</blockquote>
-<h2 id="例题一">例题一</h2>
-<p>给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。<br>
-不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。<br>
-示例 1:</p>
-<pre><code>给定数组 nums = [1,1,2],
-函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。
-你不需要考虑数组中超出新长度后面的元素。
-</code></pre>
-<p>示例2:</p>
-<pre><code>给定 nums = [0,0,1,1,1,2,2,3,3,4],
-函数应该返回新的长度 5, 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4。
-你不需要考虑数组中超出新长度后面的元素。
-</code></pre>
-<h3 id="代码实现">代码实现</h3>
-<pre><code class="language-java">public int removeDuplicates(int[] nums) {
-
-    if (nums == null || nums.length == 0) {
-        return 0;
-    }
-    int pos = 0, count = 1;
-    for (int i = 0; i &lt; nums.length; i++) {
-        if (nums[pos] == nums[i]) {
-            nums[pos] = nums[i];
-        } else {
-            pos++;
-            nums[pos] = nums[i];
-            count++;
-        }
-    }
-    return count;
-}
-</code></pre>
-<h2 id="例题二">例题二</h2>
-<p>将具有 n 项内容的数组 a 翻转过来<br>
-看到这题的常规思路是创建一个大小相等的新数组，用适当的顺序填充副本，最后的新数组记为结果，如下面的伪代码：</p>
-<pre><code>function reverse(a[0..n-1])
-    allocate b[0..n-1] # 额外设定一个数组
-    for i from 0 to n-1 # 从 0 到 n-1 遍历数组 a
-        b[n -1 - i] := a[i] 
-    return b
-</code></pre>
-<p>这种方法虽然简单，但是需要 O(n) 的额外空间以使数组 a 和 b 同时可用。此外，分配存储空间和释放存储空间通常是缓慢的操作<br>
-其实本题完全可以不用新建数组，而是可以直接修改原数组达到题目要求效果，也就是使用原地算法，用它自己翻转的内容来覆盖掉原先的内容。这样，无论数组有多大，它都只需要辅助变量 i 和 tmp</p>
-<h3 id="代码实现-2">代码实现：</h3>
-<pre><code>function reverse_in_place(a[0..n-1])
-    for i from 0 to floor((n-2)/2)
-        tmp := a[i]
-        a[i] := a[n − 1 − i]
-        a[n − 1 − i] := tmp
-</code></pre>
-<h2 id="例题三">例题三</h2>
-<p><a href="https://leetcode-cn.com/problems/game-of-life/">生命游戏</a></p>
-<h2 id="参考">参考</h2>
-<ul>
-<li><a href="https://www.jianshu.com/p/567b1dc38db7">原地算法（in-place algorithm）</a></li>
-<li><a href="https://blog.csdn.net/m0_37941483/article/details/89814847">算法系列之原地算法(in-place algorithm)</a></li>
-</ul>
 ]]></content>
     </entry>
 </feed>
