@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-09-30T01:21:32.563Z</updated>
+    <updated>2020-09-30T01:41:33.484Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -11,11 +11,168 @@
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
     <entry>
+        <title type="html"><![CDATA[VsCode 中 Emmet 语法快速生成HTML 和 CSS 代码.md]]></title>
+        <id>http://blog.kuranado.com/post/vscode-zhong-emmet-yu-fa-kuai-su-sheng-cheng-html-he-css-dai-ma-md/</id>
+        <link href="http://blog.kuranado.com/post/vscode-zhong-emmet-yu-fa-kuai-su-sheng-cheng-html-he-css-dai-ma-md/">
+        </link>
+        <updated>2020-09-30T01:36:35.000Z</updated>
+        <content type="html"><![CDATA[<p>[TOC]</p>
+<blockquote>
+<p>敲完简写后，按 Tab 自动完成</p>
+</blockquote>
+<h2 id="html">HTML</h2>
+<ul>
+<li><code>div</code></li>
+</ul>
+<pre><code>&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<ul>
+<li><code>div*3</code></li>
+</ul>
+<pre><code>&lt;div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<ul>
+<li><code>{}</code> 定义标签内的内容，<code>div{Hello}</code></li>
+</ul>
+<pre><code>&lt;div&gt;Hello&lt;/div&gt;
+</code></pre>
+<ul>
+<li><code>div{Hello}*3</code></li>
+</ul>
+<pre><code>&lt;div&gt;Hello&lt;/div&gt;
+&lt;div&gt;Hello&lt;/div&gt;
+&lt;div&gt;Hello&lt;/div&gt;
+</code></pre>
+<ul>
+<li>父子关系标签，使用 <code>&gt;</code>，如 <code>ul&gt;li</code>：</li>
+</ul>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<p><code>div&gt;p</code>：</p>
+<pre><code>&lt;div&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<ul>
+<li>兄弟关系标签，使用 <code>+</code>，如 <code>div+p</code>：</li>
+</ul>
+<pre><code>&lt;div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt;
+</code></pre>
+<ul>
+<li><code>()</code> 指定优先级，如 <code>ul&gt;(li+bq)</code>：</li>
+</ul>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;&lt;/li&gt;
+    &lt;blockquote&gt;&lt;/blockquote&gt;
+&lt;/ul&gt;
+</code></pre>
+<p><code>(ul&gt;li)+bq</code>：</p>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;&lt;/blockquote&gt;
+</code></pre>
+<ul>
+<li>带有类选择器，如 <code>.gray</code>，默认生成 class 为 gray 的 div：</li>
+</ul>
+<pre><code>&lt;div class=&quot;gray&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p>如果要生成其它标签 class 为 gray，则 <code>p.gray</code>：</p>
+<pre><code>&lt;p class=&quot;gray&quot;&gt;&lt;/p&gt;
+</code></pre>
+<p>一次生成多个 class 选择器，如 <code>.box1.box2.box3</code>：</p>
+<pre><code>&lt;div class=&quot;box1 box2 box3&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p><code>p.box1.box2.box3</code>：</p>
+<pre><code>&lt;p class=&quot;box1 box2 box3&quot;&gt;&lt;/p&gt;
+</code></pre>
+<ul>
+<li>带有 ID 选择器，如 <code>#gray</code>，默认生成 id 为 gray 的 div：</li>
+</ul>
+<pre><code>&lt;div id=&quot;gray&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p>如果要生成其它标签 id 为 gray，则 <code>p#gray</code>：</p>
+<pre><code>&lt;p id=&quot;gray&quot;&gt;&lt;/p&gt;
+</code></pre>
+<p>既有类选择器，又有 id 选择器，如 <code>p.box1.box2#gray</code>：</p>
+<pre><code>&lt;p class=&quot;box1 box2&quot; id=&quot;gray&quot;&gt;&lt;/p&gt;
+</code></pre>
+<ul>
+<li><code>[]</code> 表示属性，如 <code>ul&gt;li&gt;a[href=&quot;#&quot;]</code>：</li>
+</ul>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<ul>
+<li><code>$</code> 表示自增，如 <code>div{$}*3</code>：</li>
+</ul>
+<pre><code>&lt;div&gt;1&lt;/div&gt;
+&lt;div&gt;2&lt;/div&gt;
+&lt;div&gt;3&lt;/div&gt;
+</code></pre>
+<p><code>div.gray$*3</code>：</p>
+<pre><code>&lt;div class=&quot;gray1&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;gray2&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;gray3&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p><code>p.gray${$}*3</code>：</p>
+<pre><code>&lt;p class=&quot;gray1&quot;&gt;1&lt;/p&gt;
+&lt;p class=&quot;gray2&quot;&gt;2&lt;/p&gt;
+&lt;p class=&quot;gray3&quot;&gt;3&lt;/p&gt;
+</code></pre>
+<p><code>ul&gt;li.gray${Hello$}*3</code>：</p>
+<pre><code>&lt;ul&gt;
+    &lt;li class=&quot;gray1&quot;&gt;Hello1&lt;/li&gt;
+    &lt;li class=&quot;gray2&quot;&gt;Hello2&lt;/li&gt;
+    &lt;li class=&quot;gray3&quot;&gt;Hello3&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<h2 id="css">CSS</h2>
+<p>CSS 中一般取每个单词首字母，然后 Tab 即可自动补全/生成：</p>
+<ul>
+<li><code>w200</code>：</li>
+</ul>
+<pre><code>width: 200px;
+</code></pre>
+<ul>
+<li><code>h200</code>：</li>
+</ul>
+<pre><code>height: 200px;
+</code></pre>
+<ul>
+<li><code>lh26px</code>：</li>
+</ul>
+<pre><code>line-height: 26px;
+</code></pre>
+<ul>
+<li><code>ti2em</code>：</li>
+</ul>
+<pre><code>text-indent: 2em;
+</code></pre>
+<ul>
+<li><code>tdn</code>：</li>
+</ul>
+<pre><code>text-decoration: none;
+</code></pre>
+<ul>
+<li><code>tac</code>：</li>
+</ul>
+<pre><code>text-align: center;
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[CSS 选择器.md]]></title>
         <id>http://blog.kuranado.com/post/css-xuan-ze-qi-md/</id>
         <link href="http://blog.kuranado.com/post/css-xuan-ze-qi-md/">
         </link>
-        <updated>2020-09-30T03:14:07.000Z</updated>
+        <updated>2020-09-30T00:14:07.000Z</updated>
         <content type="html"><![CDATA[<p>[TOC]</p>
 <h2 id="基础选择器">基础选择器</h2>
 <h3 id="标签选择器">标签选择器</h3>
@@ -2029,376 +2186,6 @@ Student(no=2, teacher=Teacher(name=井老师))
 <li>跟我在一起吧，行就行，不行我就再想办法。</li>
 <li>这是我的手背，这是我的脚背，你是我的宝贝</li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CSS 基础总结.md]]></title>
-        <id>http://blog.kuranado.com/post/css-ji-chu-zong-jie-md/</id>
-        <link href="http://blog.kuranado.com/post/css-ji-chu-zong-jie-md/">
-        </link>
-        <updated>2020-09-26T08:11:07.000Z</updated>
-        <content type="html"><![CDATA[<p>[TOC]</p>
-<h2 id="css-引入方式">CSS 引入方式</h2>
-<ul>
-<li>内部样式表（嵌入式），<code>&lt;style&gt;&lt;/style&gt;</code> 标签放在 <code>&lt;head&gt;&lt;/head&gt;</code> 标签内，练习、测试时使用</li>
-<li>行内样式表，直接在标签内部使用 style 属性定义样式，使用很少</li>
-<li>外部样式表，使用最多，<code>&lt;head&gt;&lt;/head&gt;</code> 标签内 <code>&lt;link rel=&quot;stylesheet&quot; href=&quot;./css/style.css&quot;/&gt;</code><br>
-优先级：内部样式表 &gt; 行内样式表 &gt; 外部样式表</li>
-</ul>
-<h2 id="属性">属性</h2>
-<h3 id="宽高">宽/高</h3>
-<ul>
-<li>width 宽度</li>
-<li>height 高度</li>
-<li>color 文本颜色</li>
-<li>background-color 背景颜色</li>
-</ul>
-<h3 id="字体">字体</h3>
-<ul>
-<li>font-family 字体，如宋体、Microsoft YaHei、Arial、sans-serif、Times New Roman 等，尽量使用系统自带字体，字体相关属性通常用在 body 标签上，可同时设置多个字体，以逗号分隔，浏览器优先使用前面的字体，当字体不存在时，再依次尝试后面的字体</li>
-</ul>
-<pre><code>body {
-    font-family: 'Times New Roman', 'Microsoft YaHei';
-}
-</code></pre>
-<ul>
-<li>font-size 字体大小，一定要记得加上单位，如 px</li>
-</ul>
-<pre><code>body {
-    font-family: 'Times New Roman', 'Microsoft YaHei';
-    font-size: 16px;
-}
-/** 虽然 body 标签已设置了字体大小，但标题标签比较特殊，需要单独再次设置字体大小
-h1: {
-    font-size: 16px;
-}
-</code></pre>
-<ul>
-<li>font-weigth 字体粗细，实际开发中更喜欢用数字而不是用单词
-<ul>
-<li>normal 不加粗（默认值，400）</li>
-<li>bold 加粗（700）</li>
-</ul>
-</li>
-</ul>
-<pre><code>p {
-    font-weigth: 700;
-}
-/** 或 **/
-
-p {
-    font-weigth: bold;
-}
-</code></pre>
-<ul>
-<li>font-style 字体样式
-<ul>
-<li>normal 不倾斜（默认值）</li>
-<li>italic 倾斜</li>
-</ul>
-</li>
-<li>font 字体复合属性，格式：<code>font: font-style font-weigth font-size/line-height font-family</code></li>
-</ul>
-<pre><code>/** 注意不可更改属性顺序，且 font-style 和 font-weigth 属性可以省略，font-size/line-height 和 font-family 属性不可省略 **/
-p {
-    font: italic 700 16px/26px 'Times New Roman', 'Microsoft YaHei';
-}
-</code></pre>
-<h3 id="文本">文本</h3>
-<ul>
-<li>text-align 文本对齐，
-<ul>
-<li>left 左对齐（默认值）</li>
-<li>right 右对齐</li>
-<li>center 居中对齐</li>
-</ul>
-</li>
-</ul>
-<pre><code>h1 {
-    /** 让 h1 盒子里的文本居中对齐 **/
-    text-align: center;
-}
-p {
-    text-align: center;    
-}
-&lt;h1&gt;Hello&lt;/h1&gt;
-/** 图片也相当于是普通文字，要想图片在其父元素中居中对齐，需要为其父元素设置 text-align: center; 而不是为 img 标签设置该属性
-&lt;p&gt;
-    &lt;img src=&quot;./images/1.jpg&quot;/&gt;
-&lt;/p&gt;
-</code></pre>
-<ul>
-<li>text-decoration 文本装饰
-<ul>
-<li>none 没有装饰线（默认值，最常用）</li>
-<li>underline 下划线（常用）</li>
-<li>overline 上划线（几乎不用）</li>
-<li>line-throne 删除线（不常用）</li>
-</ul>
-</li>
-<li>text-indent 文本的第一行缩进多少距离</li>
-</ul>
-<pre><code>/** 如果字体大小设置为 16px，按照中国人的传统，段落首行缩进 2 个文字，则写法如下：**/
-p {
-    text-indet: 32px;
-}
-/** 或者直接写成 2em（推荐写法，em 是相对单位，相对当前标签 font-size 1 个文字的大小，如果当前标签没有设置 font-size，则相对父元素的 1 个文字大小） **/
-p {
-    text-index: 2em;
-}
-</code></pre>
-<ul>
-<li>vertical-align 用于设置一个元素的垂直对齐方式，但它只针对于行内元素或行内块元素有效。图片、表单都是行内块元素，默认的 vertical-align 为基线对齐
-<ul>
-<li>baseline 默认，元素放置在父亲的基线上</li>
-<li>top 把元素的顶端与行中最高元素的顶端对齐</li>
-<li>middle 常用，把此元素放置在父元素的中部</li>
-<li>bottom 把元素的顶端与行中最低的元素的底端对齐<br>
-<img src="http://image.kuranado.com/blog/1601107979.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
-<li>图片底部会有空白缝隙，原因是因为 img 是行内块元素，而行内块元素会和文字的基线对齐，为了去除该空白，可使用如下两种方法：
-<ul>
-<li>给图片添加 vertical-align: middle|top|bottom;，即只要不是 baselien 就可以（推荐方法）</li>
-<li>把图片转换为行块级元素 display: block;</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="行高">行高</h3>
-<ul>
-<li>line-height 行高（行间距），控制行与行之间的距离<br>
-![](http://image.kuranado.com/blog/1601107997.png?imageMogr2/thumbnail/!70p<br>
-行高由 3 部分组成：文本高度和上、下间距，由于文本高度有字体大小决定，所以当增加或减小行高时，实际文本高度不会变化，变化的只是上、下间距</li>
-</ul>
-<pre><code>/** 字体大小 16px，行高 26 px，所以上边距和下边距各位 5px **/
-p {
-font: italic 700 16px/26px 'Times New Roman', 'Microsoft YaHei';
-   text-indent: 2em;
-   line-height: 26px;
-}
-</code></pre>
-<h3 id="背景">背景</h3>
-<ul>
-<li>background-color 背景色，默认值为 transparent，表示透明的</li>
-<li>background-image 背景图片（如果既设置了背景颜色，又设置了背景图片，则背景颜色显示在下方，背景图片显示在上方）
-<ul>
-<li>none 没有图片，默认值</li>
-<li>url 指定图片地址</li>
-</ul>
-</li>
-<li>background-repeat 背景图片平铺方式
-<ul>
-<li>repeat 默认值，水平方向和垂直方向上平铺</li>
-<li>no-repeat 不平铺</li>
-<li>repeat-x 水平方向上平铺</li>
-<li>repeat-y 垂直方向上平铺</li>
-</ul>
-</li>
-<li>background-position 设置图片在背景中的位置，取值可以为方位名词，也可以为坐标，也可以方位名词和坐标混用
-<ul>
-<li>方位名词 top bottom left right center
-<ul>
-<li>单词顺序没有影响，如：<code>background-position: center right;</code> 和 <code>background-position: right center;</code> 没有任何区别</li>
-<li>如果只指定一个方位名词，另一个方位名词省略，则另一个方位名词默认为 center，如 <code>background-position: center;</code> 等价于 <code>background-position: center center;</code></li>
-</ul>
-</li>
-<li>坐标 x y
-<ul>
-<li>如：<code>background-position: 20px 50px;</code>；第一个参数为 x 表示距离盒子左边的距离，第二个参数为 y 表示距离盒子右边的距离</li>
-<li>如果只指定一个坐标，则这个坐标<strong>一定</strong>是 x，此时 y 默认为 center。如 <code>background-position: 20px;</code> 等价于 <code>background-position: 20px center;</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>background-attachment 背景固定
-<ul>
-<li>scroll 默认值，背景图像随内容滚动</li>
-<li>fixed 背景图像固定</li>
-</ul>
-</li>
-<li>background 背景属性复合写法，没有特定书写顺序，一般习惯约定顺序为：<code>background: 背景颜色 背景图片地址 背景平铺方式 背景固定方式 背景图片位置</code>，如：</li>
-</ul>
-<pre><code>body {
-    background-image: url(&quot;./images/bg.jpg&quot;);
-    background-position: top center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-color: gray;
-}
-p{Hello}*100Tab
-</code></pre>
-<p>等价于：</p>
-<pre><code>body {
-    background: gray url(&quot;./images/bg.jpg&quot;) no-repeat fixed top center;
-}
-p{Hello}*100Tab
-</code></pre>
-<ul>
-<li>background
-<ul>
-<li>rgba CSS3 新增属性，可以设置盒子背景色半透明，盒子里面的内容不受影响，如 background: rgba(0, 0, 0, 0.3) 最后一个参数为 alpha 透明度，取值范围 0 ~ 1，习惯上会把 0.3 简写为 .3</li>
-</ul>
-</li>
-<li>list-style: none 去除 li 的符号</li>
-<li>border-radius 定义圆角边框（CSS3 新增），单位可以是像素，也可以是百分比
-<ul>
-<li>像素，如让一个正方形变成圆形，只要让 border-radius 等于宽度的一半即可：</li>
-</ul>
-<pre><code>.circle {
-    width: 200px;
-    height: 200px;
-    background-color: skyblue;
-    border-radius: 100px;
-}  
-&lt;div class=&quot;circle&quot;&gt;&lt;/div&gt;      
-</code></pre>
-<ul>
-<li>百分比，同样让一个正方形变成圆形，只要让 border-radius 等于宽度的一半，也就是 50%：</li>
-</ul>
-<pre><code>.circle {
-    width: 200px;
-    height: 200px;
-    background-color: skyblue;
-    border-radius: 50%;
-}  
-&lt;div class=&quot;circle&quot;&gt;&lt;/div&gt;      
-</code></pre>
-<ul>
-<li>如果要把矩形变成圆角矩形，只要把 border-radius 设置为矩形高度的一半就可以了</li>
-<li>跟一个值，表示 4 个边框的圆角大小</li>
-<li>跟两个值，第一个值表示左上角和右下角边框的圆角大小，第二个值表示右上角和左下角的圆角大小</li>
-<li>跟四个值，分别表示左上角、右上角、右下角、左下角的圆角大小</li>
-<li>border-top-left-radius 设置左上角圆角大小，注意 top 和 left 顺序不能颠倒</li>
-<li>border-top-right-radius 设置右上角圆角大小，注意 top 和 right 顺序不能颠倒</li>
-<li>border-bottom-right-radius 设置右下角圆角大小，注意 bottom 和 right 顺序不能颠倒</li>
-<li>border-bottom-left-radius 设置左下角圆角大小，注意 bottom 和 left 顺序不能颠倒</li>
-</ul>
-</li>
-<li>border-shadow 盒子阴影，格式：box-shadow: h-shadow v-shadow blur spread color inset;
-<ul>
-<li>h-shadow 水平方向阴影</li>
-<li>v-shadow 垂直方向阴影</li>
-<li>blur 表示模糊程度</li>
-<li>spread 表示阴影尺寸</li>
-<li>color 一般使用 rgba，以便设置阴影的透明度</li>
-<li>inset 默认为外部阴影，inset 表示内部阴影，一般不会设置为 inset</li>
-<li>盒子阴影是不占用盒子空间的，不会影响其它盒子排列</li>
-</ul>
-</li>
-</ul>
-<pre><code>div {
-    width: 200px;
-    height: 200px;
-    background-color: skyblue;
-    margin: 100px auto;
-}
-div:hover {
-    box-shadow: 10px 10px 10px 5px rgba(0, 0, 0, .2);
-}
-&lt;div&gt;&lt;/div&gt;
-</code></pre>
-<ul>
-<li>text-shadow 文字阴影（不常用），格式：text-shadow: h-shadow v-shadow blur color;</li>
-</ul>
-<h3 id="显示隐藏">显示/隐藏</h3>
-<ul>
-<li>display 常用
-<ul>
-<li>none 隐藏元素，<strong>隐藏后，不再占有原来的位置</strong></li>
-<li>block 除了转换为块级元素外，还有显示元素的意思</li>
-</ul>
-</li>
-<li>visibility
-<ul>
-<li>hidden 隐藏元素，<strong>隐藏后，元素继续占有原来的位置</strong></li>
-<li>block 显示元素</li>
-</ul>
-</li>
-<li>overflow 对溢出的部分设置显示或隐藏（如果是有定位的盒子，需慎用 overflow:hidden）
-<ul>
-<li>visible 默认值，不剪切内容，也不添加滚动条</li>
-</ul>
-<pre><code>div {
-    /* 默认值，等于不设置 */
-    overflow: visible;
-    width: 400px;
-    height: 100px;
-    background-color: skyblue;
-}
-&lt;div&gt;《小猪佩奇》，又名《粉红猪小妹》（台湾名为粉红猪），英文名为《Peppa Pig》，是由英国人阿斯特利（Astley）、贝克（Baker）、戴维斯（Davis）创作、导演和制作的一部英国学前电视动画片，也是历年来最具潜力的学前儿童品牌。故事围绕小猪佩奇与家人的愉快经历，幽默而有趣，藉此宣扬传统家庭观念与友情，鼓励小朋友们体验生活。&lt;/div&gt;
-</code></pre>
-<img src="http://image.kuranado.com/blog/1601108024.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy">
-<ul>
-<li>hidden 隐藏掉超出的部分</li>
-</ul>
-<pre><code>    div {
-    /* 自动隐藏掉超出的部分 */
-    overflow: hidden;
-    width: 400px;
-    height: 100px;
-    background-color: skyblue;
-}
-</code></pre>
-<img src="http://image.kuranado.com/blog/1601108059.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy">
-<ul>
-<li>auto 当内容超出时，自动显示滚动条</li>
-</ul>
-<pre><code>div {
-    /* 当内容超出时，自动显示滚动条 */
-    overflow: auto;
-    width: 400px;
-    height: 100px;
-    background-color: skyblue;
-}
-</code></pre>
-<img src="http://image.kuranado.com/blog/1601108068.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy">
-<ul>
-<li>scroll 不管超出与否，总是显示滚动条</li>
-</ul>
-</li>
-</ul>
-<h3 id="鼠标">鼠标</h3>
-<ul>
-<li>cursor
-<ul>
-<li>default 箭头</li>
-<li>pointer 小手</li>
-<li>move 移动</li>
-<li>text 文本</li>
-<li>not-allowed 禁止</li>
-</ul>
-</li>
-</ul>
-<h3 id="表单">表单</h3>
-<ul>
-<li>outline: none; 取消表单框获取焦点时的高亮边框</li>
-<li>resize: none; 禁用 textarea 文本域的调节大小功能</li>
-</ul>
-<h2 id="继承">继承</h2>
-<ul>
-<li>行高的继承</li>
-</ul>
-<pre><code>body {
-    /** 行高既可以指定单位像素，也可以不指定，如果不指定，则表示行高为当前字体的多少倍，所以此处 1.5 表示 body 的行高为 12px * 1.5 = 18px（Chrome 中计算会有一定误差，Safari 计算正常）**/
-    font: 12px/1.5 &quot;Microsoft YaHei&quot;;
-}
-div {
-    /** 继承 body 的行高 1.5，所以 div 的行高为 14px * 1.5 = 21px **/
-    font-size: 14px;
-}
-p {
-    /** 继承 body 的行高 1.5，所以 p 的行高为 16px * 1.5 = 24px **/
-    font-size: 16px;
-}
-&lt;body&gt;
-    &lt;div&gt;Hello&lt;/div&gt;
-    &lt;p&gt;Hello&lt;/p&gt;
-    &lt;ul&gt;
-        &lt;!-- 继承 body 的字体大小 12px 和行高 1.5，所以此处 li 的行高为 12px * 1.5 = 18px --&gt;
-        &lt;li&gt;Hello&lt;/li&gt;
-    &lt;/ul&gt;
-&lt;/body&gt;
-</code></pre>
 ]]></content>
     </entry>
 </feed>

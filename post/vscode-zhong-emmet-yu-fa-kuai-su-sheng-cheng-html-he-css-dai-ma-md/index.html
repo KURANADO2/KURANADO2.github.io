@@ -1,11 +1,10 @@
 <html>
-
 <head>
     <meta charset="utf-8"/>
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>友情链接 - KURANADO</title>
+<title>VsCode 中 Emmet 语法快速生成HTML 和 CSS 代码.md | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601429920067">
 
@@ -38,12 +37,11 @@
     </script>
 
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
 </head>
-
 <body>
 <div class="main gt-bg-theme-color-first">
-        <div class="main-content">
-            <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg">
     <div class="navbar-brand">
         <img class="user-avatar" src="/images/avatar.png" alt="头像">
         <div class="site-name gt-c-content-color-first">
@@ -107,51 +105,203 @@
     </div>
 </nav>
 
-            <div class="post-container">
-                <div class="post-detail">
-                    <article>
-                        <!-- <div class="post-content-wrapper"> -->
-                            <div class="post-content">
-                                <div class="friends-desc">
-                                    
-                                </div>
-                                <h3 id="linklist">友链列表</h3>
-                                
-                                    
-                                        <div class="friend-box">
-                                            <img class="friend-avatar" src="https://mrdear.cn/favicon.ico">
-                                            <div class="flink-info">
-                                                
-                                                        <a class="gt-c-content-color-first" href="https://mrdear.cn/" target="_blank">屈定&#39;s Blog</a>
-                                                        
-                                                <br />
-                                                <div class="flink-info-desc gt-c-content-color-first">
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    
-                                        <div class="friend-box">
-                                            <img class="friend-avatar" src="http://emoji.kuranado.com/favicon.ico">
-                                            <div class="flink-info">
-                                                
-                                                        <a class="gt-c-content-color-first" href="http://emoji.kuranado.com" target="_blank">表情包网站</a>
-                                                        
-                                                <br />
-                                                <div class="flink-info-desc gt-c-content-color-first">
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    
-                                
-                            </div>
-                        <!-- </div> -->
-                    </article>
-                </div>
-                
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    VsCode 中 Emmet 语法快速生成HTML 和 CSS 代码.md
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-09-30 ·
+                    </time>
                     
-                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+                        <a href="http://blog.kuranado.com/tag/7UybBkxqc/" class="post-tags">
+                            # VsCode
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/" class="post-tags">
+                            # CSS
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/Eb-3VtzRjb/" class="post-tags">
+                            # HTML
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/AIzjXFqb32/" class="post-tags">
+                            # 前端
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>[TOC]</p>
+<blockquote>
+<p>敲完简写后，按 Tab 自动完成</p>
+</blockquote>
+<h2 id="html">HTML</h2>
+<ul>
+<li><code>div</code></li>
+</ul>
+<pre><code>&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<ul>
+<li><code>div*3</code></li>
+</ul>
+<pre><code>&lt;div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<ul>
+<li><code>{}</code> 定义标签内的内容，<code>div{Hello}</code></li>
+</ul>
+<pre><code>&lt;div&gt;Hello&lt;/div&gt;
+</code></pre>
+<ul>
+<li><code>div{Hello}*3</code></li>
+</ul>
+<pre><code>&lt;div&gt;Hello&lt;/div&gt;
+&lt;div&gt;Hello&lt;/div&gt;
+&lt;div&gt;Hello&lt;/div&gt;
+</code></pre>
+<ul>
+<li>父子关系标签，使用 <code>&gt;</code>，如 <code>ul&gt;li</code>：</li>
+</ul>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<p><code>div&gt;p</code>：</p>
+<pre><code>&lt;div&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<ul>
+<li>兄弟关系标签，使用 <code>+</code>，如 <code>div+p</code>：</li>
+</ul>
+<pre><code>&lt;div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt;
+</code></pre>
+<ul>
+<li><code>()</code> 指定优先级，如 <code>ul&gt;(li+bq)</code>：</li>
+</ul>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;&lt;/li&gt;
+    &lt;blockquote&gt;&lt;/blockquote&gt;
+&lt;/ul&gt;
+</code></pre>
+<p><code>(ul&gt;li)+bq</code>：</p>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;&lt;/blockquote&gt;
+</code></pre>
+<ul>
+<li>带有类选择器，如 <code>.gray</code>，默认生成 class 为 gray 的 div：</li>
+</ul>
+<pre><code>&lt;div class=&quot;gray&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p>如果要生成其它标签 class 为 gray，则 <code>p.gray</code>：</p>
+<pre><code>&lt;p class=&quot;gray&quot;&gt;&lt;/p&gt;
+</code></pre>
+<p>一次生成多个 class 选择器，如 <code>.box1.box2.box3</code>：</p>
+<pre><code>&lt;div class=&quot;box1 box2 box3&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p><code>p.box1.box2.box3</code>：</p>
+<pre><code>&lt;p class=&quot;box1 box2 box3&quot;&gt;&lt;/p&gt;
+</code></pre>
+<ul>
+<li>带有 ID 选择器，如 <code>#gray</code>，默认生成 id 为 gray 的 div：</li>
+</ul>
+<pre><code>&lt;div id=&quot;gray&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p>如果要生成其它标签 id 为 gray，则 <code>p#gray</code>：</p>
+<pre><code>&lt;p id=&quot;gray&quot;&gt;&lt;/p&gt;
+</code></pre>
+<p>既有类选择器，又有 id 选择器，如 <code>p.box1.box2#gray</code>：</p>
+<pre><code>&lt;p class=&quot;box1 box2&quot; id=&quot;gray&quot;&gt;&lt;/p&gt;
+</code></pre>
+<ul>
+<li><code>[]</code> 表示属性，如 <code>ul&gt;li&gt;a[href=&quot;#&quot;]</code>：</li>
+</ul>
+<pre><code>&lt;ul&gt;
+    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<ul>
+<li><code>$</code> 表示自增，如 <code>div{$}*3</code>：</li>
+</ul>
+<pre><code>&lt;div&gt;1&lt;/div&gt;
+&lt;div&gt;2&lt;/div&gt;
+&lt;div&gt;3&lt;/div&gt;
+</code></pre>
+<p><code>div.gray$*3</code>：</p>
+<pre><code>&lt;div class=&quot;gray1&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;gray2&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;gray3&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p><code>p.gray${$}*3</code>：</p>
+<pre><code>&lt;p class=&quot;gray1&quot;&gt;1&lt;/p&gt;
+&lt;p class=&quot;gray2&quot;&gt;2&lt;/p&gt;
+&lt;p class=&quot;gray3&quot;&gt;3&lt;/p&gt;
+</code></pre>
+<p><code>ul&gt;li.gray${Hello$}*3</code>：</p>
+<pre><code>&lt;ul&gt;
+    &lt;li class=&quot;gray1&quot;&gt;Hello1&lt;/li&gt;
+    &lt;li class=&quot;gray2&quot;&gt;Hello2&lt;/li&gt;
+    &lt;li class=&quot;gray3&quot;&gt;Hello3&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<h2 id="css">CSS</h2>
+<p>CSS 中一般取每个单词首字母，然后 Tab 即可自动补全/生成：</p>
+<ul>
+<li><code>w200</code>：</li>
+</ul>
+<pre><code>width: 200px;
+</code></pre>
+<ul>
+<li><code>h200</code>：</li>
+</ul>
+<pre><code>height: 200px;
+</code></pre>
+<ul>
+<li><code>lh26px</code>：</li>
+</ul>
+<pre><code>line-height: 26px;
+</code></pre>
+<ul>
+<li><code>ti2em</code>：</li>
+</ul>
+<pre><code>text-indent: 2em;
+</code></pre>
+<ul>
+<li><code>tdn</code>：</li>
+</ul>
+<pre><code>text-decoration: none;
+</code></pre>
+<ul>
+<li><code>tac</code>：</li>
+</ul>
+<pre><code>text-align: center;
+</code></pre>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/css-xuan-ze-qi-md/" class="post-title gt-a-link">
+                    CSS 选择器.md
+                </a>
+            </div>
+        
+
+        
+
+        
+            
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
 <script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
 <script>
     // md5.min.js
@@ -194,15 +344,14 @@
 
 </script>
 
-                    
+            
 
-                    
-                
-            </div>
+            
+        
 
+        
 
-
-            <div class="site-footer gt-c-content-color-first">
+        <div class="site-footer gt-c-content-color-first">
     <div class="slogan gt-c-content-color-first">笔记/博客</div>
     <div class="social-container">
         
@@ -240,8 +389,7 @@
   hljs.initHighlightingOnLoad()
 </script>
 
-        </div>
     </div>
+</div>
 </body>
-
 </html>
