@@ -1,0 +1,425 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>正则表达式总结.md | KURANADO</title>
+
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601514257392">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111464093-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-111464093-1');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            KURANADO
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1601514257392" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    正则表达式总结.md
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-10-01 ·
+                    </time>
+                    
+                        <a href="http://blog.kuranado.com/tag/r2fWjh6LA/" class="post-tags">
+                            # RegEx
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/A6QRVjXFT-/" class="post-tags">
+                            # 正则表达式
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <h2 id="基本">基本</h2>
+<ul>
+<li>正则表达式区分字母大小写</li>
+<li><code>.</code> 字符可以匹配<strong>任意</strong>单个字符、字母、数字、空格甚至是 <code>.</code> 字符本身。但在绝大多数正则表达式实现里，<code>.</code> 不能匹配换行符</li>
+<li><code>\</code> 用于转义</li>
+<li><code>\.</code> 匹配字符 <code>.</code> 本身</li>
+<li><code>\\</code> 匹配字符 <code>\</code></li>
+</ul>
+<hr>
+<h2 id="字符区间">字符区间</h2>
+<ul>
+<li><code>[abc]</code> 匹配字符 <code>a</code> 或 <code>b</code> 或 <code>c</code>，</li>
+<li><code>[0-9]</code> 等价于 <code>[0123456789]</code></li>
+<li><code>[a-z]</code> 等价于 <code>[abcdefghijklmnopqrstuvwxyz]</code>，<code>[A-Z]</code> 等价于 <code>[ABCDEFGHIJKLMNOPQRSTUVWXYZ]</code>，<code>[A-z]</code> 等价于 <code>[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz]</code>（按照 Ascii 顺序），<code>[A-Za-z0-9]</code> 等价于 <code>[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789]</code></li>
+</ul>
+<blockquote>
+<p>很多程序员喜欢把一个字符也定义为一个字符区间，如 <code>[a]</code> 等价于 <code>a</code>，<code>[\r]?</code> 等价于 <code>\r?</code>，但前者可以避免产生误解、增加可读性，所以建议一个字符也定义为字符区间</p>
+</blockquote>
+<hr>
+<h2 id="排除">排除</h2>
+<ul>
+<li><code>[^a-c]</code> 排除 <code>a</code> 或 <code>b</code> 或 <code>c</code></li>
+</ul>
+<hr>
+<h2 id="空白字符">空白字符</h2>
+<ul>
+<li><code>[\b]</code> 匹配回退（并删除）一个字符（Backspace 键）</li>
+<li><code>\f</code> 匹配换页符</li>
+<li><code>\r</code> 匹配回车符</li>
+<li><code>\n</code> 匹配换行符</li>
+<li><code>\t</code> 匹配制表符（Tab 键）</li>
+<li><code>\v</code> 匹配垂直制表符</li>
+</ul>
+<blockquote>
+<p>在 Unix 或 Linux 上使用 <code>\n</code> 匹配行尾标记，Windows 上使用 <code>\r\n</code> 匹配行尾标记</p>
+</blockquote>
+<hr>
+<h2 id="特定字符类型">特定字符类型</h2>
+<ul>
+<li><code>\d</code> 匹配任何一个数字字符，等价于 <code>[0-9]</code></li>
+<li><code>\D</code> 匹配任何一个<strong>非数字</strong>字符，等价于 <code>[^0-9]</code></li>
+<li><code>\w</code> 匹配任何一个字母（大小写均可）或数字类型或下划线字符，等价于 <code>[A-z0-9_]</code></li>
+<li><code>\W</code> 匹配任何一个<strong>非字母（大小写均可）或数字类型或下划线字符</strong>，等价于 <code>[^A-z0-9_]</code></li>
+<li><code>\s</code> 匹配任何一个空白字符，等价于 <code>[\f\r\n\t\v ]</code>，注意包含空格</li>
+<li><code>\S</code> 匹配任何一个非空白字符，等价于 <code>[^\f\r\n\t\v ]</code></li>
+</ul>
+<hr>
+<h2 id="转义">转义</h2>
+<ul>
+<li><code>.</code>、<code>[</code>、<code>]</code>、<code>\</code>、<code>+</code>、<code>*</code>、<code>?</code>、<code>(</code>、<code>)</code> 等具有特殊含义的符号被称为<strong>元字符</strong>，如果要匹配元字符，则需要对元字符进行转义，如 <code>\.</code> 匹配字符 <code>.</code>，<code>\[</code> 匹配字符 <code>[</code>，<code>\]</code> 匹配字符 <code>]</code>，<code>\\</code> 匹配字符 <code>\</code></li>
+<li><code>/</code> 字符并不是元字符，在绝大多数正则表达式解析器中如果要匹配字符 <code>/</code> 并不需要转义，但有些解析器却要求必须转义才能够匹配，所以建议总是在需要匹配字符 <code>/</code> 时对其进行转义，即使用 <code>\/</code> 匹配字符 <code>/</code>，这样在所有解析器中都能够正常工作</li>
+<li>像 <code>.</code>、<code>+</code> 这样的元字符出现在字符区间内部时，将会被解释为普通字符，可以不用转义，如 <code>[\w\.]</code> 等价于 <code>[\w.]</code>，但为了防止误解，建议显示转义</li>
+</ul>
+<hr>
+<h2 id="重复匹配">重复匹配</h2>
+<ul>
+<li><code>+</code> 元字符匹配一个或多个字符，如 <code>a+</code> 匹配一个或多个连续的 <code>a</code>，<code>[0-9]+</code> 匹配一个或多个连续的数字</li>
+<li><code>*</code> 元字符匹配 0 个或多个字符</li>
+<li><code>?</code> 元字符匹配 0 个或 1 个字符</li>
+<li><code>{n}</code> 重复匹配 n 次</li>
+<li><code>{m,n}</code> 重复匹配 m ~ n 次，如 <code>{0,1}</code> 表示最少匹配 0 次，最多匹配 1 次，等价于 <code>?</code></li>
+<li><code>{m,}</code> 重复匹配至少 m 次</li>
+<li><code>*</code> 和 <code>+</code> 是贪婪型元字符，它们会尽可能地从一段文本的开头一致匹配到末尾，而不是碰到一个匹配时就停止，如果想要碰到第一个匹配时就停止，则应该使用元字符对应的懒惰型。<code>*</code> 元字符对应的懒惰型为 <code>*?</code>，<code>+</code> 元字符对应的懒惰型为 <code>+?</code>。如想要匹配 HTML <code>&lt;b&gt;</code> 标签中的文本，贪婪型正则如下：<pre><code>&lt;[Bb]&gt;.*&lt;\/[Bb]&gt;
+</code></pre>
+但对于如下文本匹配却有问题：<br>
+<img src="http://image.kuranado.com/blog/1601514029.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+正确写法是使用懒惰型：<pre><code>&lt;[Bb]&gt;.*?&lt;\/[Bb]&gt;
+</code></pre>
+匹配结果：<br>
+<img src="http://image.kuranado.com/blog/1601514040.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
+</ul>
+<blockquote>
+<p>在为字符区间加后缀的时候，必须把后缀放到区间外面，如 <code>[0-9]+</code> 是正确的，而 <code>[0-9+]</code> 是错误的，同理 <code>[0-9]*</code>、<code>[0-9]?</code> 是正确的，而 <code>[0-9*]</code>、<code>[0-9?]</code> 是错误的<br>
+注意 <code>{m,n}</code> 是正确的，<code>{m, n}</code> 是不正确的，因为个人习惯在英文 <code>,</code> 后加一个空格，但在使用此正则时需要注意避免</p>
+</blockquote>
+<hr>
+<h2 id="位置匹配">位置匹配</h2>
+<ul>
+<li><code>\b</code> 表示边界（boundary），匹配<strong>单词</strong>的开头或结尾。这里所谓的单词是指能够被 <code>\w</code> 匹配的内容即称为单词，<code>\b</code> 匹配的时字符之间的一个位置：一边是单词（能够被 <code>\w</code> 所匹配的），一边是其它内容（能够被 <code>\W</code> 所匹配的）。<code>b</code> 匹配的是一个位置，而不是任何实际字符</li>
+<li><code>\B</code> 不匹配单词边界</li>
+<li><code>^</code> 匹配字符串开头位置。<code>^</code> 用于字符区间中表示排除，如 <code>[^abc]</code> <code>[^a-c]</code> 排除 <code>a</code> 或 <code>b</code> 或 <code>c</code>，但当 <code>^</code> 用于字符区间之外时，则表示匹配字符串的起始位置</li>
+<li><code>$</code> 匹配字符串结尾位置</li>
+<li><code>(?m)</code> 用于开启多行模式，<code>(?m)</code> 必须出现在整个模式的最前面，但实际包括 JavaScript 在内的许多正则表达式都不支持 <code>(?m)</code></li>
+</ul>
+<hr>
+<h2 id="子表达式">子表达式</h2>
+<ul>
+<li>前面介绍的重复匹配只作用于紧挨着它的前一个字符或元字符，为了能够重复匹配多个字符，需要使用子表达式</li>
+<li>子表达式必须出现在元字符 <code>(</code> 和 <code>)</code> 之间</li>
+<li>对于不需要使用子表达式的地方，如果加上元字符 <code>(</code> 和 <code>)</code> 使其成为子表达式，虽然对匹配结果不会有任何影响，但可能会影响性能，如把 <code>\d{1,3}</code> 如果写成子表达式：<code>(\d{1,3})</code>，匹配结果完全一样，但后者可能会影响性能</li>
+<li>因为模式是从左到右进行评估的，首先测试第一个，然后测试第二个，只要有任何一个模式匹配，就不再测试选择结构中的其它模式。比如 IP 地址的匹配：<br>
+IP 地址范围为 0.0.0.0 ~ 255.255.255.255，总结如下：
+<ol>
+<li>任意的 1 位或 2 位数字</li>
+<li>任意的以 1 开头的 3 位数字</li>
+<li>任意的以 2 开头，第二位数字在 0 到 4 之间的 3 位数字</li>
+<li>任意的以 25 开头，第三位数字在 0 到 5 之间的 3 位数字<br>
+很容易写出如下正则：</li>
+</ol>
+<pre><code>(((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))
+</code></pre>
+但这个正则却是错误的，如 IP 地址：<code>12.159.46.200</code> 的匹配结果如下图，最后的 0 无法被匹配，这是因为 <code>20</code> 已经被子表达式 <code>(\d{1, 2})</code> 匹配，并没有被 <code>(25[0-5])</code> 匹配<br>
+<img src="http://image.kuranado.com/blog/1601514063.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+正确的写法如下：<pre><code>((((25[0-5])\d)|(2[0-4]\d)|(1\d{2})|(\d{1,2}))\.){3}(((25[0-5])\d)|(2[0-4]\d)|(1\d{2})|(\d{1,2}))
+</code></pre>
+匹配结果：<br>
+<img src="http://image.kuranado.com/blog/1601514071.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
+</ul>
+<hr>
+<h2 id="反向引用">反向引用</h2>
+<ul>
+<li>
+<p>反向引用允许正则表达式模式引用之前匹配的结果，如想要匹配所有的 HTML 标题，正则如下：</p>
+<pre><code>(&lt;[Hh]1&gt;.*?&lt;\/[Hh]1&gt;)|(&lt;[Hh]2&gt;.*?&lt;\/[Hh]2&gt;)|(&lt;[Hh]3&gt;.*?&lt;\/[Hh]3&gt;)|(&lt;[Hh]4&gt;.*?&lt;\/[Hh]4&gt;)|(&lt;[Hh]5&gt;.*?&lt;\/[Hh]5&gt;)|(&lt;[Hh]6&gt;.*?&lt;\/[Hh]6&gt;)
+</code></pre>
+<p>匹配结果也的确是正确的：<br>
+<img src="http://image.kuranado.com/blog/1601514090.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+但是这样写未免过于臃肿，所以有人可能会这样写：</p>
+<pre><code>&lt;[Hh][1-6]&gt;.*?&lt;\/[Hh][1-6]&gt; 
+</code></pre>
+<p>但实际这却是错误的，因为他会将 <code>&lt;h2&gt;</code> 和 <code>&lt;/h3&gt;</code> 匹配到一块，而这是错误的 HTML 标题：       <img src="http://image.kuranado.com/blog/1601514113.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>正确的写法是使用反向引用：</p>
+<pre><code>&lt;[Hh]([1-6])&gt;.*?&lt;\/[Hh]\1&gt;
+</code></pre>
+<p>匹配结果：<br>
+<img src="http://image.kuranado.com/blog/1601514136.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+使用了 <code>\1</code> 引用了第 1 个子表达式 <code>([1-6])</code>，如果有第 2 个、第 3 个等子表达式，则使用 <code>\2</code>、<code>\3</code> 引用</p>
+</li>
+<li>
+<p>反向引用只能引用括号里的子表达式</p>
+</li>
+<li>
+<p>不同的正则实现中，反向引用的语法存在很大差异，如 JavaScript 和 vim 在搜索时使用 <code>\</code> 标识反向引用，在替换时使用 <code>$</code> 标识反向引用，Perl 搜索和替换都使用 <code>$</code> 标识反向引用</p>
+</li>
+</ul>
+<hr>
+<h2 id="反向引用替换">反向引用替换</h2>
+<ul>
+<li>如将文档中的所有邮箱地址全替换为 HTML 链接
+<ol>
+<li>先写出正则表达式，找出所有的邮箱地址，为了能够使用反向引用，加 <code>(</code> 和 <code>)</code> 让其变成子表达式：<pre><code>(\w+[\w\.]*@[\w\.]+\.\w+)
+</code></pre>
+</li>
+<li>编写替换的表达式：<pre><code>&lt;a href=&quot;mailto:$1&quot;&gt;$1&lt;/a&gt;
+</code></pre>
+</li>
+<li>开始替换，可以使用编程语言，如 JavaScript，这里简单直接以 VsCode 操作为例（注意要选择正则表达式模式）：<br>
+<img src="http://image.kuranado.com/blog/1601514160.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+点击替换按钮，替换结果如下：<br>
+<img src="http://image.kuranado.com/blog/1601514172.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
+</ol>
+</li>
+<li>反向引用替换大小写转换（并不是所有正则表达式实现都支持）：
+<ul>
+<li><code>\U</code> 把 <code>\U</code> 到 <code>\E</code> 之间的字符全部转换为大写</li>
+<li><code>\L</code> 把 <code>\L</code> 到 <code>\E</code> 之间的字符全部转换为小写</li>
+<li><code>\E</code> 结束 <code>\U</code> 或 <code>\L</code> 转换</li>
+<li><code>u</code> 把下一个字符转换为大写</li>
+<li><code>l</code> 把下一个字符转换为小写</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="环视">环视</h2>
+<ul>
+<li><code>?=</code> 表示向前查看，如：<code>?=:</code> 匹配字符 <code>:</code> 但不消耗字符 <code>:</code>，所谓的不消耗是指匹配到的 <code>:</code> 不会在最终的匹配结果中返回。如对于如下文本：<pre><code>http://www.baidu.com
+</code></pre>
+表达式 <code>http:</code> 匹配 <code>http:</code>，而如果使用向前查看，表达式为：<code>http(?=:)</code>，匹配结果为：<code>http</code>，不包含字符 <code>:</code></li>
+<li><code>?&lt;=</code> 表示向后查看，如：<code>?&lt;=\$</code> 匹配字符 <code>$</code>，但不消耗字符 <code>$</code>，如对于如下文本：<pre><code>ABC01: $253.00
+</code></pre>
+表达式 <code>\$[\d\.]+\d{2}</code> 匹配 <code>$253.00</code>，而如果使用向后查看，表达式为：<code>(?&lt;=\$)[\d\.]+\d{2}</code>，匹配结果为：<code>253.00</code>，不包含字符 <code>$</code></li>
+<li>向前查看和向后查看的否定式分别为：<code>?!</code> 和 <code>?&lt;!</code>，即将肯定式中的 <code>=</code> 换成 <code>!</code></li>
+</ul>
+<blockquote>
+<p>所有主流正则表达式实现都支持向前查看，但有些语言不支持向后查看，如 JavaScript</p>
+</blockquote>
+<hr>
+<h2 id="正则测试网站">正则测试网站</h2>
+<ul>
+<li><a href="https://regex101.com/">https://regex101.com/</a></li>
+<li><a href="https://www.regextester.com/">https://www.regextester.com/</a></li>
+</ul>
+<hr>
+<h2 id="参考">参考</h2>
+<ul>
+<li>《正则表达式必知必会修订版》</li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/css-yuan-su-de-xian-shi-mo-shi-md/" class="post-title gt-a-link">
+                    CSS 元素的显示模式.md
+                </a>
+            </div>
+        
+
+        
+
+        
+            
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+<script>
+    // md5.min.js
+    !function(n){
+        "use strict";
+        function d(n,t){var r=(65535&n)+(65535&t);return(n>>16)+(t>>16)+(r>>16)<<16|65535&r}
+        function f(n,t,r,e,o,u){return d((c=d(d(t,n),d(e,u)))<<(f=o)|c>>>32-f,r);var c,f}
+        function l(n,t,r,e,o,u,c){return f(t&r|~t&e,n,t,o,u,c)}
+        function v(n,t,r,e,o,u,c){return f(t&e|r&~e,n,t,o,u,c)}
+        function g(n,t,r,e,o,u,c){return f(t^r^e,n,t,o,u,c)}
+        function m(n,t,r,e,o,u,c){return f(r^(t|~e),n,t,o,u,c)}
+        function i(n,t){var r,e,o,u,c;n[t>>5]|=128<<t%32,n[14+(t+64>>>9<<4)]=t;var f=1732584193,i=-271733879,a=-1732584194,h=271733878;for(r=0;r<n.length;r+=16)f=l(e=f,o=i,u=a,c=h,n[r],7,-680876936),h=l(h,f,i,a,n[r+1],12,-389564586),a=l(a,h,f,i,n[r+2],17,606105819),i=l(i,a,h,f,n[r+3],22,-1044525330),f=l(f,i,a,h,n[r+4],7,-176418897),h=l(h,f,i,a,n[r+5],12,1200080426),a=l(a,h,f,i,n[r+6],17,-1473231341),i=l(i,a,h,f,n[r+7],22,-45705983),f=l(f,i,a,h,n[r+8],7,1770035416),h=l(h,f,i,a,n[r+9],12,-1958414417),a=l(a,h,f,i,n[r+10],17,-42063),i=l(i,a,h,f,n[r+11],22,-1990404162),f=l(f,i,a,h,n[r+12],7,1804603682),h=l(h,f,i,a,n[r+13],12,-40341101),a=l(a,h,f,i,n[r+14],17,-1502002290),f=v(f,i=l(i,a,h,f,n[r+15],22,1236535329),a,h,n[r+1],5,-165796510),h=v(h,f,i,a,n[r+6],9,-1069501632),a=v(a,h,f,i,n[r+11],14,643717713),i=v(i,a,h,f,n[r],20,-373897302),f=v(f,i,a,h,n[r+5],5,-701558691),h=v(h,f,i,a,n[r+10],9,38016083),a=v(a,h,f,i,n[r+15],14,-660478335),i=v(i,a,h,f,n[r+4],20,-405537848),f=v(f,i,a,h,n[r+9],5,568446438),h=v(h,f,i,a,n[r+14],9,-1019803690),a=v(a,h,f,i,n[r+3],14,-187363961),i=v(i,a,h,f,n[r+8],20,1163531501),f=v(f,i,a,h,n[r+13],5,-1444681467),h=v(h,f,i,a,n[r+2],9,-51403784),a=v(a,h,f,i,n[r+7],14,1735328473),f=g(f,i=v(i,a,h,f,n[r+12],20,-1926607734),a,h,n[r+5],4,-378558),h=g(h,f,i,a,n[r+8],11,-2022574463),a=g(a,h,f,i,n[r+11],16,1839030562),i=g(i,a,h,f,n[r+14],23,-35309556),f=g(f,i,a,h,n[r+1],4,-1530992060),h=g(h,f,i,a,n[r+4],11,1272893353),a=g(a,h,f,i,n[r+7],16,-155497632),i=g(i,a,h,f,n[r+10],23,-1094730640),f=g(f,i,a,h,n[r+13],4,681279174),h=g(h,f,i,a,n[r],11,-358537222),a=g(a,h,f,i,n[r+3],16,-722521979),i=g(i,a,h,f,n[r+6],23,76029189),f=g(f,i,a,h,n[r+9],4,-640364487),h=g(h,f,i,a,n[r+12],11,-421815835),a=g(a,h,f,i,n[r+15],16,530742520),f=m(f,i=g(i,a,h,f,n[r+2],23,-995338651),a,h,n[r],6,-198630844),h=m(h,f,i,a,n[r+7],10,1126891415),a=m(a,h,f,i,n[r+14],15,-1416354905),i=m(i,a,h,f,n[r+5],21,-57434055),f=m(f,i,a,h,n[r+12],6,1700485571),h=m(h,f,i,a,n[r+3],10,-1894986606),a=m(a,h,f,i,n[r+10],15,-1051523),i=m(i,a,h,f,n[r+1],21,-2054922799),f=m(f,i,a,h,n[r+8],6,1873313359),h=m(h,f,i,a,n[r+15],10,-30611744),a=m(a,h,f,i,n[r+6],15,-1560198380),i=m(i,a,h,f,n[r+13],21,1309151649),f=m(f,i,a,h,n[r+4],6,-145523070),h=m(h,f,i,a,n[r+11],10,-1120210379),a=m(a,h,f,i,n[r+2],15,718787259),i=m(i,a,h,f,n[r+9],21,-343485551),f=d(f,e),i=d(i,o),a=d(a,u),h=d(h,c);return[f,i,a,h]}
+        function a(n){var t,r="",e=32*n.length;for(t=0;t<e;t+=8)r+=String.fromCharCode(n[t>>5]>>>t%32&255);return r}
+        function h(n){var t,r=[];for(r[(n.length>>2)-1]=void 0,t=0;t<r.length;t+=1)r[t]=0;var e=8*n.length;for(t=0;t<e;t+=8)r[t>>5]|=(255&n.charCodeAt(t/8))<<t%32;return r}
+        function e(n){var t,r,e="0123456789abcdef",o="";for(r=0;r<n.length;r+=1)t=n.charCodeAt(r),o+=e.charAt(t>>>4&15)+e.charAt(15&t);return o}
+        function r(n){return unescape(encodeURIComponent(n))}
+        function o(n){return a(i(h(t=r(n)),8*t.length));var t}
+        function u(n,t){return function(n,t){var r,e,o=h(n),u=[],c=[];for(u[15]=c[15]=void 0,16<o.length&&(o=i(o,8*n.length)),r=0;r<16;r+=1)u[r]=909522486^o[r],c[r]=1549556828^o[r];return e=i(u.concat(h(t)),512+8*t.length),a(i(c.concat(e),640))}(r(n),r(t))}
+        function t(n,t,r){return t?r?u(t,n):e(u(t,n)):r?o(n):e(o(n))}
+        "function"==typeof define&&define.amd?define(function(){return t}):"object"==typeof module&&module.exports?module.exports=t:n.md5=t;
+    }(this);
+</script>
+
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd5112611bb77c8d6bb88',
+    clientSecret: 'b064af1dd2e63f211b8517f1a57d71c1efc01b8e',
+    repo: 'kuranado2.github.io',
+    owner: 'kuranado2',
+    admin: ['kuranado2'],
+    id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false       // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+            
+
+            
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">笔记/博客</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KURANADO2" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+                <a href="https://www.zhihu.com/people/jing-xin-ling-32" target="_blank">
+                    <i class="fab fa-zhihu gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        @Copyright 2020 <a href="http://emoji.kuranado.com">表情包网站</a>
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="http://blog.kuranado.com/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

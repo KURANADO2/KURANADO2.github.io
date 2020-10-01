@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-01T00:40:56.049Z</updated>
+    <updated>2020-10-01T01:05:01.907Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,201 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[正则表达式总结.md]]></title>
+        <id>http://blog.kuranado.com/post/zheng-ze-biao-da-shi-zong-jie-md/</id>
+        <link href="http://blog.kuranado.com/post/zheng-ze-biao-da-shi-zong-jie-md/">
+        </link>
+        <updated>2020-10-01T00:59:20.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="基本">基本</h2>
+<ul>
+<li>正则表达式区分字母大小写</li>
+<li><code>.</code> 字符可以匹配<strong>任意</strong>单个字符、字母、数字、空格甚至是 <code>.</code> 字符本身。但在绝大多数正则表达式实现里，<code>.</code> 不能匹配换行符</li>
+<li><code>\</code> 用于转义</li>
+<li><code>\.</code> 匹配字符 <code>.</code> 本身</li>
+<li><code>\\</code> 匹配字符 <code>\</code></li>
+</ul>
+<hr>
+<h2 id="字符区间">字符区间</h2>
+<ul>
+<li><code>[abc]</code> 匹配字符 <code>a</code> 或 <code>b</code> 或 <code>c</code>，</li>
+<li><code>[0-9]</code> 等价于 <code>[0123456789]</code></li>
+<li><code>[a-z]</code> 等价于 <code>[abcdefghijklmnopqrstuvwxyz]</code>，<code>[A-Z]</code> 等价于 <code>[ABCDEFGHIJKLMNOPQRSTUVWXYZ]</code>，<code>[A-z]</code> 等价于 <code>[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz]</code>（按照 Ascii 顺序），<code>[A-Za-z0-9]</code> 等价于 <code>[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789]</code></li>
+</ul>
+<blockquote>
+<p>很多程序员喜欢把一个字符也定义为一个字符区间，如 <code>[a]</code> 等价于 <code>a</code>，<code>[\r]?</code> 等价于 <code>\r?</code>，但前者可以避免产生误解、增加可读性，所以建议一个字符也定义为字符区间</p>
+</blockquote>
+<hr>
+<h2 id="排除">排除</h2>
+<ul>
+<li><code>[^a-c]</code> 排除 <code>a</code> 或 <code>b</code> 或 <code>c</code></li>
+</ul>
+<hr>
+<h2 id="空白字符">空白字符</h2>
+<ul>
+<li><code>[\b]</code> 匹配回退（并删除）一个字符（Backspace 键）</li>
+<li><code>\f</code> 匹配换页符</li>
+<li><code>\r</code> 匹配回车符</li>
+<li><code>\n</code> 匹配换行符</li>
+<li><code>\t</code> 匹配制表符（Tab 键）</li>
+<li><code>\v</code> 匹配垂直制表符</li>
+</ul>
+<blockquote>
+<p>在 Unix 或 Linux 上使用 <code>\n</code> 匹配行尾标记，Windows 上使用 <code>\r\n</code> 匹配行尾标记</p>
+</blockquote>
+<hr>
+<h2 id="特定字符类型">特定字符类型</h2>
+<ul>
+<li><code>\d</code> 匹配任何一个数字字符，等价于 <code>[0-9]</code></li>
+<li><code>\D</code> 匹配任何一个<strong>非数字</strong>字符，等价于 <code>[^0-9]</code></li>
+<li><code>\w</code> 匹配任何一个字母（大小写均可）或数字类型或下划线字符，等价于 <code>[A-z0-9_]</code></li>
+<li><code>\W</code> 匹配任何一个<strong>非字母（大小写均可）或数字类型或下划线字符</strong>，等价于 <code>[^A-z0-9_]</code></li>
+<li><code>\s</code> 匹配任何一个空白字符，等价于 <code>[\f\r\n\t\v ]</code>，注意包含空格</li>
+<li><code>\S</code> 匹配任何一个非空白字符，等价于 <code>[^\f\r\n\t\v ]</code></li>
+</ul>
+<hr>
+<h2 id="转义">转义</h2>
+<ul>
+<li><code>.</code>、<code>[</code>、<code>]</code>、<code>\</code>、<code>+</code>、<code>*</code>、<code>?</code>、<code>(</code>、<code>)</code> 等具有特殊含义的符号被称为<strong>元字符</strong>，如果要匹配元字符，则需要对元字符进行转义，如 <code>\.</code> 匹配字符 <code>.</code>，<code>\[</code> 匹配字符 <code>[</code>，<code>\]</code> 匹配字符 <code>]</code>，<code>\\</code> 匹配字符 <code>\</code></li>
+<li><code>/</code> 字符并不是元字符，在绝大多数正则表达式解析器中如果要匹配字符 <code>/</code> 并不需要转义，但有些解析器却要求必须转义才能够匹配，所以建议总是在需要匹配字符 <code>/</code> 时对其进行转义，即使用 <code>\/</code> 匹配字符 <code>/</code>，这样在所有解析器中都能够正常工作</li>
+<li>像 <code>.</code>、<code>+</code> 这样的元字符出现在字符区间内部时，将会被解释为普通字符，可以不用转义，如 <code>[\w\.]</code> 等价于 <code>[\w.]</code>，但为了防止误解，建议显示转义</li>
+</ul>
+<hr>
+<h2 id="重复匹配">重复匹配</h2>
+<ul>
+<li><code>+</code> 元字符匹配一个或多个字符，如 <code>a+</code> 匹配一个或多个连续的 <code>a</code>，<code>[0-9]+</code> 匹配一个或多个连续的数字</li>
+<li><code>*</code> 元字符匹配 0 个或多个字符</li>
+<li><code>?</code> 元字符匹配 0 个或 1 个字符</li>
+<li><code>{n}</code> 重复匹配 n 次</li>
+<li><code>{m,n}</code> 重复匹配 m ~ n 次，如 <code>{0,1}</code> 表示最少匹配 0 次，最多匹配 1 次，等价于 <code>?</code></li>
+<li><code>{m,}</code> 重复匹配至少 m 次</li>
+<li><code>*</code> 和 <code>+</code> 是贪婪型元字符，它们会尽可能地从一段文本的开头一致匹配到末尾，而不是碰到一个匹配时就停止，如果想要碰到第一个匹配时就停止，则应该使用元字符对应的懒惰型。<code>*</code> 元字符对应的懒惰型为 <code>*?</code>，<code>+</code> 元字符对应的懒惰型为 <code>+?</code>。如想要匹配 HTML <code>&lt;b&gt;</code> 标签中的文本，贪婪型正则如下：<pre><code>&lt;[Bb]&gt;.*&lt;\/[Bb]&gt;
+</code></pre>
+但对于如下文本匹配却有问题：<br>
+<img src="http://image.kuranado.com/blog/1601514029.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+正确写法是使用懒惰型：<pre><code>&lt;[Bb]&gt;.*?&lt;\/[Bb]&gt;
+</code></pre>
+匹配结果：<br>
+<img src="http://image.kuranado.com/blog/1601514040.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
+</ul>
+<blockquote>
+<p>在为字符区间加后缀的时候，必须把后缀放到区间外面，如 <code>[0-9]+</code> 是正确的，而 <code>[0-9+]</code> 是错误的，同理 <code>[0-9]*</code>、<code>[0-9]?</code> 是正确的，而 <code>[0-9*]</code>、<code>[0-9?]</code> 是错误的<br>
+注意 <code>{m,n}</code> 是正确的，<code>{m, n}</code> 是不正确的，因为个人习惯在英文 <code>,</code> 后加一个空格，但在使用此正则时需要注意避免</p>
+</blockquote>
+<hr>
+<h2 id="位置匹配">位置匹配</h2>
+<ul>
+<li><code>\b</code> 表示边界（boundary），匹配<strong>单词</strong>的开头或结尾。这里所谓的单词是指能够被 <code>\w</code> 匹配的内容即称为单词，<code>\b</code> 匹配的时字符之间的一个位置：一边是单词（能够被 <code>\w</code> 所匹配的），一边是其它内容（能够被 <code>\W</code> 所匹配的）。<code>b</code> 匹配的是一个位置，而不是任何实际字符</li>
+<li><code>\B</code> 不匹配单词边界</li>
+<li><code>^</code> 匹配字符串开头位置。<code>^</code> 用于字符区间中表示排除，如 <code>[^abc]</code> <code>[^a-c]</code> 排除 <code>a</code> 或 <code>b</code> 或 <code>c</code>，但当 <code>^</code> 用于字符区间之外时，则表示匹配字符串的起始位置</li>
+<li><code>$</code> 匹配字符串结尾位置</li>
+<li><code>(?m)</code> 用于开启多行模式，<code>(?m)</code> 必须出现在整个模式的最前面，但实际包括 JavaScript 在内的许多正则表达式都不支持 <code>(?m)</code></li>
+</ul>
+<hr>
+<h2 id="子表达式">子表达式</h2>
+<ul>
+<li>前面介绍的重复匹配只作用于紧挨着它的前一个字符或元字符，为了能够重复匹配多个字符，需要使用子表达式</li>
+<li>子表达式必须出现在元字符 <code>(</code> 和 <code>)</code> 之间</li>
+<li>对于不需要使用子表达式的地方，如果加上元字符 <code>(</code> 和 <code>)</code> 使其成为子表达式，虽然对匹配结果不会有任何影响，但可能会影响性能，如把 <code>\d{1,3}</code> 如果写成子表达式：<code>(\d{1,3})</code>，匹配结果完全一样，但后者可能会影响性能</li>
+<li>因为模式是从左到右进行评估的，首先测试第一个，然后测试第二个，只要有任何一个模式匹配，就不再测试选择结构中的其它模式。比如 IP 地址的匹配：<br>
+IP 地址范围为 0.0.0.0 ~ 255.255.255.255，总结如下：
+<ol>
+<li>任意的 1 位或 2 位数字</li>
+<li>任意的以 1 开头的 3 位数字</li>
+<li>任意的以 2 开头，第二位数字在 0 到 4 之间的 3 位数字</li>
+<li>任意的以 25 开头，第三位数字在 0 到 5 之间的 3 位数字<br>
+很容易写出如下正则：</li>
+</ol>
+<pre><code>(((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))
+</code></pre>
+但这个正则却是错误的，如 IP 地址：<code>12.159.46.200</code> 的匹配结果如下图，最后的 0 无法被匹配，这是因为 <code>20</code> 已经被子表达式 <code>(\d{1, 2})</code> 匹配，并没有被 <code>(25[0-5])</code> 匹配<br>
+<img src="http://image.kuranado.com/blog/1601514063.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+正确的写法如下：<pre><code>((((25[0-5])\d)|(2[0-4]\d)|(1\d{2})|(\d{1,2}))\.){3}(((25[0-5])\d)|(2[0-4]\d)|(1\d{2})|(\d{1,2}))
+</code></pre>
+匹配结果：<br>
+<img src="http://image.kuranado.com/blog/1601514071.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
+</ul>
+<hr>
+<h2 id="反向引用">反向引用</h2>
+<ul>
+<li>
+<p>反向引用允许正则表达式模式引用之前匹配的结果，如想要匹配所有的 HTML 标题，正则如下：</p>
+<pre><code>(&lt;[Hh]1&gt;.*?&lt;\/[Hh]1&gt;)|(&lt;[Hh]2&gt;.*?&lt;\/[Hh]2&gt;)|(&lt;[Hh]3&gt;.*?&lt;\/[Hh]3&gt;)|(&lt;[Hh]4&gt;.*?&lt;\/[Hh]4&gt;)|(&lt;[Hh]5&gt;.*?&lt;\/[Hh]5&gt;)|(&lt;[Hh]6&gt;.*?&lt;\/[Hh]6&gt;)
+</code></pre>
+<p>匹配结果也的确是正确的：<br>
+<img src="http://image.kuranado.com/blog/1601514090.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+但是这样写未免过于臃肿，所以有人可能会这样写：</p>
+<pre><code>&lt;[Hh][1-6]&gt;.*?&lt;\/[Hh][1-6]&gt; 
+</code></pre>
+<p>但实际这却是错误的，因为他会将 <code>&lt;h2&gt;</code> 和 <code>&lt;/h3&gt;</code> 匹配到一块，而这是错误的 HTML 标题：       <img src="http://image.kuranado.com/blog/1601514113.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>正确的写法是使用反向引用：</p>
+<pre><code>&lt;[Hh]([1-6])&gt;.*?&lt;\/[Hh]\1&gt;
+</code></pre>
+<p>匹配结果：<br>
+<img src="http://image.kuranado.com/blog/1601514136.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+使用了 <code>\1</code> 引用了第 1 个子表达式 <code>([1-6])</code>，如果有第 2 个、第 3 个等子表达式，则使用 <code>\2</code>、<code>\3</code> 引用</p>
+</li>
+<li>
+<p>反向引用只能引用括号里的子表达式</p>
+</li>
+<li>
+<p>不同的正则实现中，反向引用的语法存在很大差异，如 JavaScript 和 vim 在搜索时使用 <code>\</code> 标识反向引用，在替换时使用 <code>$</code> 标识反向引用，Perl 搜索和替换都使用 <code>$</code> 标识反向引用</p>
+</li>
+</ul>
+<hr>
+<h2 id="反向引用替换">反向引用替换</h2>
+<ul>
+<li>如将文档中的所有邮箱地址全替换为 HTML 链接
+<ol>
+<li>先写出正则表达式，找出所有的邮箱地址，为了能够使用反向引用，加 <code>(</code> 和 <code>)</code> 让其变成子表达式：<pre><code>(\w+[\w\.]*@[\w\.]+\.\w+)
+</code></pre>
+</li>
+<li>编写替换的表达式：<pre><code>&lt;a href=&quot;mailto:$1&quot;&gt;$1&lt;/a&gt;
+</code></pre>
+</li>
+<li>开始替换，可以使用编程语言，如 JavaScript，这里简单直接以 VsCode 操作为例（注意要选择正则表达式模式）：<br>
+<img src="http://image.kuranado.com/blog/1601514160.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+点击替换按钮，替换结果如下：<br>
+<img src="http://image.kuranado.com/blog/1601514172.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
+</ol>
+</li>
+<li>反向引用替换大小写转换（并不是所有正则表达式实现都支持）：
+<ul>
+<li><code>\U</code> 把 <code>\U</code> 到 <code>\E</code> 之间的字符全部转换为大写</li>
+<li><code>\L</code> 把 <code>\L</code> 到 <code>\E</code> 之间的字符全部转换为小写</li>
+<li><code>\E</code> 结束 <code>\U</code> 或 <code>\L</code> 转换</li>
+<li><code>u</code> 把下一个字符转换为大写</li>
+<li><code>l</code> 把下一个字符转换为小写</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="环视">环视</h2>
+<ul>
+<li><code>?=</code> 表示向前查看，如：<code>?=:</code> 匹配字符 <code>:</code> 但不消耗字符 <code>:</code>，所谓的不消耗是指匹配到的 <code>:</code> 不会在最终的匹配结果中返回。如对于如下文本：<pre><code>http://www.baidu.com
+</code></pre>
+表达式 <code>http:</code> 匹配 <code>http:</code>，而如果使用向前查看，表达式为：<code>http(?=:)</code>，匹配结果为：<code>http</code>，不包含字符 <code>:</code></li>
+<li><code>?&lt;=</code> 表示向后查看，如：<code>?&lt;=\$</code> 匹配字符 <code>$</code>，但不消耗字符 <code>$</code>，如对于如下文本：<pre><code>ABC01: $253.00
+</code></pre>
+表达式 <code>\$[\d\.]+\d{2}</code> 匹配 <code>$253.00</code>，而如果使用向后查看，表达式为：<code>(?&lt;=\$)[\d\.]+\d{2}</code>，匹配结果为：<code>253.00</code>，不包含字符 <code>$</code></li>
+<li>向前查看和向后查看的否定式分别为：<code>?!</code> 和 <code>?&lt;!</code>，即将肯定式中的 <code>=</code> 换成 <code>!</code></li>
+</ul>
+<blockquote>
+<p>所有主流正则表达式实现都支持向前查看，但有些语言不支持向后查看，如 JavaScript</p>
+</blockquote>
+<hr>
+<h2 id="正则测试网站">正则测试网站</h2>
+<ul>
+<li><a href="https://regex101.com/">https://regex101.com/</a></li>
+<li><a href="https://www.regextester.com/">https://www.regextester.com/</a></li>
+</ul>
+<hr>
+<h2 id="参考">参考</h2>
+<ul>
+<li>《正则表达式必知必会修订版》</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[CSS 元素的显示模式.md]]></title>
         <id>http://blog.kuranado.com/post/css-yuan-su-de-xian-shi-mo-shi-md/</id>
@@ -80,7 +275,7 @@
 &lt;span&gt;转行内块元素二&lt;/span&gt;
 </code></pre>
 <h2 id="单行文字垂直居中原理">单行文字垂直居中原理</h2>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/blog/1601512614.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601512614.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 <p>行高等于文字本身高度 + 上边距 + 下边距，如果盒子高度等于行高，文字显然会垂直居中，如：</p>
 <pre><code>a {
     display: block;
@@ -105,7 +300,7 @@ a:hover {
 &lt;a href=&quot;#&quot;&gt;健康 儿童&lt;/a&gt;
 &lt;a href=&quot;#&quot;&gt;耳机 音箱&lt;/a&gt;
 </code></pre>
-<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/blog/1601512625.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1601512625.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 <p>如果行高小于盒子高度，则文字会偏上；如果行高大于盒子高度，则文字会偏下</p>
 ]]></content>
     </entry>
@@ -1777,220 +1972,6 @@ enum Singleton {
 <li>这个年纪会在你耳边唱歌，喜欢你的肉体还会送你包的，只剩下蚊子了。</li>
 <li>这两天雨水多，下雨记得打伞，否则脑袋容易进水。</li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Java 浅拷贝和深拷贝.md]]></title>
-        <id>http://blog.kuranado.com/post/java-qian-kao-bei-he-shen-kao-bei-md/</id>
-        <link href="http://blog.kuranado.com/post/java-qian-kao-bei-he-shen-kao-bei-md/">
-        </link>
-        <updated>2020-09-27T13:59:45.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="最普通的引用复制">最普通的引用复制：</h2>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:57
- */
-@Data
-public class Student {
-
-    private int no;
-}
-</code></pre>
-<pre><code>/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:58
- */
-public class Test {
-
-    public static void main(String[] args)  {
-
-        Student student = new Student();
-        student.setNo(1);
-
-        // 复制对象引用
-        Student student2 = student;
-        student2.setNo(2);
-
-        System.out.println(student);
-        System.out.println(student2);
-    }
-}
-</code></pre>
-<p>输出结果如下：</p>
-<pre><code>Student(no=2)
-Student(no=2)
-</code></pre>
-<p>更改一个 student 的 no 值，影响到了另一个 student 的 no</p>
-<h2 id="浅拷贝">浅拷贝</h2>
-<p>被拷贝的类需要实现 <code>Cloneable</code> 接口，并重写  <code>clone</code> 方法：</p>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:57
- */
-@Data
-public class Student implements Cloneable {
-
-    private int no;
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-}
-</code></pre>
-<pre><code>/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:58
- */
-public class Test {
-
-    public static void main(String[] args) throws CloneNotSupportedException {
-
-        Student student = new Student();
-        student.setNo(1);
-
-        Student student2 = (Student) student.clone();
-        student2.setNo(2);
-
-        System.out.println(student);
-        System.out.println(student2);
-    }
-}
-</code></pre>
-<p>输出结果：</p>
-<pre><code>Student(no=1)
-Student(no=2)
-</code></pre>
-<p>更改一个 student 的 no 值，不会影响另一个 student 的 no</p>
-<h2 id="深拷贝">深拷贝</h2>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:57
- */
-@Data
-public class Student implements Cloneable {
-
-    private int no;
-    private Teacher teacher;
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-}
-</code></pre>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 13:03
- */
-@Data
-public class Teacher {
-
-    private String name;
-}
-</code></pre>
-<pre><code>/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:58
- */
-public class Test {
-
-    public static void main(String[] args) throws CloneNotSupportedException {
-
-        Student student = new Student();
-        Teacher teacher = new Teacher();
-        teacher.setName(&quot;汪老师&quot;);
-        student.setNo(1);
-        student.setTeacher(teacher);
-
-        Student student2 = (Student) student.clone();
-        student2.setNo(2);
-        student2.getTeacher().setName(&quot;井老师&quot;);
-        System.out.println(student);
-        System.out.println(student2);
-    }
-}
-</code></pre>
-<p>输出结果：</p>
-<pre><code>Student(no=1, teacher=Teacher(name=井老师))
-Student(no=2, teacher=Teacher(name=井老师))
-</code></pre>
-<p>两个 student 的 no 不同，但 teacher 却一起被改变了，说明 teacher 使用的是同一个引用。这是因为 Student 类下的 <code>super.clone()</code> 仅能拷贝 Student <strong>类本身及其中包含的值类型的成员变量，并不能拷贝引用类型的成员对象</strong></p>
-<p>修改 Teacher 类如下：</p>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 13:03
- */
-@Data
-public class Teacher implements Cloneable {
-
-    private String name;
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-}
-</code></pre>
-<p>修改 Student 类如下：</p>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:57
- */
-@Data
-public class Student implements Cloneable {
-
-    private int no;
-    private Teacher teacher;
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        Student student = (Student) super.clone();
-        student.setTeacher((Teacher) teacher.clone());
-        return student;
-    }
-}
-</code></pre>
-<pre><code>/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:58
- */
-public class Test {
-
-    public static void main(String[] args) throws CloneNotSupportedException {
-
-        Student student = new Student();
-        Teacher teacher = new Teacher();
-        teacher.setName(&quot;汪老师&quot;);
-        student.setNo(1);
-        student.setTeacher(teacher);
-
-        Student student2 = (Student) student.clone();
-        student2.setNo(2);
-        student2.getTeacher().setName(&quot;井老师&quot;);
-        System.out.println(student);
-        System.out.println(student2);
-    }
-
-}
-</code></pre>
-<p>输出结果：</p>
-<pre><code>Student(no=1, teacher=Teacher(name=汪老师))
-Student(no=2, teacher=Teacher(name=井老师))
-</code></pre>
-<p>一个 student 的 teacher 改变并不会影响另一个 student 的 teacher</p>
 ]]></content>
     </entry>
 </feed>
