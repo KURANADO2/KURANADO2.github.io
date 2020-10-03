@@ -1,0 +1,640 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>CSS 浮动.md | KURANADO</title>
+
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601693353722">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111464093-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-111464093-1');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            KURANADO
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1601693353722" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    CSS 浮动.md
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-10-03 ·
+                    </time>
+                    
+                        <a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/" class="post-tags">
+                            # CSS
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/Eb-3VtzRjb/" class="post-tags">
+                            # HTML
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/AIzjXFqb32/" class="post-tags">
+                            # 前端
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>[TOC]</p>
+<h2 id="什么是浮动">什么是浮动</h2>
+<p>float 属性用于创建浮动框，将其移动到一边，直到左边边缘或右边边缘及包含块或另一个浮动框的边缘<br>
+浮动最典型的应用：可以让多个块级元素在一行内并列显示（把块级元素转换为行内块元素虽然也可以在一行内并列显示，但行内块元素之间有间隙，而这个间隙是不可控的）</p>
+<pre><code>div {
+    width: 200px;
+    height: 200px;
+    background-color: skyblue;
+    float: left;
+}
+&lt;div&gt;第一个盒子&lt;/div&gt;
+&lt;div&gt;第二个盒子&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601693114.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<pre><code>div {
+    width: 200px;
+    height: 200px;
+    background-color: skyblue;
+}
+.left {
+    float: left;
+}
+.right {    
+    float: right;
+}
+&lt;div class=&quot;left&quot;&gt;第一个盒子&lt;/div&gt;
+&lt;div class=&quot;right&quot;&gt;第二个盒子&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1601693126.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="浮动特性重难点">浮动特性（重难点）</h2>
+<h3 id="浮动的元素会脱离标准流脱标">浮动的元素会脱离标准流（脱标）</h3>
+<p>浮动的元素脱标后，浮动的盒子<strong>不再保留原先的位置</strong></p>
+<pre><code>.left {
+    width: 100px;
+    height: 100px;
+    background-color: skyblue;
+    float: left;
+}
+.standard {
+    width: 300px;
+    height: 300px;
+    background-color: peru;
+}
+&lt;div class=&quot;left&quot;&gt;浮动的盒子&lt;/div&gt;
+&lt;div class=&quot;standard&quot;&gt;标准流的盒子&lt;/div&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1601693145.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+如上图，浮动的元素会压住下面标准流的盒子，但是，浮动的盒子不会压住下面标准流的图片或文字，因为浮动产生的最初目的是为了做文字环绕效果的（如果想让盒子压住文字或图片，应该为盒子添加绝对定位或固定定位）：</p>
+<pre><code>div {
+    float: left;
+    width: 100px;
+    height: 100px;
+    background-color: skyblue;
+}
+&lt;div&gt;&lt;/div&gt;
+&lt;p&gt;浮动的元素不会压住标准流盒子里的文字或图片&lt;/p&gt;
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1601693158.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h3 id="浮动的元素会一行内显示并且元素顶部对齐">浮动的元素会一行内显示并且元素顶部对齐</h3>
+<ul>
+<li>如果多个盒子都设置了浮动，则它们会按照属性值一行内显示并且<strong>顶端对齐</strong>排列</li>
+</ul>
+<pre><code>div {
+    width: 200px;
+    height: 200px;
+    float: left;
+}
+.one {
+    background-color: pink;
+}
+.two {
+    background-color: orange;
+    height: 220px;
+}
+.three {
+    background-color: gray;
+}
+.four {
+    background-color: skyblue;
+}
+&lt;div class=&quot;one&quot;&gt;1&lt;/div&gt;
+&lt;div class=&quot;two&quot;&gt;2&lt;/div&gt;
+&lt;div class=&quot;three&quot;&gt;3&lt;/div&gt;
+&lt;div class=&quot;four&quot;&gt;4&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1601693171.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<ul>
+<li>浮动的元素是相互贴靠在一起，不会有缝隙，如果父级宽度装不下这些浮动的盒子，多出的盒子会另起一行对齐<br>
+<img src="http://image.kuranado.com/blog/1601693180.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+<img src="http://image.kuranado.com/blog/1601693202.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
+</ul>
+<h3 id="浮动的元素具有行内块元素的特性">浮动的元素具有行内块元素的特性</h3>
+<ul>
+<li>任何元素都可以浮动，不管原先是什么模式的元素，添加浮动之后具有与<strong>行内块元素</strong>相似的特性</li>
+</ul>
+<pre><code>span {
+    float: left;
+    width: 100px;
+    height: 100px;
+    background-color: pink;
+}
+&lt;span&gt;1&lt;/span&gt;
+&lt;span&gt;2&lt;/span&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1601693215.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+span 为行内元素，行内元素直接指定高度或宽度是无效的，但是为其添加浮动后，便具有了与行内块元素相似的特性，因为行内块元素的宽度、高度、外边距、内边距都可以设置，所以上面代码的宽度和高度将会生效。<br>
+所以如果行内元素有了浮动，则不需要转换为块级元素或行内块元素，便可以直接为其设置高度和宽度。</p>
+<pre><code>span {
+    float: left;
+    width: 100px;
+    height: 100px;
+    background-color: pink;
+}
+p {    
+    height: 200px;
+    background-color: purple;
+}
+&lt;span&gt;1&lt;/span&gt;
+&lt;span&gt;2&lt;/span&gt;
+&lt;p&gt;p&lt;/p&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1601693225.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+p 是块状元素，没有浮动，是标准流的盒子，没有为其指定宽度，其宽度默认为容器（父元素）的 100%，下面为 p 添加浮动：</p>
+<pre><code>span {
+    float: left;
+    width: 100px;
+    height: 100px;
+    background-color: pink;
+}
+p {    
+    float: left;
+    height: 200px;
+    background-color: purple;
+}
+&lt;span&gt;1&lt;/span&gt;
+&lt;span&gt;2&lt;/span&gt;
+&lt;p&gt;p&lt;/p&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1601693238.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+为 p 元素添加浮动后，它便拥有了与行内块元素相似的特性，如果没有为行内块元素指定宽度，则行内块元素的默认宽度为它本身内容的宽度</p>
+<h2 id="浮动元素经常和标准流父级搭配使用">浮动元素经常和标准流父级搭配使用</h2>
+<ul>
+<li>为了约束浮动元素位置，网页布局一般采取的策略是：先用标准流的父元素排列上下位置，之后内部子元素采取浮动排列左右位置，这也刚好符合网页布局第一准则</li>
+<li>一个元素浮动了，理论上，应该为其余的兄弟元素也设置浮动</li>
+<li>浮动的盒子只会影响浮动盒子后面的标准流，不会影响前面的标准流</li>
+</ul>
+<pre><code>.one {
+    width: 100px;
+    height: 100px;
+    background-color: pink;
+}
+.two {
+    width: 200px;
+    height: 200px;
+    background-color: orange;
+    float: left;
+}
+.three {
+    width: 300px;
+    height: 300px;
+    background-color: skyblue;
+}
+&lt;div class=&quot;one&quot;&gt;标准流&lt;/div&gt;
+&lt;div class=&quot;two&quot;&gt;浮动&lt;/div&gt;
+&lt;div class=&quot;three&quot;&gt;标准流&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="http://image.kuranado.com/blog/1601693251.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="清除浮动">清除浮动</h2>
+<h3 id="为什么要清除浮动">为什么要清除浮动</h3>
+<ol>
+<li>如果为父盒子定义高度，父盒子内子元素都设置浮动没问题，然而子元素的数据往往是不确定的，如果子元素数量较多，很可能会超出父盒子的范围，所以父盒子一般不方便指定高度</li>
+<li>由于很多情况下，父盒子不方便指定高度，父盒子内浮动的子盒子又不占有位置，所以父盒子的高度就会变成 0，进而影响页面上其它标准流盒子的排版</li>
+</ol>
+<h3 id="清除浮动的本质">清除浮动的本质</h3>
+<ul>
+<li>清除浮动的本质是<strong>清除浮动元素造成的影响</strong></li>
+<li>如果父盒子本身有高度，则不需要清除浮动</li>
+<li>清除浮动之后，父盒子就会根据浮动的子盒子自动检测高度。标准流的父盒子有了高度，就不会影响下面的标准流了</li>
+</ul>
+<h3 id="语法">语法</h3>
+<ul>
+<li>clear: 属性值
+<ul>
+<li>left 不允许左侧有浮动元素（清除左侧浮动的影响）</li>
+<li>right 不允许右侧有浮动元素（清除右侧浮动的影响）</li>
+<li>both 最常用，同时清除左右两侧浮动的影响</li>
+</ul>
+</li>
+</ul>
+<h3 id="清除浮动的四种方法">清除浮动的四种方法</h3>
+<h4 id="1-额外标签法不常用">1. 额外标签法（不常用）</h4>
+<p>也称隔墙法，W3C 推荐做法<br>
+在浮动元素末尾添加一个空的<strong>块级</strong>标签，例如：<code>&lt;div style=&quot;clear:both&quot;&gt;&lt;/div&gt;</code>（不一定必须是 div 标签，只要是块级元素即可）</p>
+<ul>
+<li>优点：通俗易懂，书写方便</li>
+<li>缺点：添加许多无意义的标签，结构化较差</li>
+</ul>
+<pre><code>.box {
+    width: 230px;
+    background-color: #ccc;
+}
+.one {
+    width: 100px;
+    height: 100px;
+    background-color: pink;
+    float: left
+}
+.two {
+    width: 100px;
+    height: 100px;
+    background-color: orange;
+    float: left;
+}
+.three {
+    width: 300px;
+    height: 300px;
+    background-color: skyblue;
+}
+.clear {
+    clear: both;
+}
+&lt;div class=&quot;box&quot;&gt;
+    &lt;div class=&quot;one&quot;&gt;浮动1&lt;/div&gt;
+    &lt;div class=&quot;two&quot;&gt;浮动2&lt;/div&gt;
+    &lt;div class=&quot;one&quot;&gt;浮动3&lt;/div&gt;
+    &lt;div class=&quot;two&quot;&gt;浮动4&lt;/div&gt;
+    &lt;div class=&quot;clear&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;three&quot;&gt;标准流&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="6"><img src="http://image.kuranado.com/blog/1601693263.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h4 id="2-为父盒子添加-overflow-属性">2. 为父盒子添加 overflow 属性</h4>
+<p>可以给父级元素添加 overflow 属性，将其属性设置为 hidden 或 auto 或 scroll</p>
+<ul>
+<li>优点：代码简洁</li>
+<li>缺点：无法显示溢出的部分</li>
+</ul>
+<pre><code>.box {
+    width: 230px;
+    background-color: #ccc;
+    overflow: hidden;
+}
+.one {
+    width: 100px;
+    height: 100px;
+    background-color: pink;
+    float: left
+}
+.two {
+    width: 100px;
+    height: 100px;
+    background-color: orange;
+    float: left;
+}
+.three {
+    width: 300px;
+    height: 300px;
+    background-color: skyblue;
+}
+.clear {
+    clear: both;
+}
+&lt;div class=&quot;box&quot;&gt;
+    &lt;div class=&quot;one&quot;&gt;浮动1&lt;/div&gt;
+    &lt;div class=&quot;two&quot;&gt;浮动2&lt;/div&gt;
+    &lt;div class=&quot;one&quot;&gt;浮动3&lt;/div&gt;
+    &lt;div class=&quot;two&quot;&gt;浮动4&lt;/div&gt;
+    &lt;div class=&quot;clear&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;three&quot;&gt;标准流&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="7"><img src="http://image.kuranado.com/blog/1601693274.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h4 id="3-为父盒子添加-after-伪元素">3. 为父盒子添加 after 伪元素</h4>
+<p>本质是 CSS 为父元素内最后添加一个子元素，原理和额外标签法类似<br>
+为<strong>父元素</strong>添加如下样式（类名一般约定为 clearfix）：</p>
+<pre><code>.clearfix:after {
+    content: &quot;&quot;;
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.clearfix:after {
+    /** 兼容 IE6、IE7 专用**/
+    *zoom: 1;
+}
+</code></pre>
+<ul>
+<li>优点：没有增加标签，结构更简单</li>
+<li>缺点：需要照顾低版本的浏览器</li>
+<li>代表网站：百度、淘宝网、网易等</li>
+</ul>
+<pre><code>.clearfix:after {
+    content: &quot;&quot;;
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+.clearfix {
+    /** 兼容 IE6、IE7 专用**/
+    *zoom: 1;
+}
+.box {
+    width: 230px;
+    background-color: #ccc;
+}
+.one {
+    width: 100px;
+    height: 100px;
+    background-color: pink;
+    float: left
+}
+.two {
+    width: 100px;
+    height: 100px;
+    background-color: orange;
+    float: left;
+}
+.three {
+    width: 300px;
+    height: 300px;
+    background-color: skyblue;
+}
+.clear {
+    clear: both;
+}
+&lt;div class=&quot;box clearfix&quot;&gt;
+    &lt;div class=&quot;one&quot;&gt;浮动1&lt;/div&gt;
+    &lt;div class=&quot;two&quot;&gt;浮动2&lt;/div&gt;
+    &lt;div class=&quot;one&quot;&gt;浮动3&lt;/div&gt;
+    &lt;div class=&quot;two&quot;&gt;浮动4&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;three&quot;&gt;标准流&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="8"><img src="http://image.kuranado.com/blog/1601693288.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h4 id="4-为父元素添加双伪元素">4. 为父元素添加双伪元素</h4>
+<p>为父元素添加如下样式：</p>
+<pre><code>.clearfix:before, .clearfix:after {
+    content: &quot;&quot;;
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
+.clearfix {
+    /** 兼容 IE6、IE7 专用**/
+    *zoom: 1;
+}
+</code></pre>
+<ul>
+<li>优点：代码更简洁</li>
+<li>缺点：需要照顾低版本浏览器</li>
+</ul>
+<pre><code>.clearfix:before, .clearfix:after {
+    content: &quot;&quot;;
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
+.clearfix {
+    /** 兼容 IE6、IE7 专用**/
+    *zoom: 1;
+}
+.box {
+    width: 230px;
+    background-color: #ccc;
+}
+.one {
+    width: 100px;
+    height: 100px;
+    background-color: pink;
+    float: left
+}
+.two {
+    width: 100px;
+    height: 100px;
+    background-color: orange;
+    float: left;
+}
+.three {
+    width: 300px;
+    height: 300px;
+    background-color: skyblue;
+}
+.clear {
+    clear: both;
+}
+&lt;div class=&quot;box clearfix&quot;&gt;
+    &lt;div class=&quot;one&quot;&gt;浮动1&lt;/div&gt;
+    &lt;div class=&quot;two&quot;&gt;浮动2&lt;/div&gt;
+    &lt;div class=&quot;one&quot;&gt;浮动3&lt;/div&gt;
+    &lt;div class=&quot;two&quot;&gt;浮动4&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;three&quot;&gt;标准流&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="9"><img src="http://image.kuranado.com/blog/1601693298.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/css-he-zi-mo-xing-md/" class="post-title gt-a-link">
+                    CSS 盒子模型.md
+                </a>
+            </div>
+        
+
+        
+
+        
+            
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+<script>
+    // md5.min.js
+    !function(n){
+        "use strict";
+        function d(n,t){var r=(65535&n)+(65535&t);return(n>>16)+(t>>16)+(r>>16)<<16|65535&r}
+        function f(n,t,r,e,o,u){return d((c=d(d(t,n),d(e,u)))<<(f=o)|c>>>32-f,r);var c,f}
+        function l(n,t,r,e,o,u,c){return f(t&r|~t&e,n,t,o,u,c)}
+        function v(n,t,r,e,o,u,c){return f(t&e|r&~e,n,t,o,u,c)}
+        function g(n,t,r,e,o,u,c){return f(t^r^e,n,t,o,u,c)}
+        function m(n,t,r,e,o,u,c){return f(r^(t|~e),n,t,o,u,c)}
+        function i(n,t){var r,e,o,u,c;n[t>>5]|=128<<t%32,n[14+(t+64>>>9<<4)]=t;var f=1732584193,i=-271733879,a=-1732584194,h=271733878;for(r=0;r<n.length;r+=16)f=l(e=f,o=i,u=a,c=h,n[r],7,-680876936),h=l(h,f,i,a,n[r+1],12,-389564586),a=l(a,h,f,i,n[r+2],17,606105819),i=l(i,a,h,f,n[r+3],22,-1044525330),f=l(f,i,a,h,n[r+4],7,-176418897),h=l(h,f,i,a,n[r+5],12,1200080426),a=l(a,h,f,i,n[r+6],17,-1473231341),i=l(i,a,h,f,n[r+7],22,-45705983),f=l(f,i,a,h,n[r+8],7,1770035416),h=l(h,f,i,a,n[r+9],12,-1958414417),a=l(a,h,f,i,n[r+10],17,-42063),i=l(i,a,h,f,n[r+11],22,-1990404162),f=l(f,i,a,h,n[r+12],7,1804603682),h=l(h,f,i,a,n[r+13],12,-40341101),a=l(a,h,f,i,n[r+14],17,-1502002290),f=v(f,i=l(i,a,h,f,n[r+15],22,1236535329),a,h,n[r+1],5,-165796510),h=v(h,f,i,a,n[r+6],9,-1069501632),a=v(a,h,f,i,n[r+11],14,643717713),i=v(i,a,h,f,n[r],20,-373897302),f=v(f,i,a,h,n[r+5],5,-701558691),h=v(h,f,i,a,n[r+10],9,38016083),a=v(a,h,f,i,n[r+15],14,-660478335),i=v(i,a,h,f,n[r+4],20,-405537848),f=v(f,i,a,h,n[r+9],5,568446438),h=v(h,f,i,a,n[r+14],9,-1019803690),a=v(a,h,f,i,n[r+3],14,-187363961),i=v(i,a,h,f,n[r+8],20,1163531501),f=v(f,i,a,h,n[r+13],5,-1444681467),h=v(h,f,i,a,n[r+2],9,-51403784),a=v(a,h,f,i,n[r+7],14,1735328473),f=g(f,i=v(i,a,h,f,n[r+12],20,-1926607734),a,h,n[r+5],4,-378558),h=g(h,f,i,a,n[r+8],11,-2022574463),a=g(a,h,f,i,n[r+11],16,1839030562),i=g(i,a,h,f,n[r+14],23,-35309556),f=g(f,i,a,h,n[r+1],4,-1530992060),h=g(h,f,i,a,n[r+4],11,1272893353),a=g(a,h,f,i,n[r+7],16,-155497632),i=g(i,a,h,f,n[r+10],23,-1094730640),f=g(f,i,a,h,n[r+13],4,681279174),h=g(h,f,i,a,n[r],11,-358537222),a=g(a,h,f,i,n[r+3],16,-722521979),i=g(i,a,h,f,n[r+6],23,76029189),f=g(f,i,a,h,n[r+9],4,-640364487),h=g(h,f,i,a,n[r+12],11,-421815835),a=g(a,h,f,i,n[r+15],16,530742520),f=m(f,i=g(i,a,h,f,n[r+2],23,-995338651),a,h,n[r],6,-198630844),h=m(h,f,i,a,n[r+7],10,1126891415),a=m(a,h,f,i,n[r+14],15,-1416354905),i=m(i,a,h,f,n[r+5],21,-57434055),f=m(f,i,a,h,n[r+12],6,1700485571),h=m(h,f,i,a,n[r+3],10,-1894986606),a=m(a,h,f,i,n[r+10],15,-1051523),i=m(i,a,h,f,n[r+1],21,-2054922799),f=m(f,i,a,h,n[r+8],6,1873313359),h=m(h,f,i,a,n[r+15],10,-30611744),a=m(a,h,f,i,n[r+6],15,-1560198380),i=m(i,a,h,f,n[r+13],21,1309151649),f=m(f,i,a,h,n[r+4],6,-145523070),h=m(h,f,i,a,n[r+11],10,-1120210379),a=m(a,h,f,i,n[r+2],15,718787259),i=m(i,a,h,f,n[r+9],21,-343485551),f=d(f,e),i=d(i,o),a=d(a,u),h=d(h,c);return[f,i,a,h]}
+        function a(n){var t,r="",e=32*n.length;for(t=0;t<e;t+=8)r+=String.fromCharCode(n[t>>5]>>>t%32&255);return r}
+        function h(n){var t,r=[];for(r[(n.length>>2)-1]=void 0,t=0;t<r.length;t+=1)r[t]=0;var e=8*n.length;for(t=0;t<e;t+=8)r[t>>5]|=(255&n.charCodeAt(t/8))<<t%32;return r}
+        function e(n){var t,r,e="0123456789abcdef",o="";for(r=0;r<n.length;r+=1)t=n.charCodeAt(r),o+=e.charAt(t>>>4&15)+e.charAt(15&t);return o}
+        function r(n){return unescape(encodeURIComponent(n))}
+        function o(n){return a(i(h(t=r(n)),8*t.length));var t}
+        function u(n,t){return function(n,t){var r,e,o=h(n),u=[],c=[];for(u[15]=c[15]=void 0,16<o.length&&(o=i(o,8*n.length)),r=0;r<16;r+=1)u[r]=909522486^o[r],c[r]=1549556828^o[r];return e=i(u.concat(h(t)),512+8*t.length),a(i(c.concat(e),640))}(r(n),r(t))}
+        function t(n,t,r){return t?r?u(t,n):e(u(t,n)):r?o(n):e(o(n))}
+        "function"==typeof define&&define.amd?define(function(){return t}):"object"==typeof module&&module.exports?module.exports=t:n.md5=t;
+    }(this);
+</script>
+
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd5112611bb77c8d6bb88',
+    clientSecret: 'b064af1dd2e63f211b8517f1a57d71c1efc01b8e',
+    repo: 'kuranado2.github.io',
+    owner: 'kuranado2',
+    admin: ['kuranado2'],
+    id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false       // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+            
+
+            
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">笔记/博客</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KURANADO2" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+                <a href="https://www.zhihu.com/people/jing-xin-ling-32" target="_blank">
+                    <i class="fab fa-zhihu gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        @Copyright 2020 <a href="http://emoji.kuranado.com">表情包网站</a>
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="http://blog.kuranado.com/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
