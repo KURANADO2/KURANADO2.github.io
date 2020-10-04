@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>Nginx 安装 SSL 证书.md | KURANADO</title>
+<title>LeetCode - 1 两数之和 | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601778168378">
 
@@ -109,126 +109,83 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    Nginx 安装 SSL 证书.md
+                    LeetCode - 1 两数之和
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-09-25 ·
+                        · 2020-10-04 ·
                     </time>
                     
-                        <a href="http://blog.kuranado.com/tag/EbMZ5TaKp/" class="post-tags">
-                            # Nginx
+                        <a href="http://blog.kuranado.com/tag/tfVz-s3hI/" class="post-tags">
+                            # LeetCode
                         </a>
                     
-                        <a href="http://blog.kuranado.com/tag/ZK7puSVb5W/" class="post-tags">
-                            # HTTPS
+                        <a href="http://blog.kuranado.com/tag/qjEtrVrzm/" class="post-tags">
+                            # Algorithm
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <h2 id="安全组开启-443-端口">安全组开启 443 端口</h2>
-<p><img src="http://image.kuranado.com/blog/1601013606.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-以腾讯云为例，<strong>入站规则</strong>和<strong>出站规则</strong>都需要添加 443<br>
-<img src="http://image.kuranado.com/blog/1601013628.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="下载证书">下载证书</h2>
-<p>腾讯云下载证书<br>
-<img src="http://image.kuranado.com/blog/1601013639.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="安装证书">安装证书</h2>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601013649.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>证书下载后解压，得到如下两个文件：</p>
-<ul>
-<li><code>1_kuranado.com_bundle.crt</code> 证书</li>
-<li><code>2_kuranado.com.key</code> 私钥</li>
-</ul>
-<p>将这两份文件上传到服务器，并保存在服务器 /usr/local/nginx/conf 目录下，即 Nginx 的安装目录，然后编辑 Nginx 配置文件，先来看下原有的配置：</p>
-<pre><code>server {
-    listen 80;
-    server_name kuranado.com www.kuranado.com emoji.kuranado.com;
-
-    location / {
-        root /home/jing/data/soft/emoji-web;
-        index index.html;
+                    <h2 id="1-两数之和"><a href="https://leetcode-cn.com/problems/two-sum/">1 两数之和</a> 2020年3月15日星期日</h2>
+<p>在 LeetCode 做的第一题，比起以前做的 OJ 系统，省去了编写繁琐、无脑的读取文件操作部分的代码，很人性化</p>
+<h3 id="解法一-92ms">解法一 92ms</h3>
+<p>暴力遍历</p>
+<pre><code class="language-java">class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        int[] result = new int[2];
+        for (int i = 0; i &lt; nums.length; i++) {
+            for (int j = i + 1; j &lt; nums.length; j++) {
+                if (nums[i] + nums[j] == target) {
+                    result[0] = i;
+                    result[1] = j;
+                    return result;
+                }
+            }
+        }
+        return result;
     }
 }
 </code></pre>
-<p>原有的配置为 http 配置，可以不用对其做任何修改，下面增加证书配置：</p>
-<pre><code>server {
-    listen 443 ssl;
-    server_name kuranado.com www.kuranado.com;
-    ssl_certificate 1_kuranado.com_bundle.crt;
-    ssl_certificate_key 2_kuranado.com.key;
-    ssl_session_timeout 5m;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-    ssl_prefer_server_ciphers on;
-    location / {
-        root /home/jing/data/soft/emoji-web;
-        index index.html;
+<h4 id="时间复杂度">时间复杂度</h4>
+<p>O(n<sup>2</sup>)</p>
+<h4 id="空间复杂度">空间复杂度</h4>
+<p>O(1)</p>
+<h3 id="解法二-4ms">解法二 4ms</h3>
+<p>借助 Hash 表</p>
+<pre><code class="language-java">class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;(nums.length);
+        for (int i = 0; i &lt; nums.length; i++) {
+            int a = target - nums[i];
+            if (map.containsKey(a)) {
+                return new int[]{map.get(a), i};
+            }
+            map.put(nums[i], i);
+        }
+        throw new IllegalArgumentException();
     }
 }
 </code></pre>
-<p>增加了一个监听 443 端口的 server，因为我这里是在腾讯云申请的亚洲诚信免费 DV 版 SSL 证书，一个证书只能用于一个域名，所以 server_name 只能配置为申请证书时的域名（www.kuranado.com 和 kuranado.com 等价），而不能配置泛域名<br>
-配置添加完成后，<code>./sbin/nginx -s reload</code> 重新加载 Nginx 配置文件，可正常访问 https://kuranado.com 或 https://www.kuranado.com/，说明证书生效<br>
-<img src="http://image.kuranado.com/blog/1601013669.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<img src="http://image.kuranado.com/blog/1601013680.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<p>当然原先的 http 也可以正常使用</p>
-<h2 id="申请免费域名证书">申请免费域名证书</h2>
-<p><img src="http://image.kuranado.com/blog/1601013691.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<img src="http://image.kuranado.com/blog/1601013703.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<p>正如上面所见，同一主域可以申请 20 张 DV 版免费 SSL 证书，对于一个个人小型网站来说已经足够使用了，只是稍微有些麻烦，需要为每个子域名都申请一份证书配置到 Nginx 中</p>
-<p>如下面为访问 xxl-job 的 http 配置 <code>http://task.kuranado.com/xxl-job-admin</code>：</p>
-<pre><code>upstream task {
-    ip_hash;
-    server 127.0.0.1:10001 max_fails=3 fail_timeout=30s;
-}
-
-server {
-    listen 80;
-    server_name task.kuranado.com;
-
-    #charset koi8-r;
-
-    #access_log logs/host.access.log main;
-
-    location /xxl-job-admin {
-        #root html;
-        #index index.html index.htm;
-        proxy_pass http://task;
-    }
-}
-</code></pre>
-<p>这时我们就可以为其申请一张免费的域名证书，申请时通用名称填写 <code>task.kuranado.com</code>，然后按照上面的证书安装方法在 Nginx 中增加如下配置：</p>
-<pre><code>server {
-    listen 443 ssl;
-    server_name task.kuranado.com;
-    ssl_certificate 1_task.kuranado.com_bundle.crt;
-    ssl_certificate_key 2_task.kuranado.com.key;
-    ssl_session_timeout 5m;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-    ssl_prefer_server_ciphers on;
-    
-    location /xxl-job-admin {
-        #root html;
-        #index index.html index.htm;
-        proxy_pass http://task;
-    }
-}
-</code></pre>
-<p>重新加载 Nginx 配置文件，即可使用 <code>https://task.kuranado.com/xxl-job-admin</code> 访问 xxl-job<br>
-同理，为每个域名都申请免费证书（不超过 20 个），便可以实现全站 https 了，美滋滋<br>
-<img src="http://image.kuranado.com/blog/1601013716.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<img src="http://image.kuranado.com/blog/1601013728.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="参考">参考</h2>
-<ul>
-<li><a href="https://cloud.tencent.com/document/product/400/35244">腾讯云文档 - Nginx 服务器证书安装</a></li>
-<li><a href="https://blog.csdn.net/duyusean/article/details/79348613">nginx使用ssl模块配置支持HTTPS访问</a></li>
-</ul>
+<h4 id="个人观点">个人观点</h4>
+<p>题目并没有明确提到给定数组中不会出现重复元素，但根据题意，如果真的有重复元素，那结果就可能会有多个，真的有重复数据，就会自动覆盖掉，代码仍可以返回其中一组答案，所以把数组元素当作 map 的 key 也是没有问题的</p>
+<h4 id="时间复杂度-2">时间复杂度</h4>
+<p>O(n)<br>
+遍历了包含有 n 个元素的列表一次。在表中进行的每次查找只花费 O(1) 的时间</p>
+<h4 id="空间复杂度-2">空间复杂度</h4>
+<p>O(n)<br>
+所需的额外空间取决于哈希表中存储的元素数量，最多存储 n 个元素</p>
 
                 </div>
             </article>
         </div>
 
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/css-fu-dong-md/" class="post-title gt-a-link">
+                    CSS 浮动.md
+                </a>
+            </div>
         
 
         
