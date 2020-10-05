@@ -1,0 +1,599 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Builder 模式.md | KURANADO</title>
+
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601865609036">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111464093-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-111464093-1');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            KURANADO
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1601865609036" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Builder 模式.md
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-10-05 ·
+                    </time>
+                    
+                        <a href="http://blog.kuranado.com/tag/e80F3R9Pc/" class="post-tags">
+                            # 设计模式
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/prbxfSBgl/" class="post-tags">
+                            # Java
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>Builder 模式又称为建造者、生成器模式。日常开发中，很多类名包含 <code>Builder</code> 的都是生成器模式，例如 StringBuilder 的 append 方法</p>
+<h2 id="生成器模式的本质">生成器模式的本质</h2>
+<ul>
+<li>分离了对象子组件的单独构造和装配，从而可以构造出复杂的对象。建造者模式适用于某个对象的构建过程较为复杂的情况</li>
+<li>由于实现了构建和装配的解耦，不同的构建器，相同的装配，也可以做出不同的对象；相同的构建器，不同的装配顺序也可以做出不同的对象。构建和装配的解耦，实现了更好的复用</li>
+</ul>
+<h2 id="生成器模式的构成">生成器模式的构成</h2>
+<p>生成器模式的构成分为两个部分：</p>
+<ol>
+<li>Builder 接口：定义如何<strong>构建</strong>各个部件，了解每个部件的构建实现细节</li>
+<li>Director 接口：定义如何<strong>装配</strong>各个部件，负责产品的整体构建算法</li>
+</ol>
+<h2 id="举个栗子">举个栗子</h2>
+<p>下面以生产电脑为例，讲解 Builder 模式：</p>
+<h3 id="computer-类">Computer 类</h3>
+<pre><code>package com.kuranado.builder;
+
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * 电脑类
+ * @Author: Xinling Jing
+ * @Date: 2018-12-21 15:01
+ */
+@Setter
+@Getter
+public class Computer {
+
+    private CPU cpu;
+    private Graphics graphics;
+    private HardDisk hardDisk;
+
+    public Computer(CPU cpu, Graphics graphics, HardDisk hardDisk) {
+        this.cpu = cpu;
+        this.graphics = graphics;
+        this.hardDisk = hardDisk;
+    }
+
+    public void start() {
+        System.out.println(&quot;开机中...&quot;);
+    }
+}
+
+class Hardware {
+
+    /**
+     * 品牌
+     */
+    private String brand;
+    /**
+     * 型号
+     */
+    private String model;
+
+    public Hardware(String brand, String model) {
+        this.brand = brand;
+        this.model = model;
+    }
+}
+
+/**
+ * CPU
+ */
+class CPU extends Hardware {
+
+    /**
+     * Cache
+     */
+    private String cache;
+
+    public CPU(String brand, String model, String cache) {
+        super(brand, model);
+        this.cache = cache;
+    }
+}
+
+/**
+ * 显卡
+ */
+class Graphics extends Hardware {
+
+    /**
+     * 显存
+     */
+    private String videoMemory;
+
+    public Graphics(String brand, String model, String videoMemory) {
+        super(brand, model);
+        this.videoMemory = videoMemory;
+    }
+}
+
+/**
+ * 硬盘
+ */
+class HardDisk extends Hardware {
+
+    /**
+     * 硬盘容量
+     */
+    private String capacity;
+
+    public HardDisk(String brand, String model, String capacity) {
+        super(brand, model);
+        this.capacity = capacity;
+    }
+}
+</code></pre>
+<h3 id="computerbuilder-接口">ComputerBuilder 接口</h3>
+<pre><code>package com.kuranado.builder;
+
+/**
+ * @Author: Xinling Jing
+ * @Date: 2018-12-22 10:17
+ */
+public interface ComputerBuilder {
+
+    CPU buildCPU();
+    Graphics buildGraphics();
+    HardDisk buildHardDisk();
+
+}
+</code></pre>
+<h3 id="maccomputerbuilder-实现类">MacComputerBuilder 实现类</h3>
+<p>具体的 Builder 知道每个部件的实现细节。可以定义很多种 Builder，每种 Builder 在部件细节实现上都不尽相同，从而构建出不同的对象</p>
+<pre><code>package com.kuranado.builder;
+
+/**
+ * @Author: Xinling Jing
+ * @Date: 2018-12-22 10:19
+ */
+public class MacComputerBuilder implements ComputerBuilder {
+
+    @Override
+    public CPU buildCPU() {
+        System.out.println(&quot;构建 Mac CPU&quot;);
+        return new CPU(&quot;Intel&quot;, &quot;Xeon W&quot;, &quot;19MB&quot;);
+    }
+
+    @Override
+    public Graphics buildGraphics() {
+        System.out.println(&quot;构建 Mac 显卡&quot;);
+        return new Graphics(&quot;AMD&quot;, &quot;Radeon Pro Vega 56&quot;, &quot;8GB&quot;);
+    }
+
+    @Override
+    public HardDisk buildHardDisk() {
+        System.out.println(&quot;构建 Mac 硬盘&quot;);
+        return new HardDisk(&quot;三星&quot;, &quot;SM128C&quot;, &quot;2TB&quot;);
+    }
+}
+</code></pre>
+<h3 id="computerdirector-接口">ComputerDirector 接口</h3>
+<pre><code>package com.kuranado.builder;
+
+/**
+ * @Author: Xinling Jing
+ * @Date: 2018-12-22 10:39
+ */
+public interface ComputerDirector {
+
+    Computer directorComputer();
+
+}
+</code></pre>
+<h3 id="maccomputerdirector-实现类">MacComputerDirector 实现类</h3>
+<p>具体的 Director 负责将部件装配起来，Director 知道整个产品的装配细节。可以定义很多 Director，从而装配出不同的对象</p>
+<pre><code>package com.kuranado.builder;
+
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * @Author: Xinling Jing
+ * @Date: 2018-12-22 10:40
+ */
+@Setter
+@Getter
+public class MacComputerDirector implements ComputerDirector {
+
+    private ComputerBuilder computerBuilder;
+
+    public MacComputerDirector(ComputerBuilder computerBuilder) {
+        this.computerBuilder = computerBuilder;
+    }
+
+    @Override
+    public Computer directorComputer() {
+
+        // 调用 Builder 构建每个部件
+        CPU cpu = computerBuilder.buildCPU();
+        Graphics graphics = computerBuilder.buildGraphics();
+        HardDisk hardDisk = computerBuilder.buildHardDisk();
+
+        // 装配电脑
+        return new Computer(cpu, graphics, hardDisk);
+    }
+}
+</code></pre>
+<p>实际应用中 Director 需要进行复杂的运算，然后根据需要，调用 Builder 中的方法生成需要的部件对象并按照某种算法装配这些部件。实际开发中可能会有如下几种情况(摘自《研磨设计模式》)：</p>
+<blockquote>
+<ul>
+<li>在运行指导者的时候，会按照整体构建算法的步骤进行运算，可能先运行前几步运算，到了某一步骤，需要具体创建某个部件对象了，然后就调用 Builder 中创建相应部件调度方法来创建具体的部件。同时把前面运算得到的数据传递给 Builder，因为在 Builder 内部实现创建和组装部件的时候，可能会需要这些数据</li>
+<li>Builder 创建完具体的部件对象后，会把创建好的部件对象返回给装配者，装配者继续后续的算法运算，可能会用到已经创建好的对象</li>
+<li>如此反复下去，直到整个构建算法完成，整个产品也就创建好了</li>
+</ul>
+</blockquote>
+<h3 id="客户端调用">客户端调用</h3>
+<pre><code>package com.kuranado.builder;
+
+/**
+ * @Author: Xinling Jing
+ * @Date: 2018-12-17 21:12
+ */
+public class Client {
+
+    public static void main(String[] args) {
+        ComputerDirector director = new MacComputerDirector(new MacComputerBuilder());
+        Computer computer = director.directorComputer();
+       
+        computer.start();
+    }
+}
+</code></pre>
+<p>程序运行结果：</p>
+<pre><code>构建 Mac CPU
+构建 Mac 显卡
+构建 Mac 硬盘
+开机中...
+</code></pre>
+<h2 id="生成器模式的优点">生成器模式的优点</h2>
+<ul>
+<li>松散耦合：生成器模式可以用同一个构建算法构建出表现上完全不同的产品，实现产品构建和产品表现上的分离。</li>
+<li>可以很容易的改变产品的内部表示：Builder 对象提供接口给 Director 使用，所以具体不见的创建和装配方式被 Builder 接口隐藏了，Director 并不知道具体的实现细节。</li>
+<li>复用性好：因为实现了构建算法和具体产品实现的分离，所以构建算法和具体的产品装配两者都可以复用。同一个构建算法可以应用到不用的具体产品实现中，同一个具体产品实现，也可以配合不同的构建算法。</li>
+</ul>
+<p>这就是生成器模式，是不是很简单呢！</p>
+<h2 id="思考">思考</h2>
+<p>现在在考虑一个问题，在 directorComputer 方法中我们组装电脑使用了这样一行代码：</p>
+<pre><code>return new Computer(cpu, graphics, hardDisk);
+</code></pre>
+<p>想想这里有没有可以优化的地方呢？</p>
+<p>想不到？</p>
+<p>那倘若 Computer 类不止 CPU、Gragphics、HardDisk 这三个属性呢，比如 Computer 类还有 NetworkCard、SoundCard、MainBoard、Power、CDRom、Memory 等属性，那这时我们是不是要写这样一行代码来创建 Computer 对象：</p>
+<pre><code>return new Computer(cpu, graphics, hardDisk, networkCard, soundCard, mainBoard, power, cdRom, memory);
+</code></pre>
+<p>遇到这种参数较多的情况，很多人还会重叠构造器：</p>
+<pre><code>public Computer(CPU cpu) {
+    this(cpu, null);
+}
+
+public Computer(CPU cpu, Graphics graphics) {
+    this(cpu, graphics, null);
+}
+
+public Computer(CPU cpu, Graphics graphics, HardDisk hardDisk) {
+    this(cpu, graphics, hardDisk, null)
+}
+
+...
+
+public Computer(cpu, graphics, hardDisk, networkCard, soundCard, mainBoard, power, cdRom, memory) {
+    this.cpu = cpu;
+    this.graphics = graphics;
+    this.hardDisk = hardDisk;
+    ...
+}
+</code></pre>
+<p>在参数很多的情况下，重叠构造器有很多缺点：</p>
+<ol>
+<li>层层嵌套，代码不灵活</li>
+<li>不优雅</li>
+<li>如果增加参数那就是噩梦</li>
+</ol>
+<p>这时候就有人说了：可以提供空参构造方法，然后一个个调 setter 方法设置属性就不用重叠构造器了！</p>
+<pre><code>Computer computer = new Computer();
+computer.setCPU(cpu);
+computer.setGragphics(gragphics);
+computer.setHardDisk(hardDisk);
+computer.setNetworkCard(networkCard);
+computer.setSoundCard(soundCard);
+computer.setMainBoard(mainBoard);
+computer.setPower(power);
+computer.setCDRom(cdRom);
+computer.setMemory(memory);
+</code></pre>
+<p>事实上，我们项目组的同事都是通过这种 set 的形式设置对象的，然而这真的是一个好的代码风格吗？《阿里 Java 开发手册》中推荐方法代码不超过 80 行，照这样创建对象很难符合规范。在工作中发现了这一点，想到了 Android 的 Api 中存在大量的链式调用，我们也可以将自己的代码修改成链式调用：</p>
+<pre><code>package com.kuranado.builder;
+
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * 电脑类
+ * @Author: Xinling Jing
+ * @Date: 2018-12-21 15:01
+ */
+@Setter
+@Getter
+public class Computer {
+
+    private CPU cpu;
+    private Graphics graphics;
+    private HardDisk hardDisk;
+
+    public Computer(Builder builder) {
+        this.cpu = builder.cpu;
+        this.graphics = builder.graphics;
+        this.hardDisk = builder.hardDisk;
+    }
+
+    public void start() {
+        System.out.println(&quot;开机中...&quot;);
+    }
+
+    public static class Builder {
+
+        private CPU cpu;
+        private Graphics graphics;
+        private HardDisk hardDisk;
+
+        public Builder setCpu(CPU cpu) {
+            this.cpu = cpu;
+            return this;
+        }
+
+        public Builder setGraphics(Graphics graphics) {
+            this.graphics = graphics;
+            return this;
+        }
+
+        public Builder setHardDisk(HardDisk hardDisk) {
+            this.hardDisk = hardDisk;
+            return this;
+        }
+
+        Computer build() {
+            return new Computer(this);
+        }
+    }
+}
+</code></pre>
+<p>内部类中的每个 set 方法都返回内部类自己，对于 set 方法可以使用 IDEA 自动生成，但需要注意需要选择 Builder 模板，而不要选择 Intellij Default：</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601865469.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>然后创建 Computer 对象：</p>
+<pre><code>new Computer.Builder().setCpu(cpu).setGraphics(graphics).setHardDisk(hardDisk).build();
+</code></pre>
+<p>这样即便在属性很多时代码看起来也很简洁，当然这种链式调用也存在一定缺点，比如：</p>
+<ul>
+<li>每次创建外部类对象，都需要再创建一个内部类，所以需要消耗更多的内存</li>
+<li>每个属性要同时在内部类和外部类中定义</li>
+</ul>
+<p>所以大家具体根据使用场景而定</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>《Effective Java》</li>
+<li>《研磨设计模式》</li>
+<li><a href="https://mrdear.cn/2018/03/06/experience/design_patterns--builder-model/">学长博客</a></li>
+<li><a href="https://www.youtube.com/watch?v=03ly8k1FkVc">【GOF23设计模式】 建造者模式详解</a></li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/css-ding-wei-md/" class="post-title gt-a-link">
+                    CSS 定位.md
+                </a>
+            </div>
+        
+
+        
+
+        
+            
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+<script>
+    // md5.min.js
+    !function(n){
+        "use strict";
+        function d(n,t){var r=(65535&n)+(65535&t);return(n>>16)+(t>>16)+(r>>16)<<16|65535&r}
+        function f(n,t,r,e,o,u){return d((c=d(d(t,n),d(e,u)))<<(f=o)|c>>>32-f,r);var c,f}
+        function l(n,t,r,e,o,u,c){return f(t&r|~t&e,n,t,o,u,c)}
+        function v(n,t,r,e,o,u,c){return f(t&e|r&~e,n,t,o,u,c)}
+        function g(n,t,r,e,o,u,c){return f(t^r^e,n,t,o,u,c)}
+        function m(n,t,r,e,o,u,c){return f(r^(t|~e),n,t,o,u,c)}
+        function i(n,t){var r,e,o,u,c;n[t>>5]|=128<<t%32,n[14+(t+64>>>9<<4)]=t;var f=1732584193,i=-271733879,a=-1732584194,h=271733878;for(r=0;r<n.length;r+=16)f=l(e=f,o=i,u=a,c=h,n[r],7,-680876936),h=l(h,f,i,a,n[r+1],12,-389564586),a=l(a,h,f,i,n[r+2],17,606105819),i=l(i,a,h,f,n[r+3],22,-1044525330),f=l(f,i,a,h,n[r+4],7,-176418897),h=l(h,f,i,a,n[r+5],12,1200080426),a=l(a,h,f,i,n[r+6],17,-1473231341),i=l(i,a,h,f,n[r+7],22,-45705983),f=l(f,i,a,h,n[r+8],7,1770035416),h=l(h,f,i,a,n[r+9],12,-1958414417),a=l(a,h,f,i,n[r+10],17,-42063),i=l(i,a,h,f,n[r+11],22,-1990404162),f=l(f,i,a,h,n[r+12],7,1804603682),h=l(h,f,i,a,n[r+13],12,-40341101),a=l(a,h,f,i,n[r+14],17,-1502002290),f=v(f,i=l(i,a,h,f,n[r+15],22,1236535329),a,h,n[r+1],5,-165796510),h=v(h,f,i,a,n[r+6],9,-1069501632),a=v(a,h,f,i,n[r+11],14,643717713),i=v(i,a,h,f,n[r],20,-373897302),f=v(f,i,a,h,n[r+5],5,-701558691),h=v(h,f,i,a,n[r+10],9,38016083),a=v(a,h,f,i,n[r+15],14,-660478335),i=v(i,a,h,f,n[r+4],20,-405537848),f=v(f,i,a,h,n[r+9],5,568446438),h=v(h,f,i,a,n[r+14],9,-1019803690),a=v(a,h,f,i,n[r+3],14,-187363961),i=v(i,a,h,f,n[r+8],20,1163531501),f=v(f,i,a,h,n[r+13],5,-1444681467),h=v(h,f,i,a,n[r+2],9,-51403784),a=v(a,h,f,i,n[r+7],14,1735328473),f=g(f,i=v(i,a,h,f,n[r+12],20,-1926607734),a,h,n[r+5],4,-378558),h=g(h,f,i,a,n[r+8],11,-2022574463),a=g(a,h,f,i,n[r+11],16,1839030562),i=g(i,a,h,f,n[r+14],23,-35309556),f=g(f,i,a,h,n[r+1],4,-1530992060),h=g(h,f,i,a,n[r+4],11,1272893353),a=g(a,h,f,i,n[r+7],16,-155497632),i=g(i,a,h,f,n[r+10],23,-1094730640),f=g(f,i,a,h,n[r+13],4,681279174),h=g(h,f,i,a,n[r],11,-358537222),a=g(a,h,f,i,n[r+3],16,-722521979),i=g(i,a,h,f,n[r+6],23,76029189),f=g(f,i,a,h,n[r+9],4,-640364487),h=g(h,f,i,a,n[r+12],11,-421815835),a=g(a,h,f,i,n[r+15],16,530742520),f=m(f,i=g(i,a,h,f,n[r+2],23,-995338651),a,h,n[r],6,-198630844),h=m(h,f,i,a,n[r+7],10,1126891415),a=m(a,h,f,i,n[r+14],15,-1416354905),i=m(i,a,h,f,n[r+5],21,-57434055),f=m(f,i,a,h,n[r+12],6,1700485571),h=m(h,f,i,a,n[r+3],10,-1894986606),a=m(a,h,f,i,n[r+10],15,-1051523),i=m(i,a,h,f,n[r+1],21,-2054922799),f=m(f,i,a,h,n[r+8],6,1873313359),h=m(h,f,i,a,n[r+15],10,-30611744),a=m(a,h,f,i,n[r+6],15,-1560198380),i=m(i,a,h,f,n[r+13],21,1309151649),f=m(f,i,a,h,n[r+4],6,-145523070),h=m(h,f,i,a,n[r+11],10,-1120210379),a=m(a,h,f,i,n[r+2],15,718787259),i=m(i,a,h,f,n[r+9],21,-343485551),f=d(f,e),i=d(i,o),a=d(a,u),h=d(h,c);return[f,i,a,h]}
+        function a(n){var t,r="",e=32*n.length;for(t=0;t<e;t+=8)r+=String.fromCharCode(n[t>>5]>>>t%32&255);return r}
+        function h(n){var t,r=[];for(r[(n.length>>2)-1]=void 0,t=0;t<r.length;t+=1)r[t]=0;var e=8*n.length;for(t=0;t<e;t+=8)r[t>>5]|=(255&n.charCodeAt(t/8))<<t%32;return r}
+        function e(n){var t,r,e="0123456789abcdef",o="";for(r=0;r<n.length;r+=1)t=n.charCodeAt(r),o+=e.charAt(t>>>4&15)+e.charAt(15&t);return o}
+        function r(n){return unescape(encodeURIComponent(n))}
+        function o(n){return a(i(h(t=r(n)),8*t.length));var t}
+        function u(n,t){return function(n,t){var r,e,o=h(n),u=[],c=[];for(u[15]=c[15]=void 0,16<o.length&&(o=i(o,8*n.length)),r=0;r<16;r+=1)u[r]=909522486^o[r],c[r]=1549556828^o[r];return e=i(u.concat(h(t)),512+8*t.length),a(i(c.concat(e),640))}(r(n),r(t))}
+        function t(n,t,r){return t?r?u(t,n):e(u(t,n)):r?o(n):e(o(n))}
+        "function"==typeof define&&define.amd?define(function(){return t}):"object"==typeof module&&module.exports?module.exports=t:n.md5=t;
+    }(this);
+</script>
+
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd5112611bb77c8d6bb88',
+    clientSecret: 'b064af1dd2e63f211b8517f1a57d71c1efc01b8e',
+    repo: 'kuranado2.github.io',
+    owner: 'kuranado2',
+    admin: ['kuranado2'],
+    id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false       // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+            
+
+            
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">笔记/博客</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KURANADO2" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+                <a href="https://www.zhihu.com/people/jing-xin-ling-32" target="_blank">
+                    <i class="fab fa-zhihu gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        @Copyright 2020 <a href="http://emoji.kuranado.com">表情包网站</a>
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="http://blog.kuranado.com/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>

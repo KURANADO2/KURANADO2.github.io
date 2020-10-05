@@ -6,7 +6,7 @@
 
 <title>CSS 定位.md | KURANADO</title>
 
-<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601863627616">
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601865609036">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
@@ -97,7 +97,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1601863627616" action="/search/index.html">
+            <form id="gridea-search-form" style="position: relative" data-update="1601865609036" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
             </form>
@@ -351,13 +351,48 @@
 </code></pre>
 <figure data-type="image" tabindex="5"><img src="http://image.kuranado.com/blog/1601863495.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 <h2 id="总结">总结</h2>
-<p>定位模式|是否脱标|移动位置|是否常用<br>
--|<br>
-static 静态定位|否|不能使用边偏移|很少<br>
-relative 相对定位|否（占有位置）|相对于自身位置移动|常用<br>
-absolute 绝对定位|是（不占有位置）|带有定位的父级|常用<br>
-fixed 固定定位|是（不占有位置）|浏览器的可视窗口|常用<br>
-stick 粘性定位|否（占有位置）|浏览器可视窗口|很少</p>
+<table>
+<thead>
+<tr>
+<th>定位模式</th>
+<th>是否脱标</th>
+<th>移动位置</th>
+<th>是否常用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>static 静态定位</td>
+<td>否</td>
+<td>不能使用边偏移</td>
+<td>很少</td>
+</tr>
+<tr>
+<td>relative 相对定位</td>
+<td>否（占有位置）</td>
+<td>相对于自身位置移动</td>
+<td>常用</td>
+</tr>
+<tr>
+<td>absolute 绝对定位</td>
+<td>是（不占有位置）</td>
+<td>带有定位的父级</td>
+<td>常用</td>
+</tr>
+<tr>
+<td>fixed 固定定位</td>
+<td>是（不占有位置）</td>
+<td>浏览器的可视窗口</td>
+<td>常用</td>
+</tr>
+<tr>
+<td>stick 粘性定位</td>
+<td>否（占有位置）</td>
+<td>浏览器可视窗口</td>
+<td>很少</td>
+</tr>
+</tbody>
+</table>
 <h2 id="拓展">拓展</h2>
 <h3 id="如何让绝对定位的盒子水平居中垂直居中">如何让绝对定位的盒子水平居中/垂直居中</h3>
 <p>首先加了绝对定位的盒子不能通过 margin: 0 auto; 水平居中，但是可以通过如下算法实现水平居中：</p>
