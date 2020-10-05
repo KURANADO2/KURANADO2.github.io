@@ -1,0 +1,548 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>CSS 定位.md | KURANADO</title>
+
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601863627616">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111464093-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-111464093-1');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            KURANADO
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1601863627616" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    CSS 定位.md
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-10-05 ·
+                    </time>
+                    
+                        <a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/" class="post-tags">
+                            # CSS
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/Eb-3VtzRjb/" class="post-tags">
+                            # HTML
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/AIzjXFqb32/" class="post-tags">
+                            # 前端
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>[TOC]</p>
+<h2 id="为什么需要定位">为什么需要定位</h2>
+<p>使用标准流或浮动很难快速实现如下效果：</p>
+<ol>
+<li>某个元素可以自由的在一个盒子内移动位置，并且压住其它盒子</li>
+<li>当我们滚动窗口的时候，盒子可以固定在屏幕的某个位置</li>
+</ol>
+<p>而定位具有如下特性：</p>
+<ul>
+<li>定位可以让盒子自由的在某个盒子内移动位置或者固定在屏幕中某个位置，并且可以压住其它盒子</li>
+</ul>
+<h2 id="定位组成">定位组成</h2>
+<p>定位 = 定位模式 + 边偏移</p>
+<h3 id="边偏移">边偏移</h3>
+<p>边偏移决定了元素的最终位置，也就是定位的盒子移动到的最终位置</p>
+<ul>
+<li>top 顶部偏移量，定义元素相对其父元素上边线的距离</li>
+<li>bottom 底部偏移量，定义元素相对其父元素下边线的距离</li>
+<li>left 左侧偏移量，定义元素相对其父元素左边线的距离</li>
+<li>right 右侧偏移量，定义元素相对其父元素右边线的距离</li>
+</ul>
+<p>如果一个定位盒子既设置了 left，又设置了 right，则默认会执行 left；如果一个定位盒子既设置了 top，又设置了 bottom，则默认会执行 top。不过一般情况，我们也不会为同一个定位盒子这样设置边偏移</p>
+<h3 id="定位模式">定位模式</h3>
+<p>定位模式用于指定一个元素在文档中的定位方式</p>
+<ul>
+<li>position
+<ul>
+<li>static 静态定位（了解）</li>
+<li>relative 相对定位（重要）</li>
+<li>absolute 绝对定位（重要）</li>
+<li>fixed 固定定位（重要）</li>
+<li>sticky 粘性定位（了解）</li>
+</ul>
+</li>
+</ul>
+<h4 id="static-静态定位">static 静态定位</h4>
+<p>静态定位就是元素的默认定位方式，无定位的意思。静态定位按照标准流特性摆放位置，它没有边偏移</p>
+<h4 id="relative-相对定位">relative 相对定位</h4>
+<p>相对定位在元素移动位置时，是相对于它原来的位置来移动的</p>
+<ul>
+<li>相对定位最典型的应用就是给绝对定位当爹的</li>
+<li>移动前在标准流的位置会继续占有，也就是<strong>不脱标</strong></li>
+</ul>
+<pre><code>.one {
+    position: relative;
+    top: 100px;
+    left: 100px;
+    width: 200px;
+    height: 200px;
+    background-color: purple;
+}
+.two {
+    width: 200px;
+    height: 200px;
+    background-color: gray;
+}
+&lt;div class=&quot;one&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;two&quot;&gt;&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601863410.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h4 id="absolute-绝对定位">absolute 绝对定位</h4>
+<p>绝对定位是相对于它的祖先元素来移动位置的</p>
+<ul>
+<li>如果绝对定位的元素没有祖先元素，或者<strong>祖先元素没有定位</strong>，则以浏览器为准定位</li>
+</ul>
+<pre><code>.father {
+    width: 200px;
+    height: 200px;
+    background-color: purple;
+}
+.son {
+    position: absolute;
+    top: 100px;
+    right: 100px;
+    width: 200px;
+    height: 200px;
+    background-color: gray;
+}
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1601863424.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<ul>
+<li>如果祖先元素有定位（相对定位、绝对定位、固定定位都可以），则以<strong>最近</strong>一级有定位的祖先元素为参考点移动位置</li>
+<li>绝对定位不再占有原先的位置，也就是会<strong>脱标</strong></li>
+</ul>
+<p>子绝父相：子绝父相是开发中常用的定位方式，即：子级使用相对定位，不会占有位置，可以放到父盒子里面的任何一个地方，不会影响其它兄弟的盒子；父盒子需要加定位限制子盒子在父盒子内的显示；父盒子布局时，需要占有位置，因此父亲只能是相对定位，这就是父觉子相的由来。<strong>总结：因为父级需要占有位置，因此是相对定位，子盒子不需要占有位置，则是绝对定位</strong></p>
+<h4 id="fixed-固定定位">fixed 固定定位</h4>
+<p>固定定位用于指定元素固定于浏览器可视窗口的位置</p>
+<ul>
+<li>以浏览器的<strong>可视窗口</strong>为参照点移动元素</li>
+</ul>
+<pre><code>div {
+    position: fixed;
+    top: 20px;
+    right: 100px;
+}    
+&lt;div&gt;&lt;img src=&quot;./images/pvp.png&quot; alt=&quot;&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1601863442.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+缩小浏览器窗口：<br>
+<img src="http://image.kuranado.com/blog/1601863448.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<ul>
+<li>跟父元素没有任何关系</li>
+<li>不会随滚动条滚动</li>
+<li>固定定位不占有原先的位置，也就是会脱标</li>
+</ul>
+<p>固定定位小技巧：固定在版心右侧位置：</p>
+<ol>
+<li>让固定定位的盒子 left: 50%，也就是走到浏览器可视区域（也可以看做版心）的一半的位置</li>
+<li>为固定定位的盒子添加 margin-left: 版心宽度一般的距离，当然也可以再多加几像素，保留一定空间<br>
+这样就可以让固定定位的盒子贴着版心右侧对齐了</li>
+</ol>
+<pre><code>/* 版心 */
+.w {
+    margin: 0 auto;
+    width: 800px;
+    height: 1400px;
+    background-color: hotpink;
+}
+/* 固定定位盒子 */
+.fixed {
+    position: fixed;
+    top: 200px;
+    left: 50%;
+    margin-left: 405px;
+    width: 50px;
+    height: 100px;
+    background-color: skyblue;
+}
+&lt;div class=&quot;w&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;fixed&quot;&gt;&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1601863460.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h4 id="粘性定位">粘性定位</h4>
+<p>粘性定位可以被认为是相对定位和固定定位的混合</p>
+<ul>
+<li>以浏览器的可视窗口为参照点移动元素（固定定位的特点）</li>
+<li>粘性定位占有原先的位置（相对定位的特点）</li>
+<li>必须添加 top、left、right、bottom 中的其中一个才生效</li>
+<li>兼容性较差（IE 完全不支持）</li>
+</ul>
+<pre><code>body {
+    height: 3000px;
+}
+.nav {
+    position: sticky;
+    top: 0;
+    width: 800px;
+    height: 50px;
+    margin: 200px auto;
+    background-color: skyblue;
+}
+&lt;div class=&quot;nav&quot;&gt;我是粘性定位&lt;/div&gt;
+</code></pre>
+<p>起始位置：<br>
+<img src="http://image.kuranado.com/blog/1601863470.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+鼠标滚动到为粘性定位盒子设置的 top 值时，盒子将黏住不再跟着滚动：<br>
+<img src="http://image.kuranado.com/blog/1601863477.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<h2 id="定位的层叠次序">定位的层叠次序</h2>
+<p>在使用定位布局时，可能会出现盒子重叠的情况，这时需要使用 z-index 属性控制盒子的上下顺序</p>
+<ul>
+<li>z-index 属性值可以是整数、0 或负数，数值越大，盒子越靠上，如果没有指定数值，则默认值为 auto</li>
+<li>如果属性值相同，则按照书写顺序，后来居上</li>
+<li>数字后面不能加单位</li>
+<li>只有定位的盒子才有 z-index 属性<br>
+未加 index 按照书写顺序，后来居上：</li>
+</ul>
+<pre><code>div {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.one {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
+.two {
+    width: 75px;
+    height: 75px;
+    background-color: green;
+}
+.three {
+    width: 50px;
+    height: 50px;
+    background-color: blue;
+}
+&lt;div class=&quot;one&quot;&gt;我是第一个盒子&lt;/div&gt;
+&lt;div class=&quot;two&quot;&gt;我是第二个盒子&lt;/div&gt;
+&lt;div class=&quot;three&quot;&gt;我是第三个盒子&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1601863487.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>指定 z-index：</p>
+<pre><code>div {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.one {
+    z-index: 3;
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
+.two {
+    z-index: 2;
+    width: 75px;
+    height: 75px;
+    background-color: green;
+}
+.three {
+    z-index: 1;
+    width: 50px;
+    height: 50px;
+    background-color: blue;
+}
+&lt;div class=&quot;one&quot;&gt;我是第一个盒子&lt;/div&gt;
+&lt;div class=&quot;two&quot;&gt;我是第二个盒子&lt;/div&gt;
+&lt;div class=&quot;three&quot;&gt;我是第三个盒子&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="http://image.kuranado.com/blog/1601863495.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="总结">总结</h2>
+<p>定位模式|是否脱标|移动位置|是否常用<br>
+-|<br>
+static 静态定位|否|不能使用边偏移|很少<br>
+relative 相对定位|否（占有位置）|相对于自身位置移动|常用<br>
+absolute 绝对定位|是（不占有位置）|带有定位的父级|常用<br>
+fixed 固定定位|是（不占有位置）|浏览器的可视窗口|常用<br>
+stick 粘性定位|否（占有位置）|浏览器可视窗口|很少</p>
+<h2 id="拓展">拓展</h2>
+<h3 id="如何让绝对定位的盒子水平居中垂直居中">如何让绝对定位的盒子水平居中/垂直居中</h3>
+<p>首先加了绝对定位的盒子不能通过 margin: 0 auto; 水平居中，但是可以通过如下算法实现水平居中：</p>
+<ol>
+<li>left: 50%; 让盒子的左侧移动到父级元素的水平中心位置</li>
+<li>margin-left: 负的盒子自身宽度一半的px; 让盒子向左移动自身宽度的一半</li>
+</ol>
+<pre><code>div {
+    position: absolute;
+    left: 50%;
+    margin-left: -100px;
+    width: 200px;
+    height: 200px;
+    background-color: skyblue;
+}
+&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1601863507.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+改变浏览器窗口大小，盒子也始终处于水平居中位置</p>
+<p>同理如果让盒子垂直居中，则算法如下：</p>
+<ol>
+<li>top: 50%; 让盒子的上侧移动到父级元素的垂直中心位置</li>
+<li>margin-top: 负的盒子自身高度一半的px; 让盒子向上移动自身高度的一半</li>
+</ol>
+<p>如果想让盒子既水平又垂直居中，算法如下：</p>
+<ol>
+<li>
+<p>left: 50%;</p>
+</li>
+<li>
+<p>margin-left: 负的盒子自身宽度一半的px;</p>
+</li>
+<li>
+<p>top: 50%;</p>
+</li>
+<li>
+<p>margin-top: 负的盒子自身高度一半的px;</p>
+</li>
+</ol>
+<h3 id="绝对定位或固定定位的特殊特性">绝对定位或固定定位的特殊特性</h3>
+<ol>
+<li>行内元素添加绝对定位或固定定位，可以直接设置宽度和高度</li>
+</ol>
+<pre><code>span {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: skyblue;
+}
+&lt;span&gt;Hello&lt;/span&gt;
+</code></pre>
+<figure data-type="image" tabindex="6"><img src="http://image.kuranado.com/blog/1601863520.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<ol start="2">
+<li>块级元素添加绝对定位或固定定位，如果不给宽度或高度，则默认大小是内容的大小</li>
+</ol>
+<pre><code>div {
+    position: absolute;
+    background-color: skyblue;
+}
+&lt;div&gt;Hello&lt;/div&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1601863533.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+3. 绝对定位或固定定位会完全压住盒子<br>
+和浮动元素不同，浮动元素只会压住下面标准流的盒子，而不会压住下面标准流盒子里的文字或图片，但绝对定位或固定定位会压住下面标准流所有的内容：</p>
+<pre><code>* {
+    margin: 0;
+    padding: 0;
+}
+div {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: skyblue;
+}
+&lt;div&gt;&lt;/div&gt;
+&lt;p&gt;绝对定位或固定定位会压住下面标准流所有的内容&lt;/p&gt;
+</code></pre>
+<figure data-type="image" tabindex="7"><img src="http://image.kuranado.com/blog/1601863543.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/css-shu-xing-shu-xie-shun-xu-md/" class="post-title gt-a-link">
+                    CSS 属性书写顺序.md
+                </a>
+            </div>
+        
+
+        
+
+        
+            
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+<script>
+    // md5.min.js
+    !function(n){
+        "use strict";
+        function d(n,t){var r=(65535&n)+(65535&t);return(n>>16)+(t>>16)+(r>>16)<<16|65535&r}
+        function f(n,t,r,e,o,u){return d((c=d(d(t,n),d(e,u)))<<(f=o)|c>>>32-f,r);var c,f}
+        function l(n,t,r,e,o,u,c){return f(t&r|~t&e,n,t,o,u,c)}
+        function v(n,t,r,e,o,u,c){return f(t&e|r&~e,n,t,o,u,c)}
+        function g(n,t,r,e,o,u,c){return f(t^r^e,n,t,o,u,c)}
+        function m(n,t,r,e,o,u,c){return f(r^(t|~e),n,t,o,u,c)}
+        function i(n,t){var r,e,o,u,c;n[t>>5]|=128<<t%32,n[14+(t+64>>>9<<4)]=t;var f=1732584193,i=-271733879,a=-1732584194,h=271733878;for(r=0;r<n.length;r+=16)f=l(e=f,o=i,u=a,c=h,n[r],7,-680876936),h=l(h,f,i,a,n[r+1],12,-389564586),a=l(a,h,f,i,n[r+2],17,606105819),i=l(i,a,h,f,n[r+3],22,-1044525330),f=l(f,i,a,h,n[r+4],7,-176418897),h=l(h,f,i,a,n[r+5],12,1200080426),a=l(a,h,f,i,n[r+6],17,-1473231341),i=l(i,a,h,f,n[r+7],22,-45705983),f=l(f,i,a,h,n[r+8],7,1770035416),h=l(h,f,i,a,n[r+9],12,-1958414417),a=l(a,h,f,i,n[r+10],17,-42063),i=l(i,a,h,f,n[r+11],22,-1990404162),f=l(f,i,a,h,n[r+12],7,1804603682),h=l(h,f,i,a,n[r+13],12,-40341101),a=l(a,h,f,i,n[r+14],17,-1502002290),f=v(f,i=l(i,a,h,f,n[r+15],22,1236535329),a,h,n[r+1],5,-165796510),h=v(h,f,i,a,n[r+6],9,-1069501632),a=v(a,h,f,i,n[r+11],14,643717713),i=v(i,a,h,f,n[r],20,-373897302),f=v(f,i,a,h,n[r+5],5,-701558691),h=v(h,f,i,a,n[r+10],9,38016083),a=v(a,h,f,i,n[r+15],14,-660478335),i=v(i,a,h,f,n[r+4],20,-405537848),f=v(f,i,a,h,n[r+9],5,568446438),h=v(h,f,i,a,n[r+14],9,-1019803690),a=v(a,h,f,i,n[r+3],14,-187363961),i=v(i,a,h,f,n[r+8],20,1163531501),f=v(f,i,a,h,n[r+13],5,-1444681467),h=v(h,f,i,a,n[r+2],9,-51403784),a=v(a,h,f,i,n[r+7],14,1735328473),f=g(f,i=v(i,a,h,f,n[r+12],20,-1926607734),a,h,n[r+5],4,-378558),h=g(h,f,i,a,n[r+8],11,-2022574463),a=g(a,h,f,i,n[r+11],16,1839030562),i=g(i,a,h,f,n[r+14],23,-35309556),f=g(f,i,a,h,n[r+1],4,-1530992060),h=g(h,f,i,a,n[r+4],11,1272893353),a=g(a,h,f,i,n[r+7],16,-155497632),i=g(i,a,h,f,n[r+10],23,-1094730640),f=g(f,i,a,h,n[r+13],4,681279174),h=g(h,f,i,a,n[r],11,-358537222),a=g(a,h,f,i,n[r+3],16,-722521979),i=g(i,a,h,f,n[r+6],23,76029189),f=g(f,i,a,h,n[r+9],4,-640364487),h=g(h,f,i,a,n[r+12],11,-421815835),a=g(a,h,f,i,n[r+15],16,530742520),f=m(f,i=g(i,a,h,f,n[r+2],23,-995338651),a,h,n[r],6,-198630844),h=m(h,f,i,a,n[r+7],10,1126891415),a=m(a,h,f,i,n[r+14],15,-1416354905),i=m(i,a,h,f,n[r+5],21,-57434055),f=m(f,i,a,h,n[r+12],6,1700485571),h=m(h,f,i,a,n[r+3],10,-1894986606),a=m(a,h,f,i,n[r+10],15,-1051523),i=m(i,a,h,f,n[r+1],21,-2054922799),f=m(f,i,a,h,n[r+8],6,1873313359),h=m(h,f,i,a,n[r+15],10,-30611744),a=m(a,h,f,i,n[r+6],15,-1560198380),i=m(i,a,h,f,n[r+13],21,1309151649),f=m(f,i,a,h,n[r+4],6,-145523070),h=m(h,f,i,a,n[r+11],10,-1120210379),a=m(a,h,f,i,n[r+2],15,718787259),i=m(i,a,h,f,n[r+9],21,-343485551),f=d(f,e),i=d(i,o),a=d(a,u),h=d(h,c);return[f,i,a,h]}
+        function a(n){var t,r="",e=32*n.length;for(t=0;t<e;t+=8)r+=String.fromCharCode(n[t>>5]>>>t%32&255);return r}
+        function h(n){var t,r=[];for(r[(n.length>>2)-1]=void 0,t=0;t<r.length;t+=1)r[t]=0;var e=8*n.length;for(t=0;t<e;t+=8)r[t>>5]|=(255&n.charCodeAt(t/8))<<t%32;return r}
+        function e(n){var t,r,e="0123456789abcdef",o="";for(r=0;r<n.length;r+=1)t=n.charCodeAt(r),o+=e.charAt(t>>>4&15)+e.charAt(15&t);return o}
+        function r(n){return unescape(encodeURIComponent(n))}
+        function o(n){return a(i(h(t=r(n)),8*t.length));var t}
+        function u(n,t){return function(n,t){var r,e,o=h(n),u=[],c=[];for(u[15]=c[15]=void 0,16<o.length&&(o=i(o,8*n.length)),r=0;r<16;r+=1)u[r]=909522486^o[r],c[r]=1549556828^o[r];return e=i(u.concat(h(t)),512+8*t.length),a(i(c.concat(e),640))}(r(n),r(t))}
+        function t(n,t,r){return t?r?u(t,n):e(u(t,n)):r?o(n):e(o(n))}
+        "function"==typeof define&&define.amd?define(function(){return t}):"object"==typeof module&&module.exports?module.exports=t:n.md5=t;
+    }(this);
+</script>
+
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd5112611bb77c8d6bb88',
+    clientSecret: 'b064af1dd2e63f211b8517f1a57d71c1efc01b8e',
+    repo: 'kuranado2.github.io',
+    owner: 'kuranado2',
+    admin: ['kuranado2'],
+    id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false       // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+            
+
+            
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">笔记/博客</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KURANADO2" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+                <a href="https://www.zhihu.com/people/jing-xin-ling-32" target="_blank">
+                    <i class="fab fa-zhihu gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        @Copyright 2020 <a href="http://emoji.kuranado.com">表情包网站</a>
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="http://blog.kuranado.com/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
