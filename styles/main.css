@@ -374,6 +374,7 @@ ul li {
   max-width: 100%;
   border-radius: 2px;
   margin: 18px auto;
+  box-shadow: 4px 4px 12px 2px rgba(0, 0, 0, 0.2);
 }
 .gt-post-content p {
   line-height: 1.725;
