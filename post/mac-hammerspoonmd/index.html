@@ -6,7 +6,7 @@
 
 <title>Mac - Hammerspoon.md | KURANADO</title>
 
-<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601949485078">
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601955653210">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
@@ -97,7 +97,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1601949485078" action="/search/index.html">
+            <form id="gridea-search-form" style="position: relative" data-update="1601955653210" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
             </form>
@@ -185,6 +185,14 @@
 <td>居中</td>
 </tr>
 <tr>
+<td>⌃⌥=</td>
+<td>等比例放大窗口</td>
+</tr>
+<tr>
+<td>⌃⌥-</td>
+<td>等比例缩小窗口</td>
+</tr>
+<tr>
 <td>⌃⌥↩︎</td>
 <td>最大化</td>
 </tr>
@@ -247,9 +255,10 @@
 </tbody>
 </table>
 <h2 id="个人配置文件">个人配置文件</h2>
-<p>以下为我的个人配置：<br>
+<p>以下个人具体配置：<br>
 <code>~/.hammerspoon/init.lua</code>：</p>
-<pre><code>-- Reload config when the file changes
+<pre><code>
+-- Reload config when the file changes
 function reloadConfig(files)
     doReload = false
     for _,file in pairs(files) do
@@ -524,6 +533,48 @@ hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;C&quot;, function()
     win:setFrame(f)
 end)
 
+-- 等比例放大窗口
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;=&quot;, function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    f.w = f.w + 40
+    f.h = f.h + 40
+    f.x = f.x - 20
+    f.y = f.y - 20
+    if (f.x &lt; max.x) then
+        f.x = max.x
+    end
+    if (f.y &lt; max.y) then
+        f.y = max.y
+    end
+    if (f.w &gt; max.w) then
+        f.w = max.w
+    end
+    if (f.h &gt; max.h) then
+        f.h = max.h
+    end
+    win:setFrame(f)
+end)
+
+-- 等比例缩小窗口
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;-&quot;, function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    -- local screen = win:screen()
+    -- local max = screen:frame()
+
+    -- f.x = max.x + (max.w / 4)
+    -- f.y = max.y + (max.h / 4)
+    f.w = f.w - 40
+    f.h = f.h - 40
+    f.x = f.x + 20
+    f.y = f.y + 20
+    win:setFrame(f)
+end)
+
 -- 最大化
 hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;Return&quot;, function()
     local win = hs.window.focusedWindow()
@@ -575,7 +626,7 @@ end)
 hs.hotkey.bind({ &quot;alt&quot; }, &quot;d&quot;, function()
     toggleAppByBundleId(&quot;com.jetbrains.datagrip&quot;)
 end)
-hs.hotkey.bind({ &quot;alt&quot; }, &quot;i&quot;, function()
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;t&quot;, function()
     toggleAppByBundleId(&quot;com.googlecode.iterm2&quot;)
 end)
 hs.hotkey.bind({ &quot;alt&quot; }, &quot;m&quot;, function()
