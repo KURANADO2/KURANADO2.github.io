@@ -1,0 +1,763 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>Mac - Hammerspoon.md | KURANADO</title>
+
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1601949485078">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111464093-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-111464093-1');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            KURANADO
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1601949485078" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    Mac - Hammerspoon.md
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-10-06 ·
+                    </time>
+                    
+                        <a href="http://blog.kuranado.com/tag/xzqpm4g0S/" class="post-tags">
+                            # Mac
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>最近在<a href="https://mrdear.cn/posts/osx_app_switcher.html">学长博客</a>中发现一个非常好玩的效率软件：<a href="http://www.hammerspoon.org/">Hammerspoon</a>，通过编写 Lua 脚本，完成各种有趣的小功能</p>
+<!-- more -->
+<p>[TOC]</p>
+<h2 id="hammerspoon-作用">Hammerspoon 作用</h2>
+<ul>
+<li>替代 Magnet 进行窗口移动<br>
+之前一直用 Magnet 移动窗口，使用 Hammerspoon 之后完全可以替代 Magnet，以下为 Magnet 横屏和竖屏分别支持的快捷键截图<br>
+横屏：<br>
+<img src="http://image.kuranado.com/blog/1601949462.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+竖屏：<br>
+<img src="http://image.kuranado.com/blog/1601949470.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
+<li>为应用配置快捷键，比 ⌘⇥ 和 Alfred 切换程序更高效（建议只为高频使用的一些软件分配快捷键）</li>
+</ul>
+<h2 id="个人配置快捷键列表">个人配置快捷键列表</h2>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>⌃⌥←</td>
+<td>左半屏</td>
+</tr>
+<tr>
+<td>⌃⌥→</td>
+<td>右半屏</td>
+</tr>
+<tr>
+<td>⌃⌥↑</td>
+<td>上半屏</td>
+</tr>
+<tr>
+<td>⌃⌥↓</td>
+<td>下半屏</td>
+</tr>
+<tr>
+<td>⌃⌥D</td>
+<td>左 1/3（横屏）或上 1/3（竖屏）</td>
+</tr>
+<tr>
+<td>⌃⌥F</td>
+<td>中 1/3</td>
+</tr>
+<tr>
+<td>⌃⌥G</td>
+<td>右 1/3（横屏）或下 1/3（竖屏）</td>
+</tr>
+<tr>
+<td>⌃⌥E</td>
+<td>左 2/3（横屏）或上 2/3（竖屏）</td>
+</tr>
+<tr>
+<td>⌃⌥T</td>
+<td>右 2/3（横屏）或下 2/3（竖屏）</td>
+</tr>
+<tr>
+<td>⌃⌥C</td>
+<td>居中</td>
+</tr>
+<tr>
+<td>⌃⌥↩︎</td>
+<td>最大化</td>
+</tr>
+<tr>
+<td>⌃⌥⌘←</td>
+<td>窗口由主屏移动到副屏</td>
+</tr>
+<tr>
+<td>⌃⌥⌘→</td>
+<td>窗口由副屏移动到主屏</td>
+</tr>
+<tr>
+<td>⌥Q</td>
+<td>打开 QQ</td>
+</tr>
+<tr>
+<td>⌥W</td>
+<td>打开 WeChat</td>
+</tr>
+<tr>
+<td>⌥V</td>
+<td>打开 Visual Studio Code</td>
+</tr>
+<tr>
+<td>⌥F</td>
+<td>打开 Finder</td>
+</tr>
+<tr>
+<td>⌥C</td>
+<td>打开 Chrome</td>
+</tr>
+<tr>
+<td>⌥J</td>
+<td>打开 Intellij IDEA</td>
+</tr>
+<tr>
+<td>⌥N</td>
+<td>打开 WizNote</td>
+</tr>
+<tr>
+<td>⌥G</td>
+<td>打开 Gridea</td>
+</tr>
+<tr>
+<td>⌥D</td>
+<td>打开 DataGrip</td>
+</tr>
+<tr>
+<td>⌥T</td>
+<td>打开 iTerm2</td>
+</tr>
+<tr>
+<td>⌥M</td>
+<td>打开 MailMaster</td>
+</tr>
+<tr>
+<td>⌥P</td>
+<td>打开 Postman</td>
+</tr>
+</tbody>
+</table>
+<h2 id="个人配置文件">个人配置文件</h2>
+<p>以下为我的个人配置：<br>
+<code>~/.hammerspoon/init.lua</code>：</p>
+<pre><code>-- Reload config when the file changes
+function reloadConfig(files)
+    doReload = false
+    for _,file in pairs(files) do
+        if file:sub(-4) == &quot;.lua&quot; then
+            doReload = true
+        end
+    end
+    if doReload then
+        hs.reload()
+    end
+end
+myWatcher = hs.pathwatcher.new(os.getenv(&quot;HOME&quot;) .. &quot;/.hammerspoon/&quot;, reloadConfig):start()
+hs.alert.show(&quot;Config loaded&quot;)
+
+-- 设置显示器（显示器名称可通过在 Hammerspoon Console 控制台中输入 hs.screen.allScreens()[1]:name() 和 hs.screen.allScreens()[2]:name() 得到，更多显示器依次类推）
+-- 设置主显示器
+local main_monitor = &quot;DELL U2718Q&quot;
+-- 设置副显示器
+local second_monitor = &quot;U2790B&quot;
+
+-- 关闭动画持续时间
+hs.window.animationDuration = 0
+
+-- 窗口移动
+-- 左半屏
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;Left&quot;, function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    f.x = max.x
+    f.y = max.y
+    f.w = max.w / 2
+    f.h = max.h
+    win:setFrame(f)
+end)
+
+-- 右半屏
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;Right&quot;, function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    f.x = max.x + (max.w / 2)
+    f.y = max.y
+    f.w = max.w / 2
+    f.h = max.h
+    win:setFrame(f)
+end)
+
+-- 上半屏
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;Up&quot;, function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    f.x = max.x
+    f.y = max.y
+    f.w = max.w
+    f.h = max.h / 2
+    win:setFrame(f)
+end)
+
+-- 下半屏
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;Down&quot;, function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    f.x = max.x
+    f.y = max.y + (max.h / 2)
+    f.w = max.w
+    f.h = max.h / 2
+    win:setFrame(f)
+end)
+
+-- 左上角
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;U&quot;, function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    f.x = max.x
+    f.y = max.y
+    f.w = max.w / 2
+    f.h = max.h / 2
+    win:setFrame(f)
+end)
+
+-- 右上角
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;I&quot;, function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    f.x = max.x + (max.w / 2)
+    f.y = max.y
+    f.w = max.w / 2
+    f.h = max.h / 2
+    win:setFrame(f)
+end)
+
+-- 左下角
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;J&quot;, function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    f.x = max.x
+    f.y = max.y + (max.h / 2)
+    f.w = max.w / 2
+    f.h = max.h / 2
+    win:setFrame(f)
+end)
+
+-- 右下角
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;K&quot;, function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    f.x = max.x + (max.w / 2)
+    f.y = max.y + (max.h / 2)
+    f.w = max.w / 2
+    f.h = max.h / 2
+    win:setFrame(f)
+end)
+
+-- 左 1/3（横屏）或上 1/3（竖屏）
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;D&quot;, function()
+    -- 获取当前窗口所在屏幕
+    screen = hs.screen.mainScreen()
+    max = screen:frame()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    -- 如果为竖屏
+    if (isVerticalScreen(screen)) then
+        f.x = max.x
+        f.y = max.y
+        f.w = max.w
+        f.h = max.h / 3
+        -- 如果为横屏
+    else
+        f.x = max.x
+        f.y = max.y
+        f.w = max.w / 3
+        f.h = max.h
+    end
+    win:setFrame(f)
+end)
+
+-- 中 1/3
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;F&quot;, function()
+    -- 获取当前窗口所在屏幕
+    screen = hs.screen.mainScreen()
+    max = screen:frame()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    -- 如果为竖屏
+    if (isVerticalScreen(screen)) then
+        f.x = max.x
+        f.y = max.y + (max.h / 3)
+        f.w = max.w
+        f.h = max.h / 3
+        -- 如果为横屏
+    else
+        f.x = max.x + (max.w / 3)
+        f.y = max.y
+        f.w = max.w / 3
+        f.h = max.h
+    end
+    win:setFrame(f)
+end)
+
+-- 右 1/3（横屏）或下 1/3（竖屏）
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;G&quot;, function()
+    -- 获取当前窗口所在屏幕
+    screen = hs.screen.mainScreen()
+    max = screen:frame()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    -- 如果为竖屏
+    if (isVerticalScreen(screen)) then
+        f.x = max.x
+        f.y = max.y + (max.h / 3 * 2)
+        f.w = max.w
+        f.h = max.h / 3
+        -- 如果为横屏
+    else
+        f.x = max.x + (max.w / 3 * 2)
+        f.y = max.y
+        f.w = max.w / 3
+        f.h = max.h
+    end
+    win:setFrame(f)
+end)
+
+-- 左 2/3（横屏）或上 2/3（竖屏）
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;E&quot;, function()
+    -- 获取当前窗口所在屏幕
+    screen = hs.screen.mainScreen()
+    max = screen:frame()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    -- 如果为竖屏
+    if (isVerticalScreen(screen)) then
+        f.x = max.x
+        f.y = max.y
+        f.w = max.w
+        f.h = max.h / 3 * 2
+        -- 如果为横屏
+    else
+        f.x = max.x
+        f.y = max.y
+        f.w = max.w / 3 * 2
+        f.h = max.h
+    end
+    win:setFrame(f)
+end)
+
+-- 右 2/3（横屏）或下 2/3（竖屏）
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;T&quot;, function()
+    -- 获取当前窗口所在屏幕
+    screen = hs.screen.mainScreen()
+    max = screen:frame()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    -- 如果为竖屏
+    if (isVerticalScreen(screen)) then
+        f.x = max.x
+        f.y = max.y + (max.h / 3)
+        f.w = max.w
+        f.h = max.h / 3 * 2
+        -- 如果为横屏
+    else
+        f.x = max.x + (max.w / 3)
+        f.y = max.y
+        f.w = max.w / 3 * 2
+        f.h = max.h
+    end
+    win:setFrame(f)
+end)
+
+-- 判断指定屏幕是否为竖屏
+function isVerticalScreen(screen)
+    if (screen:rotate() == 90 or screen:rotate() == 270) then
+        return true
+    else
+        return false
+    end
+end
+
+-- 居中
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;C&quot;, function()
+    local win = hs.window.focusedWindow()
+    local f = win:frame()
+    local screen = win:screen()
+    local max = screen:frame()
+
+    f.x = max.x + (max.w / 4)
+    f.y = max.y + (max.h / 4)
+    f.w = max.w / 2
+    f.h = max.h / 2
+    win:setFrame(f)
+end)
+
+-- 最大化
+hs.hotkey.bind({&quot;alt&quot;, &quot;ctrl&quot;}, &quot;Return&quot;, function()
+    local win = hs.window.focusedWindow()
+    win:maximize()
+end)
+
+-- 主屏副屏之间的窗口移动（适用于主屏物理位置在右，副屏物理位置在左的显示器摆放布局，若不是该布局，则请手动修改下面代码以满足需求）
+-- 主屏窗口移动到副屏
+hs.hotkey.bind({&quot;cmd&quot;, &quot;alt&quot;, &quot;ctrl&quot;}, &quot;Left&quot;, function()
+    local win = hs.window.focusedWindow()
+    if (win) then
+        win:moveToScreen(second_monitor)
+    end
+end)
+
+-- 副屏窗口移动到主屏
+hs.hotkey.bind({&quot;cmd&quot;, &quot;alt&quot;, &quot;ctrl&quot;}, &quot;Right&quot;, function()
+    local win = hs.window.focusedWindow()
+    if (win) then
+        win:moveToScreen(main_monitor)
+    end
+end)
+
+-- 应用切换
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;q&quot;, function()
+    toggleAppByBundleId(&quot;com.tencent.qq&quot;)
+end)
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;w&quot;, function()
+    toggleAppByBundleId(&quot;com.tencent.xinWeChat&quot;)
+end)
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;v&quot;, function()
+    toggleAppByBundleId(&quot;com.microsoft.VSCode&quot;)
+end)
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;f&quot;, function()
+    toggleAppByBundleId(&quot;com.apple.finder&quot;)
+end)
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;c&quot;, function()
+    toggleAppByBundleId(&quot;com.google.Chrome&quot;)
+end)
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;j&quot;, function()
+    toggleAppByBundleId(&quot;com.jetbrains.intellij&quot;)
+end)
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;n&quot;, function()
+    toggleAppByBundleId(&quot;cn.wiz.wiznoteformac&quot;)
+end)
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;g&quot;, function()
+    toggleAppByBundleId(&quot;com.electron.gridea&quot;)
+end)
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;d&quot;, function()
+    toggleAppByBundleId(&quot;com.jetbrains.datagrip&quot;)
+end)
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;i&quot;, function()
+    toggleAppByBundleId(&quot;com.googlecode.iterm2&quot;)
+end)
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;m&quot;, function()
+    toggleAppByBundleId(&quot;com.netease.macmail&quot;)
+end)
+hs.hotkey.bind({ &quot;alt&quot; }, &quot;p&quot;, function()
+    toggleAppByBundleId(&quot;com.postmanlabs.mac&quot;)
+end)
+
+-- 鼠标位置
+mousePositions = {}
+
+function toggleAppByBundleId(appBundleID)
+    -- 获取当前最靠前的应用,保存鼠标位置
+    local frontMostApp = hs.application.frontmostApplication()
+    mousePositions[frontMostApp:mainWindow():id()] = hs.mouse.getAbsolutePosition()
+
+    -- 两者重复时,寻找下一个该窗口
+    if frontMostApp:bundleID() == appBundleID then
+        local wf = hs.window.filter.new{frontMostApp:name()}
+        local locT = wf:getWindows({hs.window.filter.sortByFocusedLast})
+        if locT and #locT &gt; 1 then
+            local windowId = frontMostApp:mainWindow():id()
+            for _, value in pairs(locT) do
+                if value:id() ~= windowId then
+                    value:focus()
+                end
+            end
+        else
+            frontMostApp:hide()
+        end
+    else
+        -- 不存在窗口时,启动app
+        local launchResult = hs.application.launchOrFocusByBundleID(appBundleID)
+        if not launchResult then
+            return
+        end
+    end
+    -- 调整鼠标位置
+    frontMostApp = hs.application.applicationsForBundleID(appBundleID)[1]
+    local point = mousePositions[appBundleID]
+    if point then
+      hs.mouse.setAbsolutePosition(point)
+      local currentSc = hs.mouse.getCurrentScreen()
+      local tempSc = frontMostApp:mainWindow():screen()
+      if currentSc ~= tempSc then
+          setMouseToCenter(frontMostApp)
+      end
+    -- 找不到则转移到该屏幕中间
+    else
+        setMouseToCenter(frontMostApp)
+    end
+end
+
+function setMouseToCenter(frontMostApp)
+    local mainWindow = frontMostApp:mainWindow()
+    if not mainWindow then
+        return
+    end
+    local mainFrame = mainWindow:frame()
+    local mainPoint = hs.geometry.point(mainFrame.x + mainFrame.w /2, mainFrame.y + mainFrame.h /2)
+    hs.mouse.setAbsolutePosition(mainPoint)
+end
+</code></pre>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://mrdear.cn/posts/osx_app_switcher.html">学长博客 - OSX--OSX应用快速切换方案</a></li>
+<li><a href="https://www.hammerspoon.org/go/">官方 Quick Start</a></li>
+<li><a href="http://www.hammerspoon.org/docs/">官方文档</a></li>
+<li><a href="https://sspai.com/post/53992">少数派 - 免费又强大的 macOS 自动化工具，Hammerspoon 可以让你少买很多 App</a></li>
+<li><a href="https://www.v2ex.com/t/553241">V2EX - 推荐一个 MacOS 上用了就无法自拔的神器</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/72499152">Hammerspoon - 岂止于窗口管理</a></li>
+<li><a href="https://github.com/rtoshiro/hammerspoon-init">hammerspoon-init</a></li>
+<li><a href="https://www.runoob.com/lua/lua-tutorial.html">菜鸟教程 - Lua 教程</a></li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/builder-mo-shi-md/" class="post-title gt-a-link">
+                    Builder 模式.md
+                </a>
+            </div>
+        
+
+        
+
+        
+            
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+<script>
+    // md5.min.js
+    !function(n){
+        "use strict";
+        function d(n,t){var r=(65535&n)+(65535&t);return(n>>16)+(t>>16)+(r>>16)<<16|65535&r}
+        function f(n,t,r,e,o,u){return d((c=d(d(t,n),d(e,u)))<<(f=o)|c>>>32-f,r);var c,f}
+        function l(n,t,r,e,o,u,c){return f(t&r|~t&e,n,t,o,u,c)}
+        function v(n,t,r,e,o,u,c){return f(t&e|r&~e,n,t,o,u,c)}
+        function g(n,t,r,e,o,u,c){return f(t^r^e,n,t,o,u,c)}
+        function m(n,t,r,e,o,u,c){return f(r^(t|~e),n,t,o,u,c)}
+        function i(n,t){var r,e,o,u,c;n[t>>5]|=128<<t%32,n[14+(t+64>>>9<<4)]=t;var f=1732584193,i=-271733879,a=-1732584194,h=271733878;for(r=0;r<n.length;r+=16)f=l(e=f,o=i,u=a,c=h,n[r],7,-680876936),h=l(h,f,i,a,n[r+1],12,-389564586),a=l(a,h,f,i,n[r+2],17,606105819),i=l(i,a,h,f,n[r+3],22,-1044525330),f=l(f,i,a,h,n[r+4],7,-176418897),h=l(h,f,i,a,n[r+5],12,1200080426),a=l(a,h,f,i,n[r+6],17,-1473231341),i=l(i,a,h,f,n[r+7],22,-45705983),f=l(f,i,a,h,n[r+8],7,1770035416),h=l(h,f,i,a,n[r+9],12,-1958414417),a=l(a,h,f,i,n[r+10],17,-42063),i=l(i,a,h,f,n[r+11],22,-1990404162),f=l(f,i,a,h,n[r+12],7,1804603682),h=l(h,f,i,a,n[r+13],12,-40341101),a=l(a,h,f,i,n[r+14],17,-1502002290),f=v(f,i=l(i,a,h,f,n[r+15],22,1236535329),a,h,n[r+1],5,-165796510),h=v(h,f,i,a,n[r+6],9,-1069501632),a=v(a,h,f,i,n[r+11],14,643717713),i=v(i,a,h,f,n[r],20,-373897302),f=v(f,i,a,h,n[r+5],5,-701558691),h=v(h,f,i,a,n[r+10],9,38016083),a=v(a,h,f,i,n[r+15],14,-660478335),i=v(i,a,h,f,n[r+4],20,-405537848),f=v(f,i,a,h,n[r+9],5,568446438),h=v(h,f,i,a,n[r+14],9,-1019803690),a=v(a,h,f,i,n[r+3],14,-187363961),i=v(i,a,h,f,n[r+8],20,1163531501),f=v(f,i,a,h,n[r+13],5,-1444681467),h=v(h,f,i,a,n[r+2],9,-51403784),a=v(a,h,f,i,n[r+7],14,1735328473),f=g(f,i=v(i,a,h,f,n[r+12],20,-1926607734),a,h,n[r+5],4,-378558),h=g(h,f,i,a,n[r+8],11,-2022574463),a=g(a,h,f,i,n[r+11],16,1839030562),i=g(i,a,h,f,n[r+14],23,-35309556),f=g(f,i,a,h,n[r+1],4,-1530992060),h=g(h,f,i,a,n[r+4],11,1272893353),a=g(a,h,f,i,n[r+7],16,-155497632),i=g(i,a,h,f,n[r+10],23,-1094730640),f=g(f,i,a,h,n[r+13],4,681279174),h=g(h,f,i,a,n[r],11,-358537222),a=g(a,h,f,i,n[r+3],16,-722521979),i=g(i,a,h,f,n[r+6],23,76029189),f=g(f,i,a,h,n[r+9],4,-640364487),h=g(h,f,i,a,n[r+12],11,-421815835),a=g(a,h,f,i,n[r+15],16,530742520),f=m(f,i=g(i,a,h,f,n[r+2],23,-995338651),a,h,n[r],6,-198630844),h=m(h,f,i,a,n[r+7],10,1126891415),a=m(a,h,f,i,n[r+14],15,-1416354905),i=m(i,a,h,f,n[r+5],21,-57434055),f=m(f,i,a,h,n[r+12],6,1700485571),h=m(h,f,i,a,n[r+3],10,-1894986606),a=m(a,h,f,i,n[r+10],15,-1051523),i=m(i,a,h,f,n[r+1],21,-2054922799),f=m(f,i,a,h,n[r+8],6,1873313359),h=m(h,f,i,a,n[r+15],10,-30611744),a=m(a,h,f,i,n[r+6],15,-1560198380),i=m(i,a,h,f,n[r+13],21,1309151649),f=m(f,i,a,h,n[r+4],6,-145523070),h=m(h,f,i,a,n[r+11],10,-1120210379),a=m(a,h,f,i,n[r+2],15,718787259),i=m(i,a,h,f,n[r+9],21,-343485551),f=d(f,e),i=d(i,o),a=d(a,u),h=d(h,c);return[f,i,a,h]}
+        function a(n){var t,r="",e=32*n.length;for(t=0;t<e;t+=8)r+=String.fromCharCode(n[t>>5]>>>t%32&255);return r}
+        function h(n){var t,r=[];for(r[(n.length>>2)-1]=void 0,t=0;t<r.length;t+=1)r[t]=0;var e=8*n.length;for(t=0;t<e;t+=8)r[t>>5]|=(255&n.charCodeAt(t/8))<<t%32;return r}
+        function e(n){var t,r,e="0123456789abcdef",o="";for(r=0;r<n.length;r+=1)t=n.charCodeAt(r),o+=e.charAt(t>>>4&15)+e.charAt(15&t);return o}
+        function r(n){return unescape(encodeURIComponent(n))}
+        function o(n){return a(i(h(t=r(n)),8*t.length));var t}
+        function u(n,t){return function(n,t){var r,e,o=h(n),u=[],c=[];for(u[15]=c[15]=void 0,16<o.length&&(o=i(o,8*n.length)),r=0;r<16;r+=1)u[r]=909522486^o[r],c[r]=1549556828^o[r];return e=i(u.concat(h(t)),512+8*t.length),a(i(c.concat(e),640))}(r(n),r(t))}
+        function t(n,t,r){return t?r?u(t,n):e(u(t,n)):r?o(n):e(o(n))}
+        "function"==typeof define&&define.amd?define(function(){return t}):"object"==typeof module&&module.exports?module.exports=t:n.md5=t;
+    }(this);
+</script>
+
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd5112611bb77c8d6bb88',
+    clientSecret: 'b064af1dd2e63f211b8517f1a57d71c1efc01b8e',
+    repo: 'kuranado2.github.io',
+    owner: 'kuranado2',
+    admin: ['kuranado2'],
+    id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false       // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+            
+
+            
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">笔记/博客</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KURANADO2" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+                <a href="https://www.zhihu.com/people/jing-xin-ling-32" target="_blank">
+                    <i class="fab fa-zhihu gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        @Copyright 2020 <a href="http://emoji.kuranado.com">表情包网站</a>
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="http://blog.kuranado.com/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
