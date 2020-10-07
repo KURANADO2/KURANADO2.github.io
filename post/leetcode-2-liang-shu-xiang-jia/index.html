@@ -1,10 +1,10 @@
-<html lang="zh">
+<html>
 <head>
     <meta charset="utf-8"/>
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>关于 - KURANADO</title>
+<title>LeetCode - 2 两数相加 | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1602036958320">
 
@@ -37,7 +37,7 @@
     </script>
 
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
 </head>
 <body>
 <div class="main gt-bg-theme-color-first">
@@ -106,18 +106,114 @@
 </nav>
 
     <div class="post-container">
-        <div class="post-detail">
+        <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
+                <h2 class="post-title">
+                    LeetCode - 2 两数相加
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2020-10-07 ·
+                    </time>
+                    
+                        <a href="http://blog.kuranado.com/tag/tfVz-s3hI/" class="post-tags">
+                            # LeetCode
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/qjEtrVrzm/" class="post-tags">
+                            # Algorithm
+                        </a>
+                    
+                </div>
                 <div class="post-content">
-                    <h2 id="欢迎来到-kuranado-的技术小站">欢迎来到 KURANADO 的技术小站</h2>
-<p>这里分享技术总结、生活，很高兴在这里遇见你！</p>
-<h2 id="我的其它网站">我的其它网站</h2>
-<h3 id="表情包网站"><a href="http://emoji.kuranado.com">表情包网站</a></h3>
+                    <h2 id="2-两数相加"><a href="https://leetcode-cn.com/problems/add-two-numbers/">2 两数相加</a> 2020年3月16日星期一</h2>
+<p>太久没做过算法题，题目看了好久愣是没搞懂什么意思，昨天晚上想了好久，今天又在平板上画了好多遍，最后直接一边写代码一边思考独立做出来了，使用了递归，最后提交结果用时 2ms，战胜 99.98% 的 Java 提交记录，还是蛮有成就感的，嘻嘻😬<br>
+下面为我的思路：<br>
+根据题目可以大概知道需要处理以下几个问题：</p>
+<ol>
+<li>进位问题</li>
+<li>两个链表长度不相等问题<br>
+第一步，不考虑进位，并且假设输入数据的两个链表长度是相同的，可简单写出如下代码：</li>
+</ol>
+<pre><code class="language-java">    public static ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
+        int x = l1.val + l2.val;
+        ListNode r = new ListNode(x % 10);
+        if (l1.next != null) {
+            r.next = addTwoNumbers2(l1.next, l2.next);
+        }
+        return r;
+    }
+</code></pre>
+<p>第二步，如果两个链表的长度是不相同的，只要其中一个链表还没有被遍历完，就继续递归，并为另一个已遍历完的链表创建下一节点，只不过把节点值设置为 0，就可以将两个链表变为相同长度链表：</p>
+<pre><code class="language-java">    public static ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
+        if (l1 == null) {
+            l1 = new ListNode(0);
+        }
+        if (l2 == null) {
+            l2 = new ListNode(0);
+        }
+        int x = l1.val + l2.val;
+        ListNode r = new ListNode(x % 10);
+        if (l1.next != null || l2.next != null) {
+            r.next = addTwoNumbers2(l1.next, l2.next);
+        }
+        return r;
+    }
+</code></pre>
+<p>最后再考虑进位问题，下面为完整代码：</p>
+<h3 id="完整代码2ms">完整代码：2ms</h3>
+<pre><code class="language-java">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ * int val;
+ * ListNode next;
+ * ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+       if (l1 == null) {
+            l1 = new ListNode(0);
+        }
+        if (l2 == null) {
+            l2 = new ListNode(0);
+        }
+        int x = l1.val + l2.val;
+        ListNode r = new ListNode(x % 10);
+        if (l1.next != null || l2.next != null) {
+            if (x &gt;= 10) {
+                if (l1.next != null) {
+                    l1.next.val += 1;
+                } else {
+                    l2.next.val += 1;
+                }
+            }
+            r.next = addTwoNumbers(l1.next, l2.next);
+        } else {
+            if (x &gt;= 10) {
+                r.next = new ListNode(1);
+            }
+        }
+        return r;
+    }
+}
+</code></pre>
 
                 </div>
             </article>
         </div>
-        <br>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/css-zhi-zuo-san-jiao-md/" class="post-title gt-a-link">
+                    CSS 制作三角.md
+                </a>
+            </div>
+        
+
+        
+
         
             
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
@@ -164,11 +260,11 @@
 </script>
 
             
+
             
         
 
         
-
 
         <div class="site-footer gt-c-content-color-first">
     <div class="slogan gt-c-content-color-first">笔记/博客</div>

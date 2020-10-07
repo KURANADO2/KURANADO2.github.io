@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-06T05:59:24.032Z</updated>
+    <updated>2020-10-07T02:16:33.926Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,291 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[LeetCode - 2 两数相加]]></title>
+        <id>http://blog.kuranado.com/post/leetcode-2-liang-shu-xiang-jia/</id>
+        <link href="http://blog.kuranado.com/post/leetcode-2-liang-shu-xiang-jia/">
+        </link>
+        <updated>2020-10-07T02:13:23.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="2-两数相加"><a href="https://leetcode-cn.com/problems/add-two-numbers/">2 两数相加</a> 2020年3月16日星期一</h2>
+<p>太久没做过算法题，题目看了好久愣是没搞懂什么意思，昨天晚上想了好久，今天又在平板上画了好多遍，最后直接一边写代码一边思考独立做出来了，使用了递归，最后提交结果用时 2ms，战胜 99.98% 的 Java 提交记录，还是蛮有成就感的，嘻嘻😬<br>
+下面为我的思路：<br>
+根据题目可以大概知道需要处理以下几个问题：</p>
+<ol>
+<li>进位问题</li>
+<li>两个链表长度不相等问题<br>
+第一步，不考虑进位，并且假设输入数据的两个链表长度是相同的，可简单写出如下代码：</li>
+</ol>
+<pre><code class="language-java">    public static ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
+        int x = l1.val + l2.val;
+        ListNode r = new ListNode(x % 10);
+        if (l1.next != null) {
+            r.next = addTwoNumbers2(l1.next, l2.next);
+        }
+        return r;
+    }
+</code></pre>
+<p>第二步，如果两个链表的长度是不相同的，只要其中一个链表还没有被遍历完，就继续递归，并为另一个已遍历完的链表创建下一节点，只不过把节点值设置为 0，就可以将两个链表变为相同长度链表：</p>
+<pre><code class="language-java">    public static ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
+        if (l1 == null) {
+            l1 = new ListNode(0);
+        }
+        if (l2 == null) {
+            l2 = new ListNode(0);
+        }
+        int x = l1.val + l2.val;
+        ListNode r = new ListNode(x % 10);
+        if (l1.next != null || l2.next != null) {
+            r.next = addTwoNumbers2(l1.next, l2.next);
+        }
+        return r;
+    }
+</code></pre>
+<p>最后再考虑进位问题，下面为完整代码：</p>
+<h3 id="完整代码2ms">完整代码：2ms</h3>
+<pre><code class="language-java">/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ * int val;
+ * ListNode next;
+ * ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+       if (l1 == null) {
+            l1 = new ListNode(0);
+        }
+        if (l2 == null) {
+            l2 = new ListNode(0);
+        }
+        int x = l1.val + l2.val;
+        ListNode r = new ListNode(x % 10);
+        if (l1.next != null || l2.next != null) {
+            if (x &gt;= 10) {
+                if (l1.next != null) {
+                    l1.next.val += 1;
+                } else {
+                    l2.next.val += 1;
+                }
+            }
+            r.next = addTwoNumbers(l1.next, l2.next);
+        } else {
+            if (x &gt;= 10) {
+                r.next = new ListNode(1);
+            }
+        }
+        return r;
+    }
+}
+</code></pre>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CSS 制作三角.md]]></title>
+        <id>http://blog.kuranado.com/post/css-zhi-zuo-san-jiao-md/</id>
+        <link href="http://blog.kuranado.com/post/css-zhi-zuo-san-jiao-md/">
+        </link>
+        <updated>2020-10-07T02:05:20.000Z</updated>
+        <content type="html"><![CDATA[<p>在很多网站，鼠标悬浮在某个按钮上，都会出现一个带有小箭头的小浮框，接下来就来讲解这样一个小箭头的实现原理：<br>
+<a href="https://www.jd.com/">京东</a>：<br>
+<img src="http://image.kuranado.com/blog/1602036362.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+<a href="https://www.mi.com/">小米</a><br>
+<img src="http://image.kuranado.com/blog/1602036369.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+编写如下代码：</p>
+<pre><code>.box {
+    /* 盒子宽高一定要都设置为 0 */
+    width: 0;
+    height: 0;
+    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
+    font-size: 0;
+    line-height: 0;
+    border-top: 50px solid red;
+    border-right: 50px solid green;
+    border-bottom: 50px solid blue;
+    border-left: 50px solid skyblue;
+}
+&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p>效果图：<br>
+<img src="http://image.kuranado.com/blog/1602036385.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+生成了 4 个箭头，箭头的大小取决于 border 的粗细<br>
+那如果只想生成一个小箭头，只需要将其他边框颜色设置为透明即可：</p>
+<pre><code>.box {
+    width: 0;
+    height: 0;
+    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
+    font-size: 0;
+    line-height: 0;
+    /* 生成向下的箭头 */
+    border: 50px solid transparent;
+    border-top: 50px solid skyblue;
+}
+&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1602036394.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+综上，想要实现京东或小米的箭头效果，只要一个相对定位的大盒子上放一个绝对定位的小箭头就可以了，遂编写如下代码：</p>
+<pre><code>.box {
+    position: relative;
+    width: 300px;
+    height: 100px;
+    background-color: #A1E75A;
+    border-radius: 5px;
+}
+.arrow {
+    position: absolute;
+    /** 此处为了让向右的箭头能垂直居中，所以 top 设置为大盒子的高度的一半 - 等腰三角形的底边的一半即可（等腰直角三角形高 = 底边的一半）= 100/2 - 10 = 40px **/
+    top: 40px;
+    left: 300px;
+    width: 0;
+    height: 0;
+    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
+    font-size: 0;
+    line-height: 0;
+    border: 10px solid transparent;
+    border-left: 10px solid #A1E75A;
+}
+&lt;div class=&quot;box&quot;&gt;
+    &lt;div class=&quot;arrow&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1602036404.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+怎么样，是不是有点像微信的聊天框呢，哈哈哈！<br>
+有时还可以看到这样的形状：<br>
+<img src="http://image.kuranado.com/blog/1602036412.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+左边部分是一个梯形，根据我们上面分析问题的经验，这个梯形可以分解成一个红色矩形加一个白色的直角三角形实现，可是我们上面的代码得到的是一个普通等腰三角形，应该如何设置 border 才能得到这样一个直角三角形呢？不妨按照如下思路来一步步实现：</p>
+<ol>
+<li>boder-bottom 设置为 0<br>
+去除下边框</li>
+</ol>
+<pre><code>.box {
+    /* 盒子宽高一定要都设置为 0 */
+    width: 0;
+    height: 0;
+    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
+    font-size: 0;
+    line-height: 0;
+    border-top: 50px solid red;
+    border-right: 50px solid green;
+    /* border-bottom: 50px solid blue; */
+    border-left: 50px solid skyblue;
+}
+&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1602036422.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+2. 增大 boder-top<br>
+为了得到一个高大于地板的直角三角形，所以这里调大 border-top</p>
+<pre><code>.box {
+    /* 盒子宽高一定要都设置为 0 */
+    width: 0;
+    height: 0;
+    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
+    font-size: 0;
+    line-height: 0;
+    border-top: 100px solid red;
+    border-right: 50px solid green;
+    /* border-bottom: 50px solid blue; */
+    border-left: 50px solid skyblue;
+}
+&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1602036431.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+3. boder-left 设置为 0<br>
+去除左边框</p>
+<pre><code>.box {
+    /* 盒子宽高一定要都设置为 0 */
+    width: 0;
+    height: 0;
+    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
+    font-size: 0;
+    line-height: 0;
+    border-top: 100px solid red;
+    border-right: 50px solid green;
+    /* border-bottom: 50px solid blue; */
+    /* border-left: 50px solid skyblue; */
+}
+&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1602036440.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+4. border-top 改为透明色</p>
+<pre><code>.box {
+    /* 盒子宽高一定要都设置为 0 */
+    width: 0;
+    height: 0;
+    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
+    font-size: 0;
+    line-height: 0;
+    border-top: 100px solid transparent;
+    border-right: 50px solid green;
+    /* border-bottom: 50px solid blue; */
+    /* border-left: 50px solid skyblue; */
+}
+&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+</code></pre>
+<p><img src="http://image.kuranado.com/blog/1602036448.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+这样我们就得到了想要的高大于底边的直角三角形，当然代码可以简写成如下形式：</p>
+<pre><code>.box {
+    /* 盒子宽高一定要都设置为 0 */
+    width: 0;
+    height: 0;
+    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
+    font-size: 0;
+    line-height: 0;
+    border-style: solid;
+    border-width: 100px 50px 0 0;
+    border-color: transparent green transparent transparent;
+}
+</code></pre>
+<p>有了上面的基础，现在回到京东的案例，我们只需要为该三角形设置绝对定位，将其定位到红色矩形的最右侧，然后将其颜色改为白色即可，具体代码如下：</p>
+<pre><code>* {
+    margin: 0;
+    padding: 0;
+}
+.price {
+    width: 160px;
+    height: 24px;
+    line-height: 24px;
+    border: 1px solid red;
+}
+.price .miaosha {
+    float: left;
+    position: relative;
+    width: 90px;
+    height: 100%;
+    text-align: center;
+    color: white;
+    font-weight: 700;
+    background-color: red;
+}
+.price .miaosha i {
+    position: absolute;
+    top: 0;
+    left: 80px;
+    width: 0;
+    height: 0;
+    font-size: 0;
+    line-height: 0;
+    border-style: solid;
+    border-width: 24px 10px 0 0;
+    border-color: transparent white transparent transparent;
+}
+.origin {
+    padding-left: 10px;
+    font-size: 14px;
+    color: gray;
+    text-decoration: line-through;
+}
+&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;price&quot;&gt;
+    &lt;sapn class=&quot;miaosha&quot;&gt;
+        ¥1650&lt;i&gt;&lt;/i&gt;
+    &lt;/sapn&gt;
+    &lt;span class=&quot;origin&quot;&gt;¥5650&lt;/span&gt;
+&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602036463.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[CSS 字体图标.md]]></title>
         <id>http://blog.kuranado.com/post/css-zi-ti-tu-biao-md/</id>
@@ -1720,520 +2005,6 @@ div p {
 }
 &lt;span&gt;Hello&lt;/span&gt;
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[电影 & 电视剧.md]]></title>
-        <id>http://blog.kuranado.com/post/dian-ying-and-dian-shi-ju-md/</id>
-        <link href="http://blog.kuranado.com/post/dian-ying-and-dian-shi-ju-md/">
-        </link>
-        <updated>2020-10-01T01:09:45.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="已看">已看</h2>
-<ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4845295"><label class="task-list-item-label" for="task-item-4845295"> Rango 蓝戈</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4584415"><label class="task-list-item-label" for="task-item-4584415"> 超能陆战队</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7351598"><label class="task-list-item-label" for="task-item-7351598"> 忠犬八公的故事</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6335775"><label class="task-list-item-label" for="task-item-6335775"> 肖申克的救赎</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2003667"><label class="task-list-item-label" for="task-item-2003667"> 魔女宅急变</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6457665"><label class="task-list-item-label" for="task-item-6457665"> 致命魔术</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2742108"><label class="task-list-item-label" for="task-item-2742108"> 机器人瓦利</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1212521"><label class="task-list-item-label" for="task-item-1212521"> 超级大坏蛋</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2148606"><label class="task-list-item-label" for="task-item-2148606"> 功夫熊猫 1、2、3</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8567237"><label class="task-list-item-label" for="task-item-8567237"> 龙猫</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-752558"><label class="task-list-item-label" for="task-item-752558"> 冰雪奇缘 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-670305"><label class="task-list-item-label" for="task-item-670305"> 冰雪奇缘-生日惊喜</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-206867"><label class="task-list-item-label" for="task-item-206867"> 恐怖游轮</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6523578"><label class="task-list-item-label" for="task-item-6523578"> 天空之城</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7059305"><label class="task-list-item-label" for="task-item-7059305"> 千与千寻</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9281951"><label class="task-list-item-label" for="task-item-9281951"> 哈尔的移动城堡</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2904096"><label class="task-list-item-label" for="task-item-2904096"> 杀死比尔 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4842277"><label class="task-list-item-label" for="task-item-4842277"> 速度与激情 3、4、5、6、7、8</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5364155"><label class="task-list-item-label" for="task-item-5364155"> 天将雄师</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8849655"><label class="task-list-item-label" for="task-item-8849655"> 神偷奶爸 1、2、3</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1128918"><label class="task-list-item-label" for="task-item-1128918"> 小黄人大冒险</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3466816"><label class="task-list-item-label" for="task-item-3466816"> 钢铁侠</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2081635"><label class="task-list-item-label" for="task-item-2081635"> 海扁王 1</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-785917"><label class="task-list-item-label" for="task-item-785917"> 东成西就</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9732705"><label class="task-list-item-label" for="task-item-9732705"> 起风了</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5114505"><label class="task-list-item-label" for="task-item-5114505"> 婚纱</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8977406"><label class="task-list-item-label" for="task-item-8977406"> 天降美食 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6134129"><label class="task-list-item-label" for="task-item-6134129"> 指环王-护戒使者</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4137200"><label class="task-list-item-label" for="task-item-4137200"> 指环王-双塔奇兵</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4780237"><label class="task-list-item-label" for="task-item-4780237"> 指环王-王者归来</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7901494"><label class="task-list-item-label" for="task-item-7901494"> 霍比特人-意外之旅</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2963070"><label class="task-list-item-label" for="task-item-2963070"> 霍比特人-史矛革荒漠</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9803997"><label class="task-list-item-label" for="task-item-9803997"> 霍比特人-五军之战</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3021814"><label class="task-list-item-label" for="task-item-3021814"> 头脑特工队</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6217720"><label class="task-list-item-label" for="task-item-6217720"> 源代码</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2497017"><label class="task-list-item-label" for="task-item-2497017"> 记忆碎片</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9618410"><label class="task-list-item-label" for="task-item-9618410"> 妈妈再爱我一次</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4925750"><label class="task-list-item-label" for="task-item-4925750"> 青春派</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8753378"><label class="task-list-item-label" for="task-item-8753378"> 黑客帝国 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9533049"><label class="task-list-item-label" for="task-item-9533049"> 模仿游戏</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-179621"><label class="task-list-item-label" for="task-item-179621"> 天才眼镜狗</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6887543"><label class="task-list-item-label" for="task-item-6887543"> 穿靴子的猫</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2344399"><label class="task-list-item-label" for="task-item-2344399"> 穿靴子的猫番外篇-萌猫三剑客</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6343418"><label class="task-list-item-label" for="task-item-6343418"> 盗梦空间</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4422279"><label class="task-list-item-label" for="task-item-4422279"> 逆世界</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-970856"><label class="task-list-item-label" for="task-item-970856"> 终结者</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4926172"><label class="task-list-item-label" for="task-item-4926172"> 碟中谍 1、2、3、4、5</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1580102"><label class="task-list-item-label" for="task-item-1580102"> 黑衣人 1、2、3</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8529946"><label class="task-list-item-label" for="task-item-8529946"> 少年班</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1064492"><label class="task-list-item-label" for="task-item-1064492"> 教父 1、2、3</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4233876"><label class="task-list-item-label" for="task-item-4233876"> 阿甘正传</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5242829"><label class="task-list-item-label" for="task-item-5242829"> 剪刀手爱德华</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5952631"><label class="task-list-item-label" for="task-item-5952631"> 第九区</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8825149"><label class="task-list-item-label" for="task-item-8825149"> 人工智能</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6303593"><label class="task-list-item-label" for="task-item-6303593"> 惊天魔盗团 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2959182"><label class="task-list-item-label" for="task-item-2959182"> 大圣归来</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7222718"><label class="task-list-item-label" for="task-item-7222718"> 马达加斯加的企鹅 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8088690"><label class="task-list-item-label" for="task-item-8088690"> 狮子王</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7303496"><label class="task-list-item-label" for="task-item-7303496"> 百万富翁</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2047025"><label class="task-list-item-label" for="task-item-2047025"> 驯龙高手 1、2、3</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3902206"><label class="task-list-item-label" for="task-item-3902206"> 怪物史莱克 1、2、3、4</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5379068"><label class="task-list-item-label" for="task-item-5379068"> 机器管家</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-506688"><label class="task-list-item-label" for="task-item-506688"> 返老还童</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9025135"><label class="task-list-item-label" for="task-item-9025135"> 飞屋环游记</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9682247"><label class="task-list-item-label" for="task-item-9682247"> 像素大战</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2965647"><label class="task-list-item-label" for="task-item-2965647"> 蚁人</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1160240"><label class="task-list-item-label" for="task-item-1160240"> 侏罗纪公园</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7803887"><label class="task-list-item-label" for="task-item-7803887"> 憨豆特工</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7267055"><label class="task-list-item-label" for="task-item-7267055"> 憨豆的黄金周</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7328428"><label class="task-list-item-label" for="task-item-7328428"> 玛丽与马克思</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9528076"><label class="task-list-item-label" for="task-item-9528076"> 海上钢琴师</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8502071"><label class="task-list-item-label" for="task-item-8502071"> 功夫之王</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7743197"><label class="task-list-item-label" for="task-item-7743197"> 四大名捕</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9856488"><label class="task-list-item-label" for="task-item-9856488"> 天下无贼</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-409795"><label class="task-list-item-label" for="task-item-409795"> 那些年我们一起追过的女孩</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4700024"><label class="task-list-item-label" for="task-item-4700024"> 功夫</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6559858"><label class="task-list-item-label" for="task-item-6559858"> 长江7号</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9470817"><label class="task-list-item-label" for="task-item-9470817"> 后天</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2071967"><label class="task-list-item-label" for="task-item-2071967"> 2012</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2312823"><label class="task-list-item-label" for="task-item-2312823"> 我是传奇</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-374997"><label class="task-list-item-label" for="task-item-374997"> 超人汉考克</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1891121"><label class="task-list-item-label" for="task-item-1891121"> 哥斯拉</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6167972"><label class="task-list-item-label" for="task-item-6167972"> 暮光之城 1、2、3、4 破晓上、4 破晓下</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9605904"><label class="task-list-item-label" for="task-item-9605904"> 风之谷</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5813580"><label class="task-list-item-label" for="task-item-5813580"> 叶问 1、2、3、4</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-171899"><label class="task-list-item-label" for="task-item-171899"> 海绵宝宝历险记</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2220509"><label class="task-list-item-label" for="task-item-2220509"> 十月围城</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9733555"><label class="task-list-item-label" for="task-item-9733555"> 一代宗师</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-663324"><label class="task-list-item-label" for="task-item-663324"> 师父</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8479447"><label class="task-list-item-label" for="task-item-8479447"> 镖门</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6955667"><label class="task-list-item-label" for="task-item-6955667"> 极速蜗牛</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6571595"><label class="task-list-item-label" for="task-item-6571595"> 史蒂夫乔布斯</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7626644"><label class="task-list-item-label" for="task-item-7626644"> 乔布斯传</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6648046"><label class="task-list-item-label" for="task-item-6648046"> 疯狂动物城</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2585051"><label class="task-list-item-label" for="task-item-2585051"> 美人鱼</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6924003"><label class="task-list-item-label" for="task-item-6924003"> 楚门的世界</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9088531"><label class="task-list-item-label" for="task-item-9088531"> 雷蒙-斯尼奇的不幸历险</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5604818"><label class="task-list-item-label" for="task-item-5604818"> 机械姬</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6187156"><label class="task-list-item-label" for="task-item-6187156"> 拯救大兵瑞恩</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8846710"><label class="task-list-item-label" for="task-item-8846710"> 入殓师</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6527139"><label class="task-list-item-label" for="task-item-6527139"> 盗走达芬奇</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3249647"><label class="task-list-item-label" for="task-item-3249647"> 蝴蝶效应 1、2、3</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8259585"><label class="task-list-item-label" for="task-item-8259585"> 偷天换日</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-169517"><label class="task-list-item-label" for="task-item-169517"> 十二只猴子</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6922307"><label class="task-list-item-label" for="task-item-6922307"> 星际穿越</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9578656"><label class="task-list-item-label" for="task-item-9578656"> 死侍 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-797291"><label class="task-list-item-label" for="task-item-797291"> 异邦人-无皇刃谭</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4064721"><label class="task-list-item-label" for="task-item-4064721"> 饥饿游戏 1</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-84995"><label class="task-list-item-label" for="task-item-84995"> 机械心（法国）</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9740797"><label class="task-list-item-label" for="task-item-9740797"> 怪兽大学</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4918759"><label class="task-list-item-label" for="task-item-4918759"> 美国队长 3</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4152651"><label class="task-list-item-label" for="task-item-4152651"> 神战 - 权利之眼</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-412501"><label class="task-list-item-label" for="task-item-412501"> 心灵捕手</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8811590"><label class="task-list-item-label" for="task-item-8811590"> 头文字D剧场版-梦现</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4036381"><label class="task-list-item-label" for="task-item-4036381"> 哆啦A梦-伴我同行</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7626335"><label class="task-list-item-label" for="task-item-7626335"> BAT MAN VS SUPER MAN</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7040867"><label class="task-list-item-label" for="task-item-7040867"> 鲁滨逊漂流记</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1368052"><label class="task-list-item-label" for="task-item-1368052"> 泰迪熊 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9281242"><label class="task-list-item-label" for="task-item-9281242"> 爱宠大机密</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9635068"><label class="task-list-item-label" for="task-item-9635068"> 生化危机 1 - 变种生还</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7947761"><label class="task-list-item-label" for="task-item-7947761"> 生化危机 2 - 启示录</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7920669"><label class="task-list-item-label" for="task-item-7920669"> 生化危机 3 - 灭绝</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5218376"><label class="task-list-item-label" for="task-item-5218376"> 生化危机 4 - 战神再生</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8866118"><label class="task-list-item-label" for="task-item-8866118"> 生化危机 5 - 惩罚</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6423427"><label class="task-list-item-label" for="task-item-6423427"> 生化危机 6 - 终章</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3317407"><label class="task-list-item-label" for="task-item-3317407"> 生化危机-恶化</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4936521"><label class="task-list-item-label" for="task-item-4936521"> 这个杀手不太冷</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7169495"><label class="task-list-item-label" for="task-item-7169495"> 生化危机-诅咒</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6193374"><label class="task-list-item-label" for="task-item-6193374"> 茱莉亚的眼睛</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2980077"><label class="task-list-item-label" for="task-item-2980077"> 你的名字</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8315955"><label class="task-list-item-label" for="task-item-8315955"> 秒速五厘米</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6877949"><label class="task-list-item-label" for="task-item-6877949"> 机械师 2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7176147"><label class="task-list-item-label" for="task-item-7176147"> 佩小姐的奇幻城堡</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9211506"><label class="task-list-item-label" for="task-item-9211506"> 猫的报恩</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2085055"><label class="task-list-item-label" for="task-item-2085055"> 权力的游戏</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5978422"><label class="task-list-item-label" for="task-item-5978422"> 杀戮都市 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6017322"><label class="task-list-item-label" for="task-item-6017322"> 热血高校 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5220479"><label class="task-list-item-label" for="task-item-5220479"> 言叶之庭</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2333494"><label class="task-list-item-label" for="task-item-2333494"> 加勒比海盗 1、2、3、4、5</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4534392"><label class="task-list-item-label" for="task-item-4534392"> 萤火虫之墓</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3444990"><label class="task-list-item-label" for="task-item-3444990"> 变形金刚 1、2、3、4、5</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2819538"><label class="task-list-item-label" for="task-item-2819538"> 当幸福来敲门</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5716376"><label class="task-list-item-label" for="task-item-5716376"> 少年派的奇幻漂流</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2371957"><label class="task-list-item-label" for="task-item-2371957"> 美丽心灵</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6088853"><label class="task-list-item-label" for="task-item-6088853"> 序列之争</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1823059"><label class="task-list-item-label" for="task-item-1823059"> 凉宫春日的消失</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3400565"><label class="task-list-item-label" for="task-item-3400565"> 境界的彼方-未来篇</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-324661"><label class="task-list-item-label" for="task-item-324661"> 菊次郎的夏天</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-485512"><label class="task-list-item-label" for="task-item-485512"> 环太平洋 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8524325"><label class="task-list-item-label" for="task-item-8524325"> 轻音少女剧场版</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-589085"><label class="task-list-item-label" for="task-item-589085"> 玉子的爱情故事</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5600110"><label class="task-list-item-label" for="task-item-5600110"> 寻梦环游记</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-668614"><label class="task-list-item-label" for="task-item-668614"> 明日边缘</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9028386"><label class="task-list-item-label" for="task-item-9028386"> 土拨鼠之日</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-356913"><label class="task-list-item-label" for="task-item-356913"> 魁拔 1 - 十万火急</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7087723"><label class="task-list-item-label" for="task-item-7087723"> 魁拔 2 - 大战元泱界</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-609377"><label class="task-list-item-label" for="task-item-609377"> 魁拔 3 - 战神崛起</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9098581"><label class="task-list-item-label" for="task-item-9098581"> 英伦对决</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9746420"><label class="task-list-item-label" for="task-item-9746420"> 奇幻森林</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4364513"><label class="task-list-item-label" for="task-item-4364513"> 唐人街探案 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9681644"><label class="task-list-item-label" for="task-item-9681644"> 电锯惊魂 1、8</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8144046"><label class="task-list-item-label" for="task-item-8144046"> 艺伎回忆录</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-392500"><label class="task-list-item-label" for="task-item-392500"> 猫汤</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7591242"><label class="task-list-item-label" for="task-item-7591242"> 伊豆的舞女</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2071211"><label class="task-list-item-label" for="task-item-2071211"> 神鞭</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8993827"><label class="task-list-item-label" for="task-item-8993827"> 达芬奇密码</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3388636"><label class="task-list-item-label" for="task-item-3388636"> 哈利波特 1 - 魔法师</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1562820"><label class="task-list-item-label" for="task-item-1562820"> 哈利波特 2 - 密室</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9178260"><label class="task-list-item-label" for="task-item-9178260"> 西虹市首富</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2647877"><label class="task-list-item-label" for="task-item-2647877"> 奇异博士</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2906329"><label class="task-list-item-label" for="task-item-2906329"> 失恋 33 天</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-569158"><label class="task-list-item-label" for="task-item-569158"> 情书</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4820555"><label class="task-list-item-label" for="task-item-4820555"> 朝花夕誓</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9174656"><label class="task-list-item-label" for="task-item-9174656"> 风雨哈佛路</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5601256"><label class="task-list-item-label" for="task-item-5601256"> 飓风营救</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4525960"><label class="task-list-item-label" for="task-item-4525960"> 摩天营救</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9538729"><label class="task-list-item-label" for="task-item-9538729"> 摄影机不要停</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9221712"><label class="task-list-item-label" for="task-item-9221712"> 阿尔法-狼伴归途</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9064413"><label class="task-list-item-label" for="task-item-9064413"> 疯狂的麦克斯 1、4</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8402813"><label class="task-list-item-label" for="task-item-8402813"> 流浪地球</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9904249"><label class="task-list-item-label" for="task-item-9904249"> 海王</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9866778"><label class="task-list-item-label" for="task-item-9866778"> 特种部队 2 - 全面反击</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3146372"><label class="task-list-item-label" for="task-item-3146372"> 白蛇缘起</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-872352"><label class="task-list-item-label" for="task-item-872352"> 花牌情缘 上之句</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4580565"><label class="task-list-item-label" for="task-item-4580565"> 花牌情缘 下之句</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3915433"><label class="task-list-item-label" for="task-item-3915433"> 神探夏洛克</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1314891"><label class="task-list-item-label" for="task-item-1314891"> 惊奇队长</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-51319"><label class="task-list-item-label" for="task-item-51319"> X 战警</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7314550"><label class="task-list-item-label" for="task-item-7314550"> 银河护卫队 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8553259"><label class="task-list-item-label" for="task-item-8553259"> 帕丁顿熊 2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7487500"><label class="task-list-item-label" for="task-item-7487500"> 复仇者联盟 1、2、3、4</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1504189"><label class="task-list-item-label" for="task-item-1504189"> 阿丽塔</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2514703"><label class="task-list-item-label" for="task-item-2514703"> 蜘蛛侠 - 英雄远征</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8040546"><label class="task-list-item-label" for="task-item-8040546"> 哪吒之魔童降世</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4968311"><label class="task-list-item-label" for="task-item-4968311"> 中国机长</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-9799561"><label class="task-list-item-label" for="task-item-9799561"> 天气之子</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1235622"><label class="task-list-item-label" for="task-item-1235622"> 生死狙击</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-877643"><label class="task-list-item-label" for="task-item-877643"> 星际探索</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7847054"><label class="task-list-item-label" for="task-item-7847054"> 猩球崛起</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-950774"><label class="task-list-item-label" for="task-item-950774"> 全民风暴</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1262143"><label class="task-list-item-label" for="task-item-1262143"> 忍者神龟-变种时代</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7731618"><label class="task-list-item-label" for="task-item-7731618"> 荒野猎人</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5976607"><label class="task-list-item-label" for="task-item-5976607"> 调音师</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2801923"><label class="task-list-item-label" for="task-item-2801923"> 忍者神龟 2 - 破影而出 2020年4月25日星期六</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-8310813"><label class="task-list-item-label" for="task-item-8310813"> 灭绝 - 烂片</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-5000890"><label class="task-list-item-label" for="task-item-5000890"> Hello World</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2587124"><label class="task-list-item-label" for="task-item-2587124"> 黑金</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-3758291"><label class="task-list-item-label" for="task-item-3758291"> 灵魂摆渡</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-7823803"><label class="task-list-item-label" for="task-item-7823803"> 画壁</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-4725651"><label class="task-list-item-label" for="task-item-4725651"> 诸神之怒</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6274429"><label class="task-list-item-label" for="task-item-6274429"> 诸神之战 2020年7月11日星期六</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-6639947"><label class="task-list-item-label" for="task-item-6639947"> X 特遣队</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-2927146"><label class="task-list-item-label" for="task-item-2927146"> 王牌特工 2 黄金圈 2020年10月1日星期四</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" checked="" disabled="" type="checkbox" id="task-item-1773397"><label class="task-list-item-label" for="task-item-1773397"> 王牌特工 1 特工学院 2020年10月1日星期四</label></li>
-</ul>
-<h2 id="待看">待看</h2>
-<ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1672989"><label class="task-list-item-label" for="task-item-1672989"> 幽灵公主</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9371801"><label class="task-list-item-label" for="task-item-9371801"> 种下星星的日子</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2604531"><label class="task-list-item-label" for="task-item-2604531"> 蜘蛛侠-英雄归来</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-958686"><label class="task-list-item-label" for="task-item-958686"> 匆匆那年</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2237554"><label class="task-list-item-label" for="task-item-2237554"> 泰坦尼克号</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-318688"><label class="task-list-item-label" for="task-item-318688"> 罗马假日</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1777794"><label class="task-list-item-label" for="task-item-1777794"> 红猪</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7392643"><label class="task-list-item-label" for="task-item-7392643"> 侧耳倾听</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4627083"><label class="task-list-item-label" for="task-item-4627083"> 小美人鱼</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5378458"><label class="task-list-item-label" for="task-item-5378458"> 玩具总动员</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5440925"><label class="task-list-item-label" for="task-item-5440925"> 怪兽大战外星人</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7977285"><label class="task-list-item-label" for="task-item-7977285"> 料理鼠王</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9455142"><label class="task-list-item-label" for="task-item-9455142"> ET</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7224929"><label class="task-list-item-label" for="task-item-7224929"> 硅谷传奇</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3096817"><label class="task-list-item-label" for="task-item-3096817"> 卧虎藏龙</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-87566"><label class="task-list-item-label" for="task-item-87566"> 阿凡达 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8379959"><label class="task-list-item-label" for="task-item-8379959"> 冰河世纪</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6432836"><label class="task-list-item-label" for="task-item-6432836"> 疯狂原始人</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8187285"><label class="task-list-item-label" for="task-item-8187285"> 守护者联盟</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-963182"><label class="task-list-item-label" for="task-item-963182"> 贫民窟的百万富翁</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9536994"><label class="task-list-item-label" for="task-item-9536994"> 银翼杀手</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3496666"><label class="task-list-item-label" for="task-item-3496666"> 彗星来的那一夜</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3662288"><label class="task-list-item-label" for="task-item-3662288"> 希特勒的名单</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5524997"><label class="task-list-item-label" for="task-item-5524997"> 十二怒汉</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8481475"><label class="task-list-item-label" for="task-item-8481475"> 异次元骇客</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3541055"><label class="task-list-item-label" for="task-item-3541055"> 感官游戏</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4514398"><label class="task-list-item-label" for="task-item-4514398"> 冒名顶替</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7562668"><label class="task-list-item-label" for="task-item-7562668"> 无姓之人</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1930540"><label class="task-list-item-label" for="task-item-1930540"> 香草的天空</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1321328"><label class="task-list-item-label" for="task-item-1321328"> 星际迷航</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8951183"><label class="task-list-item-label" for="task-item-8951183"> 独立日</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8845826"><label class="task-list-item-label" for="task-item-8845826"> 荒野猎人</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9796093"><label class="task-list-item-label" for="task-item-9796093"> 第三种爱情</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9491084"><label class="task-list-item-label" for="task-item-9491084"> 拉登日记</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5041477"><label class="task-list-item-label" for="task-item-5041477"> 乱世佳人</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7689832"><label class="task-list-item-label" for="task-item-7689832"> 苔丝</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3577568"><label class="task-list-item-label" for="task-item-3577568"> 霸王别姬</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9692343"><label class="task-list-item-label" for="task-item-9692343"> 美丽人生</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9857846"><label class="task-list-item-label" for="task-item-9857846"> 三傻大闹宝莱坞</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6147406"><label class="task-list-item-label" for="task-item-6147406"> 放牛班的春天</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5213197"><label class="task-list-item-label" for="task-item-5213197"> 怦然心动</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-720288"><label class="task-list-item-label" for="task-item-720288"> V字仇杀队</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9653035"><label class="task-list-item-label" for="task-item-9653035"> 被嫌弃的松子的一生</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-717734"><label class="task-list-item-label" for="task-item-717734"> 穿越时空的少女</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3568918"><label class="task-list-item-label" for="task-item-3568918"> 荒野生存</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8336077"><label class="task-list-item-label" for="task-item-8336077"> 叛逆的物语</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8678099"><label class="task-list-item-label" for="task-item-8678099"> 沉默的羔羊</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8495759"><label class="task-list-item-label" for="task-item-8495759"> 控方证人</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-893194"><label class="task-list-item-label" for="task-item-893194"> 锅匠 裁缝 士兵 间谍（Tinker Tailor Soldier Spy）</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9137055"><label class="task-list-item-label" for="task-item-9137055"> 第六感</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7374358"><label class="task-list-item-label" for="task-item-7374358"> 傲慢与偏见</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8541677"><label class="task-list-item-label" for="task-item-8541677"> 刺客联盟</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3725788"><label class="task-list-item-label" for="task-item-3725788"> 末日崩塌</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1688977"><label class="task-list-item-label" for="task-item-1688977"> 隧道</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8734342"><label class="task-list-item-label" for="task-item-8734342"> 感冒</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-262186"><label class="task-list-item-label" for="task-item-262186"> 铁线虫入侵</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6668762"><label class="task-list-item-label" for="task-item-6668762"> 恐怖直播</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6391741"><label class="task-list-item-label" for="task-item-6391741"> 万物理论</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2030266"><label class="task-list-item-label" for="task-item-2030266"> 社交网络</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-938263"><label class="task-list-item-label" for="task-item-938263"> 缩小人生</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8543938"><label class="task-list-item-label" for="task-item-8543938"> 地球停转之日</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6698360"><label class="task-list-item-label" for="task-item-6698360"> 恋空</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1649542"><label class="task-list-item-label" for="task-item-1649542"> 黑镜</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9382663"><label class="task-list-item-label" for="task-item-9382663"> 死亡诗社</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2000342"><label class="task-list-item-label" for="task-item-2000342"> 和莎莫的 500 天</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7185998"><label class="task-list-item-label" for="task-item-7185998"> 饮食男女</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7255893"><label class="task-list-item-label" for="task-item-7255893"> 我是大哥大</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1344351"><label class="task-list-item-label" for="task-item-1344351"> 星运里的错</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4793819"><label class="task-list-item-label" for="task-item-4793819"> 突袭</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1721015"><label class="task-list-item-label" for="task-item-1721015"> 无敌破坏王 1</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-463544"><label class="task-list-item-label" for="task-item-463544"> 无敌破坏王 2 - 大闹互联网</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8196701"><label class="task-list-item-label" for="task-item-8196701"> 回到未来</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3104505"><label class="task-list-item-label" for="task-item-3104505"> 刺客信条</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-29232"><label class="task-list-item-label" for="task-item-29232"> 死亡笔记</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-65299"><label class="task-list-item-label" for="task-item-65299"> 金田一</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7587090"><label class="task-list-item-label" for="task-item-7587090"> 安德的游戏</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9979526"><label class="task-list-item-label" for="task-item-9979526"> 最终幻想</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4246045"><label class="task-list-item-label" for="task-item-4246045"> 阿拉丁神灯</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9528255"><label class="task-list-item-label" for="task-item-9528255"> 木乃伊</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9310157"><label class="task-list-item-label" for="task-item-9310157"> 国家宝藏</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2668141"><label class="task-list-item-label" for="task-item-2668141"> 博物馆奇妙夜</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5766439"><label class="task-list-item-label" for="task-item-5766439"> 舞出我人生</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6449357"><label class="task-list-item-label" for="task-item-6449357"> 赌博默示录 1、2</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9439861"><label class="task-list-item-label" for="task-item-9439861"> 超体</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9740608"><label class="task-list-item-label" for="task-item-9740608"> 蓝色大海的传说</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4274994"><label class="task-list-item-label" for="task-item-4274994"> 来自星星的你</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1243235"><label class="task-list-item-label" for="task-item-1243235"> 巨额来电</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6109218"><label class="task-list-item-label" for="task-item-6109218"> 二代妖精</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9962101"><label class="task-list-item-label" for="task-item-9962101"> 可可西里的美丽传说</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5587177"><label class="task-list-item-label" for="task-item-5587177"> 信条</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3318630"><label class="task-list-item-label" for="task-item-3318630"> 摩天大楼</label></li>
-</ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[正则表达式总结.md]]></title>
-        <id>http://blog.kuranado.com/post/zheng-ze-biao-da-shi-zong-jie-md/</id>
-        <link href="http://blog.kuranado.com/post/zheng-ze-biao-da-shi-zong-jie-md/">
-        </link>
-        <updated>2020-10-01T00:59:20.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="基本">基本</h2>
-<ul>
-<li>正则表达式区分字母大小写</li>
-<li><code>.</code> 字符可以匹配<strong>任意</strong>单个字符、字母、数字、空格甚至是 <code>.</code> 字符本身。但在绝大多数正则表达式实现里，<code>.</code> 不能匹配换行符</li>
-<li><code>\</code> 用于转义</li>
-<li><code>\.</code> 匹配字符 <code>.</code> 本身</li>
-<li><code>\\</code> 匹配字符 <code>\</code></li>
-</ul>
-<hr>
-<h2 id="字符区间">字符区间</h2>
-<ul>
-<li><code>[abc]</code> 匹配字符 <code>a</code> 或 <code>b</code> 或 <code>c</code>，</li>
-<li><code>[0-9]</code> 等价于 <code>[0123456789]</code></li>
-<li><code>[a-z]</code> 等价于 <code>[abcdefghijklmnopqrstuvwxyz]</code>，<code>[A-Z]</code> 等价于 <code>[ABCDEFGHIJKLMNOPQRSTUVWXYZ]</code>，<code>[A-z]</code> 等价于 <code>[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz]</code>（按照 Ascii 顺序），<code>[A-Za-z0-9]</code> 等价于 <code>[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789]</code></li>
-</ul>
-<blockquote>
-<p>很多程序员喜欢把一个字符也定义为一个字符区间，如 <code>[a]</code> 等价于 <code>a</code>，<code>[\r]?</code> 等价于 <code>\r?</code>，但前者可以避免产生误解、增加可读性，所以建议一个字符也定义为字符区间</p>
-</blockquote>
-<hr>
-<h2 id="排除">排除</h2>
-<ul>
-<li><code>[^a-c]</code> 排除 <code>a</code> 或 <code>b</code> 或 <code>c</code></li>
-</ul>
-<hr>
-<h2 id="空白字符">空白字符</h2>
-<ul>
-<li><code>[\b]</code> 匹配回退（并删除）一个字符（Backspace 键）</li>
-<li><code>\f</code> 匹配换页符</li>
-<li><code>\r</code> 匹配回车符</li>
-<li><code>\n</code> 匹配换行符</li>
-<li><code>\t</code> 匹配制表符（Tab 键）</li>
-<li><code>\v</code> 匹配垂直制表符</li>
-</ul>
-<blockquote>
-<p>在 Unix 或 Linux 上使用 <code>\n</code> 匹配行尾标记，Windows 上使用 <code>\r\n</code> 匹配行尾标记</p>
-</blockquote>
-<hr>
-<h2 id="特定字符类型">特定字符类型</h2>
-<ul>
-<li><code>\d</code> 匹配任何一个数字字符，等价于 <code>[0-9]</code></li>
-<li><code>\D</code> 匹配任何一个<strong>非数字</strong>字符，等价于 <code>[^0-9]</code></li>
-<li><code>\w</code> 匹配任何一个字母（大小写均可）或数字类型或下划线字符，等价于 <code>[A-z0-9_]</code></li>
-<li><code>\W</code> 匹配任何一个<strong>非字母（大小写均可）或数字类型或下划线字符</strong>，等价于 <code>[^A-z0-9_]</code></li>
-<li><code>\s</code> 匹配任何一个空白字符，等价于 <code>[\f\r\n\t\v ]</code>，注意包含空格</li>
-<li><code>\S</code> 匹配任何一个非空白字符，等价于 <code>[^\f\r\n\t\v ]</code></li>
-</ul>
-<hr>
-<h2 id="转义">转义</h2>
-<ul>
-<li><code>.</code>、<code>[</code>、<code>]</code>、<code>\</code>、<code>+</code>、<code>*</code>、<code>?</code>、<code>(</code>、<code>)</code> 等具有特殊含义的符号被称为<strong>元字符</strong>，如果要匹配元字符，则需要对元字符进行转义，如 <code>\.</code> 匹配字符 <code>.</code>，<code>\[</code> 匹配字符 <code>[</code>，<code>\]</code> 匹配字符 <code>]</code>，<code>\\</code> 匹配字符 <code>\</code></li>
-<li><code>/</code> 字符并不是元字符，在绝大多数正则表达式解析器中如果要匹配字符 <code>/</code> 并不需要转义，但有些解析器却要求必须转义才能够匹配，所以建议总是在需要匹配字符 <code>/</code> 时对其进行转义，即使用 <code>\/</code> 匹配字符 <code>/</code>，这样在所有解析器中都能够正常工作</li>
-<li>像 <code>.</code>、<code>+</code> 这样的元字符出现在字符区间内部时，将会被解释为普通字符，可以不用转义，如 <code>[\w\.]</code> 等价于 <code>[\w.]</code>，但为了防止误解，建议显示转义</li>
-</ul>
-<hr>
-<h2 id="重复匹配">重复匹配</h2>
-<ul>
-<li><code>+</code> 元字符匹配一个或多个字符，如 <code>a+</code> 匹配一个或多个连续的 <code>a</code>，<code>[0-9]+</code> 匹配一个或多个连续的数字</li>
-<li><code>*</code> 元字符匹配 0 个或多个字符</li>
-<li><code>?</code> 元字符匹配 0 个或 1 个字符</li>
-<li><code>{n}</code> 重复匹配 n 次</li>
-<li><code>{m,n}</code> 重复匹配 m ~ n 次，如 <code>{0,1}</code> 表示最少匹配 0 次，最多匹配 1 次，等价于 <code>?</code></li>
-<li><code>{m,}</code> 重复匹配至少 m 次</li>
-<li><code>*</code> 和 <code>+</code> 是贪婪型元字符，它们会尽可能地从一段文本的开头一致匹配到末尾，而不是碰到一个匹配时就停止，如果想要碰到第一个匹配时就停止，则应该使用元字符对应的懒惰型。<code>*</code> 元字符对应的懒惰型为 <code>*?</code>，<code>+</code> 元字符对应的懒惰型为 <code>+?</code>。如想要匹配 HTML <code>&lt;b&gt;</code> 标签中的文本，贪婪型正则如下：<pre><code>&lt;[Bb]&gt;.*&lt;\/[Bb]&gt;
-</code></pre>
-但对于如下文本匹配却有问题：<br>
-<img src="http://image.kuranado.com/blog/1601514029.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-正确写法是使用懒惰型：<pre><code>&lt;[Bb]&gt;.*?&lt;\/[Bb]&gt;
-</code></pre>
-匹配结果：<br>
-<img src="http://image.kuranado.com/blog/1601514040.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
-</ul>
-<blockquote>
-<p>在为字符区间加后缀的时候，必须把后缀放到区间外面，如 <code>[0-9]+</code> 是正确的，而 <code>[0-9+]</code> 是错误的，同理 <code>[0-9]*</code>、<code>[0-9]?</code> 是正确的，而 <code>[0-9*]</code>、<code>[0-9?]</code> 是错误的<br>
-注意 <code>{m,n}</code> 是正确的，<code>{m, n}</code> 是不正确的，因为个人习惯在英文 <code>,</code> 后加一个空格，但在使用此正则时需要注意避免</p>
-</blockquote>
-<hr>
-<h2 id="位置匹配">位置匹配</h2>
-<ul>
-<li><code>\b</code> 表示边界（boundary），匹配<strong>单词</strong>的开头或结尾。这里所谓的单词是指能够被 <code>\w</code> 匹配的内容即称为单词，<code>\b</code> 匹配的时字符之间的一个位置：一边是单词（能够被 <code>\w</code> 所匹配的），一边是其它内容（能够被 <code>\W</code> 所匹配的）。<code>b</code> 匹配的是一个位置，而不是任何实际字符</li>
-<li><code>\B</code> 不匹配单词边界</li>
-<li><code>^</code> 匹配字符串开头位置。<code>^</code> 用于字符区间中表示排除，如 <code>[^abc]</code> <code>[^a-c]</code> 排除 <code>a</code> 或 <code>b</code> 或 <code>c</code>，但当 <code>^</code> 用于字符区间之外时，则表示匹配字符串的起始位置</li>
-<li><code>$</code> 匹配字符串结尾位置</li>
-<li><code>(?m)</code> 用于开启多行模式，<code>(?m)</code> 必须出现在整个模式的最前面，但实际包括 JavaScript 在内的许多正则表达式都不支持 <code>(?m)</code></li>
-</ul>
-<hr>
-<h2 id="子表达式">子表达式</h2>
-<ul>
-<li>前面介绍的重复匹配只作用于紧挨着它的前一个字符或元字符，为了能够重复匹配多个字符，需要使用子表达式</li>
-<li>子表达式必须出现在元字符 <code>(</code> 和 <code>)</code> 之间</li>
-<li>对于不需要使用子表达式的地方，如果加上元字符 <code>(</code> 和 <code>)</code> 使其成为子表达式，虽然对匹配结果不会有任何影响，但可能会影响性能，如把 <code>\d{1,3}</code> 如果写成子表达式：<code>(\d{1,3})</code>，匹配结果完全一样，但后者可能会影响性能</li>
-<li>因为模式是从左到右进行评估的，首先测试第一个，然后测试第二个，只要有任何一个模式匹配，就不再测试选择结构中的其它模式。比如 IP 地址的匹配：<br>
-IP 地址范围为 0.0.0.0 ~ 255.255.255.255，总结如下：
-<ol>
-<li>任意的 1 位或 2 位数字</li>
-<li>任意的以 1 开头的 3 位数字</li>
-<li>任意的以 2 开头，第二位数字在 0 到 4 之间的 3 位数字</li>
-<li>任意的以 25 开头，第三位数字在 0 到 5 之间的 3 位数字<br>
-很容易写出如下正则：</li>
-</ol>
-<pre><code>(((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))
-</code></pre>
-但这个正则却是错误的，如 IP 地址：<code>12.159.46.200</code> 的匹配结果如下图，最后的 0 无法被匹配，这是因为 <code>20</code> 已经被子表达式 <code>(\d{1, 2})</code> 匹配，并没有被 <code>(25[0-5])</code> 匹配<br>
-<img src="http://image.kuranado.com/blog/1601514063.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-正确的写法如下：<pre><code>((((25[0-5])\d)|(2[0-4]\d)|(1\d{2})|(\d{1,2}))\.){3}(((25[0-5])\d)|(2[0-4]\d)|(1\d{2})|(\d{1,2}))
-</code></pre>
-匹配结果：<br>
-<img src="http://image.kuranado.com/blog/1601514071.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
-</ul>
-<hr>
-<h2 id="反向引用">反向引用</h2>
-<ul>
-<li>
-<p>反向引用允许正则表达式模式引用之前匹配的结果，如想要匹配所有的 HTML 标题，正则如下：</p>
-<pre><code>(&lt;[Hh]1&gt;.*?&lt;\/[Hh]1&gt;)|(&lt;[Hh]2&gt;.*?&lt;\/[Hh]2&gt;)|(&lt;[Hh]3&gt;.*?&lt;\/[Hh]3&gt;)|(&lt;[Hh]4&gt;.*?&lt;\/[Hh]4&gt;)|(&lt;[Hh]5&gt;.*?&lt;\/[Hh]5&gt;)|(&lt;[Hh]6&gt;.*?&lt;\/[Hh]6&gt;)
-</code></pre>
-<p>匹配结果也的确是正确的：<br>
-<img src="http://image.kuranado.com/blog/1601514090.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-但是这样写未免过于臃肿，所以有人可能会这样写：</p>
-<pre><code>&lt;[Hh][1-6]&gt;.*?&lt;\/[Hh][1-6]&gt; 
-</code></pre>
-<p>但实际这却是错误的，因为他会将 <code>&lt;h2&gt;</code> 和 <code>&lt;/h3&gt;</code> 匹配到一块，而这是错误的 HTML 标题：       <img src="http://image.kuranado.com/blog/1601514113.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<p>正确的写法是使用反向引用：</p>
-<pre><code>&lt;[Hh]([1-6])&gt;.*?&lt;\/[Hh]\1&gt;
-</code></pre>
-<p>匹配结果：<br>
-<img src="http://image.kuranado.com/blog/1601514136.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-使用了 <code>\1</code> 引用了第 1 个子表达式 <code>([1-6])</code>，如果有第 2 个、第 3 个等子表达式，则使用 <code>\2</code>、<code>\3</code> 引用</p>
-</li>
-<li>
-<p>反向引用只能引用括号里的子表达式</p>
-</li>
-<li>
-<p>不同的正则实现中，反向引用的语法存在很大差异，如 JavaScript 和 vim 在搜索时使用 <code>\</code> 标识反向引用，在替换时使用 <code>$</code> 标识反向引用，Perl 搜索和替换都使用 <code>$</code> 标识反向引用</p>
-</li>
-</ul>
-<hr>
-<h2 id="反向引用替换">反向引用替换</h2>
-<ul>
-<li>如将文档中的所有邮箱地址全替换为 HTML 链接
-<ol>
-<li>先写出正则表达式，找出所有的邮箱地址，为了能够使用反向引用，加 <code>(</code> 和 <code>)</code> 让其变成子表达式：<pre><code>(\w+[\w\.]*@[\w\.]+\.\w+)
-</code></pre>
-</li>
-<li>编写替换的表达式：<pre><code>&lt;a href=&quot;mailto:$1&quot;&gt;$1&lt;/a&gt;
-</code></pre>
-</li>
-<li>开始替换，可以使用编程语言，如 JavaScript，这里简单直接以 VsCode 操作为例（注意要选择正则表达式模式）：<br>
-<img src="http://image.kuranado.com/blog/1601514160.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-点击替换按钮，替换结果如下：<br>
-<img src="http://image.kuranado.com/blog/1601514172.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
-</ol>
-</li>
-<li>反向引用替换大小写转换（并不是所有正则表达式实现都支持）：
-<ul>
-<li><code>\U</code> 把 <code>\U</code> 到 <code>\E</code> 之间的字符全部转换为大写</li>
-<li><code>\L</code> 把 <code>\L</code> 到 <code>\E</code> 之间的字符全部转换为小写</li>
-<li><code>\E</code> 结束 <code>\U</code> 或 <code>\L</code> 转换</li>
-<li><code>u</code> 把下一个字符转换为大写</li>
-<li><code>l</code> 把下一个字符转换为小写</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="环视">环视</h2>
-<ul>
-<li><code>?=</code> 表示向前查看，如：<code>?=:</code> 匹配字符 <code>:</code> 但不消耗字符 <code>:</code>，所谓的不消耗是指匹配到的 <code>:</code> 不会在最终的匹配结果中返回。如对于如下文本：<pre><code>http://www.baidu.com
-</code></pre>
-表达式 <code>http:</code> 匹配 <code>http:</code>，而如果使用向前查看，表达式为：<code>http(?=:)</code>，匹配结果为：<code>http</code>，不包含字符 <code>:</code></li>
-<li><code>?&lt;=</code> 表示向后查看，如：<code>?&lt;=\$</code> 匹配字符 <code>$</code>，但不消耗字符 <code>$</code>，如对于如下文本：<pre><code>ABC01: $253.00
-</code></pre>
-表达式 <code>\$[\d\.]+\d{2}</code> 匹配 <code>$253.00</code>，而如果使用向后查看，表达式为：<code>(?&lt;=\$)[\d\.]+\d{2}</code>，匹配结果为：<code>253.00</code>，不包含字符 <code>$</code></li>
-<li>向前查看和向后查看的否定式分别为：<code>?!</code> 和 <code>?&lt;!</code>，即将肯定式中的 <code>=</code> 换成 <code>!</code></li>
-</ul>
-<blockquote>
-<p>所有主流正则表达式实现都支持向前查看，但有些语言不支持向后查看，如 JavaScript</p>
-</blockquote>
-<hr>
-<h2 id="正则测试网站">正则测试网站</h2>
-<ul>
-<li><a href="https://regex101.com/">https://regex101.com/</a></li>
-<li><a href="https://www.regextester.com/">https://www.regextester.com/</a></li>
-</ul>
-<hr>
-<h2 id="参考">参考</h2>
-<ul>
-<li>《正则表达式必知必会修订版》</li>
-</ul>
 ]]></content>
     </entry>
 </feed>
