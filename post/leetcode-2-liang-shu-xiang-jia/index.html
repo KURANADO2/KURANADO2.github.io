@@ -6,7 +6,7 @@
 
 <title>LeetCode - 2 两数相加 | KURANADO</title>
 
-<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1602036958320">
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1602037214277">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
@@ -97,7 +97,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1602036958320" action="/search/index.html">
+            <form id="gridea-search-form" style="position: relative" data-update="1602037214277" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
             </form>
@@ -127,14 +127,14 @@
                 </div>
                 <div class="post-content">
                     <h2 id="2-两数相加"><a href="https://leetcode-cn.com/problems/add-two-numbers/">2 两数相加</a> 2020年3月16日星期一</h2>
-<p>太久没做过算法题，题目看了好久愣是没搞懂什么意思，昨天晚上想了好久，今天又在平板上画了好多遍，最后直接一边写代码一边思考独立做出来了，使用了递归，最后提交结果用时 2ms，战胜 99.98% 的 Java 提交记录，还是蛮有成就感的，嘻嘻😬<br>
-下面为我的思路：<br>
-根据题目可以大概知道需要处理以下几个问题：</p>
+<p>太久没做过算法题，题目看了好久愣是没搞懂什么意思，昨天晚上想了好久，今天又在平板上画了好多遍，最后直接一边写代码一边思考独立做出来了，使用了递归，最后提交结果用时 2ms，战胜 99.98% 的 Java 提交记录，还是蛮有成就感的，嘻嘻😬</p>
+<p>下面为我的思路：</p>
+<p>根据题目可以大概知道需要处理以下几个问题：</p>
 <ol>
 <li>进位问题</li>
-<li>两个链表长度不相等问题<br>
-第一步，不考虑进位，并且假设输入数据的两个链表长度是相同的，可简单写出如下代码：</li>
+<li>两个链表长度不相等问题</li>
 </ol>
+<p>第一步，不考虑进位，并且假设输入数据的两个链表长度是相同的，可简单写出如下代码：</p>
 <pre><code class="language-java">    public static ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
         int x = l1.val + l2.val;
         ListNode r = new ListNode(x % 10);

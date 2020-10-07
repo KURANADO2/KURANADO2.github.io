@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-07T02:16:33.926Z</updated>
+    <updated>2020-10-07T02:20:31.261Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -17,14 +17,14 @@
         </link>
         <updated>2020-10-07T02:13:23.000Z</updated>
         <content type="html"><![CDATA[<h2 id="2-两数相加"><a href="https://leetcode-cn.com/problems/add-two-numbers/">2 两数相加</a> 2020年3月16日星期一</h2>
-<p>太久没做过算法题，题目看了好久愣是没搞懂什么意思，昨天晚上想了好久，今天又在平板上画了好多遍，最后直接一边写代码一边思考独立做出来了，使用了递归，最后提交结果用时 2ms，战胜 99.98% 的 Java 提交记录，还是蛮有成就感的，嘻嘻😬<br>
-下面为我的思路：<br>
-根据题目可以大概知道需要处理以下几个问题：</p>
+<p>太久没做过算法题，题目看了好久愣是没搞懂什么意思，昨天晚上想了好久，今天又在平板上画了好多遍，最后直接一边写代码一边思考独立做出来了，使用了递归，最后提交结果用时 2ms，战胜 99.98% 的 Java 提交记录，还是蛮有成就感的，嘻嘻😬</p>
+<p>下面为我的思路：</p>
+<p>根据题目可以大概知道需要处理以下几个问题：</p>
 <ol>
 <li>进位问题</li>
-<li>两个链表长度不相等问题<br>
-第一步，不考虑进位，并且假设输入数据的两个链表长度是相同的，可简单写出如下代码：</li>
+<li>两个链表长度不相等问题</li>
 </ol>
+<p>第一步，不考虑进位，并且假设输入数据的两个链表长度是相同的，可简单写出如下代码：</p>
 <pre><code class="language-java">    public static ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
         int x = l1.val + l2.val;
         ListNode r = new ListNode(x % 10);
