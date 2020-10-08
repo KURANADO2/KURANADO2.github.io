@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>Java 浅拷贝和深拷贝.md | KURANADO</title>
+<title>LeetCode - 面试题 01.06. 字符串压缩 | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1602130206181">
 
@@ -109,225 +109,54 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    Java 浅拷贝和深拷贝.md
+                    LeetCode - 面试题 01.06. 字符串压缩
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-09-27 ·
+                        · 2020-10-08 ·
                     </time>
                     
-                        <a href="http://blog.kuranado.com/tag/prbxfSBgl/" class="post-tags">
-                            # Java
+                        <a href="http://blog.kuranado.com/tag/tfVz-s3hI/" class="post-tags">
+                            # LeetCode
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/qjEtrVrzm/" class="post-tags">
+                            # Algorithm
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <h2 id="最普通的引用复制">最普通的引用复制：</h2>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:57
- */
-@Data
-public class Student {
-
-    private int no;
-}
-</code></pre>
-<pre><code>/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:58
- */
-public class Test {
-
-    public static void main(String[] args)  {
-
-        Student student = new Student();
-        student.setNo(1);
-
-        // 复制对象引用
-        Student student2 = student;
-        student2.setNo(2);
-
-        System.out.println(student);
-        System.out.println(student2);
+                    <h2 id="面试题-0106-字符串压缩"><a href="https://leetcode-cn.com/problems/compress-string-lcci/">面试题 01.06. 字符串压缩</a> 2020年3月16日星期一</h2>
+<p>月度打卡题<br>
+因为没注意看题目描述（题目要求：若“压缩”后的字符串<strong>没有变短</strong>，则返回原先的字符串），把 <code>if (result.length() &gt;= S.length())</code> 写成了 <code>if (result.length() &gt; S.length())</code> ，导致提交错误了一次</p>
+<p>题目还是比较简单的，不再赘述了</p>
+<h3 id="完整代码-6ms">完整代码 6ms</h3>
+<pre><code class="language-java">class Solution {
+    public String compressString(String S) {
+        if (&quot;&quot;.equals(S)) {
+            return S;
+        }
+        int sum = 1;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i &lt; S.length() - 1; i ++) {
+            char m = S.charAt(i);
+            char n = S.charAt(i + 1);
+            if (n == m) {
+                sum++;
+            } else {
+                sb.append(m).append(sum);
+                sum = 1;
+            }
+        }
+        sb.append(S.charAt(S.length() - 1)).append(sum);
+        String result = sb.toString();
+        if (result.length() &gt;= S.length()) {
+            return S;
+        }
+        return sb.toString();
     }
 }
 </code></pre>
-<p>输出结果如下：</p>
-<pre><code>Student(no=2)
-Student(no=2)
-</code></pre>
-<p>更改一个 student 的 no 值，影响到了另一个 student 的 no</p>
-<h2 id="浅拷贝">浅拷贝</h2>
-<p>被拷贝的类需要实现 <code>Cloneable</code> 接口，并重写  <code>clone</code> 方法：</p>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:57
- */
-@Data
-public class Student implements Cloneable {
-
-    private int no;
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-}
-</code></pre>
-<pre><code>/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:58
- */
-public class Test {
-
-    public static void main(String[] args) throws CloneNotSupportedException {
-
-        Student student = new Student();
-        student.setNo(1);
-
-        Student student2 = (Student) student.clone();
-        student2.setNo(2);
-
-        System.out.println(student);
-        System.out.println(student2);
-    }
-}
-</code></pre>
-<p>输出结果：</p>
-<pre><code>Student(no=1)
-Student(no=2)
-</code></pre>
-<p>更改一个 student 的 no 值，不会影响另一个 student 的 no</p>
-<h2 id="深拷贝">深拷贝</h2>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:57
- */
-@Data
-public class Student implements Cloneable {
-
-    private int no;
-    private Teacher teacher;
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-}
-</code></pre>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 13:03
- */
-@Data
-public class Teacher {
-
-    private String name;
-}
-</code></pre>
-<pre><code>/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:58
- */
-public class Test {
-
-    public static void main(String[] args) throws CloneNotSupportedException {
-
-        Student student = new Student();
-        Teacher teacher = new Teacher();
-        teacher.setName(&quot;汪老师&quot;);
-        student.setNo(1);
-        student.setTeacher(teacher);
-
-        Student student2 = (Student) student.clone();
-        student2.setNo(2);
-        student2.getTeacher().setName(&quot;井老师&quot;);
-        System.out.println(student);
-        System.out.println(student2);
-    }
-}
-</code></pre>
-<p>输出结果：</p>
-<pre><code>Student(no=1, teacher=Teacher(name=井老师))
-Student(no=2, teacher=Teacher(name=井老师))
-</code></pre>
-<p>两个 student 的 no 不同，但 teacher 却一起被改变了，说明 teacher 使用的是同一个引用。这是因为 Student 类下的 <code>super.clone()</code> 仅能拷贝 Student <strong>类本身及其中包含的值类型的成员变量，并不能拷贝引用类型的成员对象</strong></p>
-<p>修改 Teacher 类如下：</p>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 13:03
- */
-@Data
-public class Teacher implements Cloneable {
-
-    private String name;
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-}
-</code></pre>
-<p>修改 Student 类如下：</p>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:57
- */
-@Data
-public class Student implements Cloneable {
-
-    private int no;
-    private Teacher teacher;
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        Student student = (Student) super.clone();
-        student.setTeacher((Teacher) teacher.clone());
-        return student;
-    }
-}
-</code></pre>
-<pre><code>/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:58
- */
-public class Test {
-
-    public static void main(String[] args) throws CloneNotSupportedException {
-
-        Student student = new Student();
-        Teacher teacher = new Teacher();
-        teacher.setName(&quot;汪老师&quot;);
-        student.setNo(1);
-        student.setTeacher(teacher);
-
-        Student student2 = (Student) student.clone();
-        student2.setNo(2);
-        student2.getTeacher().setName(&quot;井老师&quot;);
-        System.out.println(student);
-        System.out.println(student2);
-    }
-
-}
-</code></pre>
-<p>输出结果：</p>
-<pre><code>Student(no=1, teacher=Teacher(name=汪老师))
-Student(no=2, teacher=Teacher(name=井老师))
-</code></pre>
-<p>一个 student 的 teacher 改变并不会影响另一个 student 的 teacher</p>
 
                 </div>
             </article>
@@ -336,8 +165,8 @@ Student(no=2, teacher=Teacher(name=井老师))
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="http://blog.kuranado.com/post/tu-wei-qing-hua-md/" class="post-title gt-a-link">
-                    土味情话.md
+                <a href="http://blog.kuranado.com/post/leetcode-2-liang-shu-xiang-jia/" class="post-title gt-a-link">
+                    LeetCode - 2 两数相加
                 </a>
             </div>
         

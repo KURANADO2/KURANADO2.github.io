@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>Java 浅拷贝和深拷贝.md | KURANADO</title>
+<title>装饰器模式.md | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1602130206181">
 
@@ -109,12 +109,16 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    Java 浅拷贝和深拷贝.md
+                    装饰器模式.md
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-09-27 ·
+                        · 2020-10-08 ·
                     </time>
+                    
+                        <a href="http://blog.kuranado.com/tag/e80F3R9Pc/" class="post-tags">
+                            # 设计模式
+                        </a>
                     
                         <a href="http://blog.kuranado.com/tag/prbxfSBgl/" class="post-tags">
                             # Java
@@ -122,212 +126,234 @@
                     
                 </div>
                 <div class="post-content">
-                    <h2 id="最普通的引用复制">最普通的引用复制：</h2>
-<pre><code>import lombok.Data;
+                    <p>装饰器模式也称为包装器模式，往往以 Decorator 或 Wrapper 结尾的类都是使用的装饰器模式</p>
+<h2 id="什么是装饰器模式">什么是装饰器模式？</h2>
+<blockquote>
+<p>装饰器模式又称装饰模式、包装模式。用于动态的给一个对象添加一些额外的职责。就增加功能来说，装饰器模式比生成子类更为灵活</p>
+</blockquote>
+<h2 id="装饰模式结构">装饰模式结构</h2>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602130112.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<ul>
+<li>Component 组件对象的接口，可以给这些对象动态的添加职责</li>
+<li>ConcreteComponent 具体的组件对象，实现组件对象接口，通常就是被装饰器装饰的原始对象，可以给这个对象添加职责</li>
+<li>Decorator 所有装饰器的抽象父类，需要定义一个与组件接口一致的接口，并持有一个 Component 对象，也就是持有一个被装饰的对象（注意这个被装饰的对象不一定是最原始的那个对象了，有可能是被其它装饰器装饰过后的对象）</li>
+<li>ConcreateDecorator 实际的装饰器对象，实现具体要向被装饰对象添加的功能</li>
+</ul>
+<h2 id="装饰器模式实现简单示例">装饰器模式实现简单示例</h2>
+<h3 id="1-定义组件接口">1. 定义组件接口</h3>
+<pre><code class="language-java">import lombok.Data;
 
 /**
  * @Author: Xinling Jing
- * @Date: 2019-07-20 12:57
+ * @Date: 2019-07-21 15:59
  */
 @Data
-public class Student {
+public abstract class BasePerson {
 
-    private int no;
+    private String name;
+
+    public abstract String show();
 }
 </code></pre>
-<pre><code>/**
+<h3 id="2-定义具体组件类该组件类的对象将被装饰器装饰">2. 定义具体组件类，该组件类的对象将被装饰器装饰</h3>
+<p>所有人开始都是一丝不挂</p>
+<pre><code class="language-java">/**
  * @Author: Xinling Jing
- * @Date: 2019-07-20 12:58
+ * @Date: 2019-07-21 16:01
  */
-public class Test {
+public class ConcretPerson extends BasePerson {
 
-    public static void main(String[] args)  {
+    @Override
+    public String show() {
+        return this.getName() + &quot;裸体&quot;;
+    }
+}
+</code></pre>
+<h3 id="3-定义装饰器接口需要和被装饰的对象实现同样的接口">3. 定义装饰器接口，需要和被装饰的对象实现同样的接口</h3>
+<pre><code class="language-java">/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-21 16:01
+ */
+public abstract class BaseDecorator extends BasePerson {
 
-        Student student = new Student();
-        student.setNo(1);
+    private BasePerson person;
 
-        // 复制对象引用
-        Student student2 = student;
-        student2.setNo(2);
+    public BaseDecorator(BasePerson person) {
+        this.person = person;
+    }
 
-        System.out.println(student);
-        System.out.println(student2);
+    @Override
+    public String show() {
+        return person.show();
+    }
+}
+</code></pre>
+<h3 id="4-定义具体装饰器类">4. 定义具体装饰器类</h3>
+<h4 id="穿内裤的装饰器">穿内裤的装饰器</h4>
+<pre><code class="language-java">/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-21 16:14
+ */
+public class PantsDecorator extends BaseDecorator {
+
+    public PantsDecorator(BasePerson person) {
+        super(person);
+    }
+
+    @Override
+    public String show() {
+        return String.join(&quot; -&gt; &quot;, super.show(), &quot;穿上了红胖次&quot;);
+    }
+}
+</code></pre>
+<h4 id="穿裤子的装饰器">穿裤子的装饰器</h4>
+<pre><code class="language-java">/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-21 16:21
+ */
+public class TrousersDecorator extends BaseDecorator {
+
+    public TrousersDecorator(BasePerson person) {
+        super(person);
+    }
+
+    @Override
+    public String show() {
+        return String.join(&quot; -&gt; &quot;, super.show(), &quot;穿上了裤子&quot;);
+    }
+}
+</code></pre>
+<h4 id="穿-t-恤的装饰器">穿 T 恤的装饰器</h4>
+<pre><code class="language-java">/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-21 16:23
+ */
+public class TShirtDecorator extends BaseDecorator {
+
+    public TShirtDecorator(BasePerson person) {
+        super(person);
+    }
+
+    @Override
+    public String show() {
+        return String.join(&quot; -&gt; &quot;, super.show(), &quot;穿上了 T 恤&quot;);
+    }
+}
+</code></pre>
+<h4 id="梳头发的装饰器">梳头发的装饰器</h4>
+<pre><code class="language-java">/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-21 16:25
+ */
+public class HairstyleDecorator extends BaseDecorator {
+
+    public HairstyleDecorator(BasePerson person) {
+        super(person);
+    }
+
+    @Override
+    public String show() {
+        return String.join(&quot; -&gt; &quot;, super.show(), &quot;梳了一个性感的发型&quot;);
+    }
+}
+</code></pre>
+<h3 id="5-客户端调用">5. 客户端调用</h3>
+<p>客户端首先创建被装饰的组件对象，然后创建一种或多种装饰器对象，然后把装饰器对象组合起来：</p>
+<pre><code class="language-java">/**
+ * @Author: Xinling Jing
+ * @Date: 2019-07-21 16:26
+ */
+public class Client {
+
+    public static void main(String[] args) {
+        
+        // 小明家很穷，出门只能穿得起一条内裤
+        PantsDecorator decorator = new PantsDecorator(new ConcretPerson(&quot;小明&quot;));
+        System.out.println(decorator.show());
+
+        // 康康不仅穿了内裤，还穿了裤子和 T 恤
+        TShirtDecorator decorator2 = new TShirtDecorator(new TrousersDecorator(new PantsDecorator(new ConcretPerson(
+            &quot;康康&quot;))));
+        System.out.println(decorator2.show());
+
+        // 西瓜个头比较小，只需要穿条内裤，然后梳理下发型就可以了
+        HairstyleDecorator decorator3 = new HairstyleDecorator(new PantsDecorator(new ConcretPerson(&quot;西瓜&quot;)));
+        System.out.println(decorator3.show());
     }
 }
 </code></pre>
 <p>输出结果如下：</p>
-<pre><code>Student(no=2)
-Student(no=2)
+<pre><code>小明裸体 -&gt; 穿上了红胖次
+康康裸体 -&gt; 穿上了红胖次 -&gt; 穿上了裤子 -&gt; 穿上了 T 恤
+西瓜裸体 -&gt; 穿上了红胖次 -&gt; 梳了一个性感的发型
 </code></pre>
-<p>更改一个 student 的 no 值，影响到了另一个 student 的 no</p>
-<h2 id="浅拷贝">浅拷贝</h2>
-<p>被拷贝的类需要实现 <code>Cloneable</code> 接口，并重写  <code>clone</code> 方法：</p>
-<pre><code>import lombok.Data;
-
-/**
+<p>结构如下：</p>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1602130129.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="常见装饰器模式实现">常见装饰器模式实现</h2>
+<h3 id="io-流">IO 流</h3>
+<p>结构如下：</p>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602130138.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>各个类在装饰器中扮演的角色如下：</p>
+<ul>
+<li><code>InputStream</code> 对应 <code>Component</code></li>
+<li><code>FileInputStream</code> 对应 <code>ConcretComponent</code></li>
+<li><code>FilterInputStream</code> 对应 <code>Decorator</code></li>
+<li><code>DataInputStream</code>、<code>BufferedInputStream</code>、<code>PushbackInputStream</code> 均是具体的装饰器实现</li>
+</ul>
+<p>示例代码：</p>
+<pre><code class="language-java">/**
  * @Author: Xinling Jing
- * @Date: 2019-07-20 12:57
+ * @Date: 2019-07-21 18:21
  */
-@Data
-public class Student implements Cloneable {
+public class IOTest {
 
-    private int no;
+    public static void main(String[] args) {
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+        DataInputStream dataInputStream = null;
+        try {
+            dataInputStream = new DataInputStream(new BufferedInputStream(new FileInputStream(&quot;/Users/jing/Desktop&quot; +
+                &quot;/IOTest.txt&quot;)));
+            byte[] buff = new byte[dataInputStream.available()];
+            dataInputStream.read(buff);
+            System.out.println(new String(buff));
+        } catch (IOException e) {
+             e.printStackTrace();
+        } finally {
+            try {
+                if (dataInputStream != null) {
+                    dataInputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 </code></pre>
-<pre><code>/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:58
- */
-public class Test {
-
-    public static void main(String[] args) throws CloneNotSupportedException {
-
-        Student student = new Student();
-        student.setNo(1);
-
-        Student student2 = (Student) student.clone();
-        student2.setNo(2);
-
-        System.out.println(student);
-        System.out.println(student2);
-    }
-}
-</code></pre>
-<p>输出结果：</p>
-<pre><code>Student(no=1)
-Student(no=2)
-</code></pre>
-<p>更改一个 student 的 no 值，不会影响另一个 student 的 no</p>
-<h2 id="深拷贝">深拷贝</h2>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:57
- */
-@Data
-public class Student implements Cloneable {
-
-    private int no;
-    private Teacher teacher;
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-}
-</code></pre>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 13:03
- */
-@Data
-public class Teacher {
-
-    private String name;
-}
-</code></pre>
-<pre><code>/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:58
- */
-public class Test {
-
-    public static void main(String[] args) throws CloneNotSupportedException {
-
-        Student student = new Student();
-        Teacher teacher = new Teacher();
-        teacher.setName(&quot;汪老师&quot;);
-        student.setNo(1);
-        student.setTeacher(teacher);
-
-        Student student2 = (Student) student.clone();
-        student2.setNo(2);
-        student2.getTeacher().setName(&quot;井老师&quot;);
-        System.out.println(student);
-        System.out.println(student2);
-    }
-}
-</code></pre>
-<p>输出结果：</p>
-<pre><code>Student(no=1, teacher=Teacher(name=井老师))
-Student(no=2, teacher=Teacher(name=井老师))
-</code></pre>
-<p>两个 student 的 no 不同，但 teacher 却一起被改变了，说明 teacher 使用的是同一个引用。这是因为 Student 类下的 <code>super.clone()</code> 仅能拷贝 Student <strong>类本身及其中包含的值类型的成员变量，并不能拷贝引用类型的成员对象</strong></p>
-<p>修改 Teacher 类如下：</p>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 13:03
- */
-@Data
-public class Teacher implements Cloneable {
-
-    private String name;
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
-}
-</code></pre>
-<p>修改 Student 类如下：</p>
-<pre><code>import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:57
- */
-@Data
-public class Student implements Cloneable {
-
-    private int no;
-    private Teacher teacher;
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        Student student = (Student) super.clone();
-        student.setTeacher((Teacher) teacher.clone());
-        return student;
-    }
-}
-</code></pre>
-<pre><code>/**
- * @Author: Xinling Jing
- * @Date: 2019-07-20 12:58
- */
-public class Test {
-
-    public static void main(String[] args) throws CloneNotSupportedException {
-
-        Student student = new Student();
-        Teacher teacher = new Teacher();
-        teacher.setName(&quot;汪老师&quot;);
-        student.setNo(1);
-        student.setTeacher(teacher);
-
-        Student student2 = (Student) student.clone();
-        student2.setNo(2);
-        student2.getTeacher().setName(&quot;井老师&quot;);
-        System.out.println(student);
-        System.out.println(student2);
-    }
-
-}
-</code></pre>
-<p>输出结果：</p>
-<pre><code>Student(no=1, teacher=Teacher(name=汪老师))
-Student(no=2, teacher=Teacher(name=井老师))
-</code></pre>
-<p>一个 student 的 teacher 改变并不会影响另一个 student 的 teacher</p>
+<h2 id="总结">总结</h2>
+<p>下面开始装饰器模式的技术总结：</p>
+<ul>
+<li>装饰器模式的本质是<strong>动态组合</strong></li>
+<li>装饰器用来装饰组件，装饰器一定要实现和组件类一致的接口，保证它们是同一个类型，并且具有同一个外观，这样组合完成的装饰才能递归调用下去</li>
+<li>各个装饰器之间最好是完全独立的功能，不要有依赖，以在装饰组合的时候，可以随心所欲，不受先后顺序的限制，也就是说先装饰谁和后装饰谁都应该是一样的，否则会大大降低装饰器组合的灵活性。虽然在实际应用中，可以根据具体的功能要求而有顺序的限制，但应该尽量避免这种情况</li>
+</ul>
+<h3 id="优点">优点</h3>
+<ul>
+<li>装饰模式比继承更灵活。继承是静态的，一旦继承，所有子类都有一样的功能，然而有时候有些子类可能并不需要这些继承而来的功能；装饰模式把功能分离到多个装饰器中，然后通过对象组合的方式，在运行时动态的组合功能，每个被装饰的对象最终拥有哪些功能，是由运行时期动态组合的功能来决定的</li>
+<li>功能容易复用。一个对象可以使用多个装饰器，一个装饰器也可以用来装饰多个对象，从而实现功能复用</li>
+</ul>
+<h3 id="缺点">缺点</h3>
+<ul>
+<li>会产生很多细粒度的对象。装饰模式是把一系列复杂的功能分散到多个装饰器当中，一般每个装饰器只实现一个功能，这样会产生很多细粒度的对象，而且功能越复杂，需要的细粒度对象也就越多，大量小对象占据内存，一定程度上会影响性能</li>
+</ul>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>《研磨设计模式》</li>
+</ul>
+<h2 id="源码">源码</h2>
+<ul>
+<li><a href="https://github.com/KURANADO2/DesignPatterns">https://github.com/KURANADO2/DesignPatterns</a></li>
+</ul>
 
                 </div>
             </article>
@@ -336,8 +362,8 @@ Student(no=2, teacher=Teacher(name=井老师))
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="http://blog.kuranado.com/post/tu-wei-qing-hua-md/" class="post-title gt-a-link">
-                    土味情话.md
+                <a href="http://blog.kuranado.com/post/leetcode-mian-shi-ti-0106-zi-fu-chuan-ya-suo/" class="post-title gt-a-link">
+                    LeetCode - 面试题 01.06. 字符串压缩
                 </a>
             </div>
         
