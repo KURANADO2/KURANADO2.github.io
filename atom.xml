@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-08T04:10:28.701Z</updated>
+    <updated>2020-10-08T09:22:38.975Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -782,10 +782,23 @@ span {
 <td>⌥P</td>
 <td>打开 Postman</td>
 </tr>
+<tr>
+<td>⌥O</td>
+<td>打开 Word</td>
+</tr>
+<tr>
+<td>⌥E</td>
+<td>打开 Excel</td>
+</tr>
 </tbody>
 </table>
 <h2 id="个人配置文件">个人配置文件</h2>
 <p>见 GitHub：<a href="https://github.com/KURANADO2/hammerspoon-kuranado/blob/main/init.lua">https://github.com/KURANADO2/hammerspoon-kuranado/blob/main/init.lua</a></p>
+<h2 id="关于应用-bundle-id">关于应用 bundle id</h2>
+<p>上面配置中使用快捷键切换应用，需要拿到应用的 bundle id（请注意 bundle id 配置到 hammerspoon 中需要区分大小写，否则 console 会报错），可通过如下方式拿到：</p>
+<pre><code>osascript -e 'id of app &quot;Name of App&quot;'
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602148909.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 <h2 id="参考">参考</h2>
 <ul>
 <li><a href="https://mrdear.cn/posts/osx_app_switcher.html">学长博客 - OSX--OSX应用快速切换方案</a></li>
@@ -796,6 +809,7 @@ span {
 <li><a href="https://zhuanlan.zhihu.com/p/72499152">Hammerspoon - 岂止于窗口管理</a></li>
 <li><a href="https://github.com/rtoshiro/hammerspoon-init">hammerspoon-init</a></li>
 <li><a href="https://www.runoob.com/lua/lua-tutorial.html">菜鸟教程 - Lua 教程</a></li>
+<li><a href="https://robservatory.com/easily-see-any-apps-bundle-identifier/">Easily see any app’s bundle identifier</a></li>
 </ul>
 ]]></content>
     </entry>
