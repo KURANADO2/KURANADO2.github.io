@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-08T09:22:38.975Z</updated>
+    <updated>2020-10-09T10:53:56.312Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,157 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[LeetCode - 1160. 拼写单词]]></title>
+        <id>http://blog.kuranado.com/post/leetcode-1160-pin-xie-dan-ci/</id>
+        <link href="http://blog.kuranado.com/post/leetcode-1160-pin-xie-dan-ci/">
+        </link>
+        <updated>2020-10-09T10:52:02.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="1160-拼写单词"><a href="https://leetcode-cn.com/problems/find-words-that-can-be-formed-by-characters/">1160. 拼写单词</a> 2020年3月17日星期二</h2>
+<p>月度打卡题<br>
+首先能想到的肯定是要对 chars 打表</p>
+<h3 id="解法一-46-ms">解法一 46 ms</h3>
+<p>在刚看到这题时，白天是想到了要用数组的，晚上真正回家做的时候竟全然忘记数组，使用了 Map，不过使用数组还是 Map 都大差不差，这一题的主要解题差距还是在于遍历问题，解法一是多遍历了一层的方法，比较耗时</p>
+<pre><code class="language-java">class Solution {
+    public int countCharacters(String[] words, String chars) {
+        Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;(26);
+        for (int i = 0; i &lt; chars.length(); i++) {
+            String s = chars.substring(i, i + 1);
+            Integer sum = map.get(s);
+            if (sum == null) {
+                sum = 1;
+            } else {
+                sum++;
+            }
+            map.put(s, sum);
+        }
+        int result = 0;
+        for (int i = 0; i &lt; words.length; i++) {
+            Map&lt;String, Integer&gt; mapCopy = new HashMap&lt;&gt;(map);
+            String word = words[i];
+            boolean flag = true;
+            for (int j = 0; j &lt; word.length(); j++) {
+                String s = word.substring(j, j + 1);
+                Integer sum = mapCopy.get(s);
+                if (sum == null || sum == 0) {
+                    flag = false;
+                    break;
+                } else {
+                    sum--;
+                    mapCopy.put(s, sum);
+                }
+            }
+            if (flag) {
+                result += word.length();
+            }
+        }
+        return result;
+    }
+}
+</code></pre>
+<h3 id="时间复杂度">时间复杂度</h3>
+<p>O(n<sup>2</sup>)</p>
+<h3 id="空间复杂度">空间复杂度</h3>
+<p>O(n)</p>
+<h3 id="解法二-6-ms">解法二 6 ms</h3>
+<p>相较解法一，少了一层遍历，</p>
+<pre><code class="language-java">class Solution {
+    public int countCharacters(String[] words, String chars) {
+        int[] table = new int[26];
+        for (int i = 0; i &lt; chars.length(); i++) {
+            table[chars.charAt(i) - 'a'] ++;
+        }
+        int result = 0;
+        for (int i = 0; i &lt; words.length; i++) {
+            String word = words[i];
+            boolean flag = true;
+            int[] tmp = new int[26];
+            for (int j = 0; j &lt; word.length(); j++) {
+                int index = word.charAt(j) - 'a';
+                if (tmp[index] == table[index]) {
+                    flag = false;
+                    break;
+                }
+                tmp[index]++;
+            }
+            if (flag) {
+                result += word.length();
+            }
+        }
+        return result;
+    }
+}
+</code></pre>
+<h4 id="时间复杂度-2">时间复杂度</h4>
+<p>O(n)</p>
+<h4 id="空间复杂度-2">空间复杂度</h4>
+<p>O(n)</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[CSS 文本溢出显示省略号.md]]></title>
+        <id>http://blog.kuranado.com/post/css-wen-ben-yi-chu-xian-shi-sheng-lue-hao-md/</id>
+        <link href="http://blog.kuranado.com/post/css-wen-ben-yi-chu-xian-shi-sheng-lue-hao-md/">
+        </link>
+        <updated>2020-10-09T10:48:23.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="单行文本溢出显示省略号">单行文本溢出显示省略号</h2>
+<p>单行文本溢出显示省略号必须满足如下三个条件：</p>
+<ol>
+<li>先强制一行内显示文本，禁止自动换行</li>
+<li>超出部分隐藏</li>
+<li>使用省略号代替隐藏的超出部分<br>
+默认自动换行：</li>
+</ol>
+<pre><code>div {
+    width: 100px;
+    height: 50px;
+    background-color: skyblue;
+}
+&lt;div&gt;
+    单行文本溢出显示省略号
+&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602240539.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<pre><code>div {
+    width: 100px;
+    height: 50px;
+    /* 1. 禁止自动换行，white-space 默认值为 normal，表示自动换行 */
+    white-space: nowrap;
+    /* 2. 隐藏溢出部分 */
+    overflow: hidden;
+    /* 3.  文字溢出时，使用省略号代替显示隐藏的溢出部分 */
+    text-overflow: ellipsis;
+    background-color: skyblue;
+}
+&lt;div&gt;
+    单行文本溢出显示省略号
+&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1602240551.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="多行文本溢出显示省略号">多行文本溢出显示省略号</h2>
+<p>如下方法有较大的兼容性问题，适合于 WebKit 内核浏览器或移动端浏览器（移动端浏览器大部分是 WebKit 内核）</p>
+<pre><code>div {
+    width: 100px;
+    height: 65px;
+    /* 1. 隐藏溢出部分 */
+    overflow: hidden;
+    /* 2. 文字溢出时，使用省略号代替显示隐藏的超出部分 */
+    text-overflow: ellipsis;
+    background-color: skyblue;
+    /* 弹性伸缩盒子模型显示 */
+    display: -webkit-box;
+    /* 限制在一个块内元素显示文本的行数，想让第几行末尾显示省略号，该属性值就等于几 */
+    -webkit-line-clamp: 3;
+    /* 设置或检索伸缩和对象的子元素的排列方式 */
+    -webkit-box-orient: vertical;
+}
+&lt;div&gt;
+    多行文本溢出显示省略号，不需要记代码，用时直接复制即可
+&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602240571.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[装饰器模式.md]]></title>
         <id>http://blog.kuranado.com/post/guan-cha-zhe-mo-shi/</id>
@@ -1529,77 +1680,6 @@ div {
 &lt;p&gt;绝对定位或固定定位会压住下面标准流所有的内容&lt;/p&gt;
 </code></pre>
 <figure data-type="image" tabindex="7"><img src="http://image.kuranado.com/blog/1601863543.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CSS 属性书写顺序.md]]></title>
-        <id>http://blog.kuranado.com/post/css-shu-xing-shu-xie-shun-xu-md/</id>
-        <link href="http://blog.kuranado.com/post/css-shu-xing-shu-xie-shun-xu-md/">
-        </link>
-        <updated>2020-10-04T02:21:22.000Z</updated>
-        <content type="html"><![CDATA[<p>建议遵循以下规则：</p>
-<ol>
-<li>布局定位属性：display/position/float/clear/visibility/overflow（建议 display 第一个写，毕竟关系到模式）</li>
-<li>自身属性：width/heigth/margin/padding/border/background</li>
-<li>文本属性：color/font/text-decoration/text-align/vertical-align/white-space/break-word</li>
-<li>其它属性（CSS3）：content/cursor/border-radius/box-shadow/text-shadow/background:linear-gradient/...</li>
-</ol>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[LeetCode - 1 两数之和]]></title>
-        <id>http://blog.kuranado.com/post/leetcode-1-liang-shu-zhi-he/</id>
-        <link href="http://blog.kuranado.com/post/leetcode-1-liang-shu-zhi-he/">
-        </link>
-        <updated>2020-10-04T02:18:00.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="1-两数之和"><a href="https://leetcode-cn.com/problems/two-sum/">1 两数之和</a> 2020年3月15日星期日</h2>
-<p>在 LeetCode 做的第一题，比起以前做的 OJ 系统，省去了编写繁琐、无脑的读取文件操作部分的代码，很人性化</p>
-<h3 id="解法一-92ms">解法一 92ms</h3>
-<p>暴力遍历</p>
-<pre><code class="language-java">class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        int[] result = new int[2];
-        for (int i = 0; i &lt; nums.length; i++) {
-            for (int j = i + 1; j &lt; nums.length; j++) {
-                if (nums[i] + nums[j] == target) {
-                    result[0] = i;
-                    result[1] = j;
-                    return result;
-                }
-            }
-        }
-        return result;
-    }
-}
-</code></pre>
-<h4 id="时间复杂度">时间复杂度</h4>
-<p>O(n<sup>2</sup>)</p>
-<h4 id="空间复杂度">空间复杂度</h4>
-<p>O(1)</p>
-<h3 id="解法二-4ms">解法二 4ms</h3>
-<p>借助 Hash 表</p>
-<pre><code class="language-java">class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;(nums.length);
-        for (int i = 0; i &lt; nums.length; i++) {
-            int a = target - nums[i];
-            if (map.containsKey(a)) {
-                return new int[]{map.get(a), i};
-            }
-            map.put(nums[i], i);
-        }
-        throw new IllegalArgumentException();
-    }
-}
-</code></pre>
-<h4 id="个人观点">个人观点</h4>
-<p>题目并没有明确提到给定数组中不会出现重复元素，但根据题意，如果真的有重复元素，那结果就可能会有多个，真的有重复数据，就会自动覆盖掉，代码仍可以返回其中一组答案，所以把数组元素当作 map 的 key 也是没有问题的</p>
-<h4 id="时间复杂度-2">时间复杂度</h4>
-<p>O(n)<br>
-遍历了包含有 n 个元素的列表一次。在表中进行的每次查找只花费 O(1) 的时间</p>
-<h4 id="空间复杂度-2">空间复杂度</h4>
-<p>O(n)<br>
-所需的额外空间取决于哈希表中存储的元素数量，最多存储 n 个元素</p>
 ]]></content>
     </entry>
 </feed>

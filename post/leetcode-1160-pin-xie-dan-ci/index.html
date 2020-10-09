@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>CSS 选择器.md | KURANADO</title>
+<title>LeetCode - 1160. 拼写单词 | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1602240808273">
 
@@ -109,199 +109,102 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    CSS 选择器.md
+                    LeetCode - 1160. 拼写单词
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-09-30 ·
+                        · 2020-10-09 ·
                     </time>
                     
-                        <a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/" class="post-tags">
-                            # CSS
+                        <a href="http://blog.kuranado.com/tag/tfVz-s3hI/" class="post-tags">
+                            # LeetCode
                         </a>
                     
-                        <a href="http://blog.kuranado.com/tag/Eb-3VtzRjb/" class="post-tags">
-                            # HTML
-                        </a>
-                    
-                        <a href="http://blog.kuranado.com/tag/AIzjXFqb32/" class="post-tags">
-                            # 前端
+                        <a href="http://blog.kuranado.com/tag/qjEtrVrzm/" class="post-tags">
+                            # Algorithm
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>[TOC]</p>
-<h2 id="基础选择器">基础选择器</h2>
-<h3 id="标签选择器">标签选择器</h3>
-<pre><code>/** 选择所有 p 标签 **/
-p {
-    color: red;
+                    <h2 id="1160-拼写单词"><a href="https://leetcode-cn.com/problems/find-words-that-can-be-formed-by-characters/">1160. 拼写单词</a> 2020年3月17日星期二</h2>
+<p>月度打卡题<br>
+首先能想到的肯定是要对 chars 打表</p>
+<h3 id="解法一-46-ms">解法一 46 ms</h3>
+<p>在刚看到这题时，白天是想到了要用数组的，晚上真正回家做的时候竟全然忘记数组，使用了 Map，不过使用数组还是 Map 都大差不差，这一题的主要解题差距还是在于遍历问题，解法一是多遍历了一层的方法，比较耗时</p>
+<pre><code class="language-java">class Solution {
+    public int countCharacters(String[] words, String chars) {
+        Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;(26);
+        for (int i = 0; i &lt; chars.length(); i++) {
+            String s = chars.substring(i, i + 1);
+            Integer sum = map.get(s);
+            if (sum == null) {
+                sum = 1;
+            } else {
+                sum++;
+            }
+            map.put(s, sum);
+        }
+        int result = 0;
+        for (int i = 0; i &lt; words.length; i++) {
+            Map&lt;String, Integer&gt; mapCopy = new HashMap&lt;&gt;(map);
+            String word = words[i];
+            boolean flag = true;
+            for (int j = 0; j &lt; word.length(); j++) {
+                String s = word.substring(j, j + 1);
+                Integer sum = mapCopy.get(s);
+                if (sum == null || sum == 0) {
+                    flag = false;
+                    break;
+                } else {
+                    sum--;
+                    mapCopy.put(s, sum);
+                }
+            }
+            if (flag) {
+                result += word.length();
+            }
+        }
+        return result;
+    }
 }
 </code></pre>
-<h3 id="类选择器">类选择器</h3>
-<pre><code>/** 选择所有 class 属性值为 red 的标签 **/
-.red {
-    color: red;
-}
-&lt;p class=&quot;red&quot;&gt;Hello&lt;/p&gt;
-</code></pre>
-<h3 id="类选择器-多类名">类选择器-多类名</h3>
-<pre><code>.box {
-    width: 100px;
-    height: 100px;
-    font-size: 35px;
-}
-.red {
-    color: red;
-}
-.green {
-    color: green;
-}
-&lt;div class=&quot;box red&quot;&gt;红色&lt;/div&gt;
-&lt;div class=&quot;box green&quot;&gt;绿色&lt;/div&gt;
-&lt;div class=&quot;box red&quot;&gt;红色&lt;/div&gt;
-</code></pre>
-<h3 id="id-选择器">ID 选择器</h3>
-<pre><code>#pink {
-    color: pink;
-}
-&lt;p id=&quot;pink&quot;&gt;Hello&lt;/p&gt;
-</code></pre>
-<h3 id="通配符选择器">通配符选择器</h3>
-<pre><code>/** 选择页面所有标签 **/
-* {
-    maring: 0;
-    padding: 0;
+<h3 id="时间复杂度">时间复杂度</h3>
+<p>O(n<sup>2</sup>)</p>
+<h3 id="空间复杂度">空间复杂度</h3>
+<p>O(n)</p>
+<h3 id="解法二-6-ms">解法二 6 ms</h3>
+<p>相较解法一，少了一层遍历，</p>
+<pre><code class="language-java">class Solution {
+    public int countCharacters(String[] words, String chars) {
+        int[] table = new int[26];
+        for (int i = 0; i &lt; chars.length(); i++) {
+            table[chars.charAt(i) - 'a'] ++;
+        }
+        int result = 0;
+        for (int i = 0; i &lt; words.length; i++) {
+            String word = words[i];
+            boolean flag = true;
+            int[] tmp = new int[26];
+            for (int j = 0; j &lt; word.length(); j++) {
+                int index = word.charAt(j) - 'a';
+                if (tmp[index] == table[index]) {
+                    flag = false;
+                    break;
+                }
+                tmp[index]++;
+            }
+            if (flag) {
+                result += word.length();
+            }
+        }
+        return result;
+    }
 }
 </code></pre>
-<h2 id="复合选择器">复合选择器</h2>
-<h3 id="后代选择器又称包含选择器重要">后代选择器（又称包含选择器，重要）</h3>
-<pre><code>/** 选择 ol 下的所有 li 标签（包括子元素、孙子元素、重孙等） **/
-ol li {
-    color: pink;
-}
-</code></pre>
-<h3 id="子选择器重要">子选择器（重要）</h3>
-<pre><code>/** 只选择第一代子元素（只选择亲儿子） **/
-div &gt; a {
-    color: red;
-}
-</code></pre>
-<h3 id="并集选择器重要">并集选择器（重要）</h3>
-<pre><code>/** 选择 div 标签、 p 标签和 .nav 下的 ul 下的 li 标签 **/
-div, 
-p, 
-.nav ul li {
-    color: red;
-}
-</code></pre>
-<h3 id="伪类选择器">伪类选择器</h3>
-<h4 id="链接伪类选择器">链接伪类选择器</h4>
-<pre><code>/** 选择所有未被点击过的链接（不常用，一般直接用 a 标签选择器选择） **/
-a:link {
-    color: black;
-}
-/** 选择所有点击过的链接 **/
-a:visited {
-    color: orange;
-}
-/** 选择鼠标悬浮的链接，最常用 **/
-a:hover {
-    color: blue;
-}
-/** 选择鼠标按下，还没有抬起的链接 **/
-a:active {
-    color: green;
-}
-</code></pre>
-<p>一般只会用到 a:hover 选择器，如果 4 个链接伪类选择器都要使用，则一定要按照 <strong>LVHA</strong> 的先后顺序定义，否则将不会生效</p>
-<h4 id="focus-伪类选择器">focus 伪类选择器</h4>
-<pre><code>/** 选择获取焦点的表单元素 **/
-input:focus {
-    background-color: yellow;
-}
-</code></pre>
-<h2 id="选择器权重优先级">选择器权重（优先级）</h2>
-<ul>
-<li>!import &gt; 行内样式 &gt; ID 选择器 &gt; 类选择器，伪类选择器 &gt; 标签选择器 &gt; 继承或者 <code>*</code></li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>选择器</th>
-<th>权重</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>继承或者 <code>*</code></td>
-<td>0 0 0 0</td>
-</tr>
-<tr>
-<td>标签选择器，伪元素选择器</td>
-<td>0 0 0 1</td>
-</tr>
-<tr>
-<td>类选择器，伪类选择器，属性选择器（CSS3）</td>
-<td>0 0 1 0</td>
-</tr>
-<tr>
-<td>ID 选择器</td>
-<td>0 1 0 0</td>
-</tr>
-<tr>
-<td>行内样式</td>
-<td>1 0 0 0</td>
-</tr>
-<tr>
-<td>!import</td>
-<td>无穷大</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>浏览器为 a 标签默认指定了蓝色、带下划线的样式，如：</li>
-</ul>
-<pre><code>body {
-    color: red;
-}
-&lt;body&gt;
-    &lt;!-- 显示为蓝色带下划线，因为浏览器默认为 a 标签指定了蓝色下划线，而标签选择器优先级 &gt; 继承，所以最终显示为蓝色带下划线 --&gt;
-    &lt;a href=&quot;#&quot;&gt;链接&lt;/a&gt;
-&lt;/body&gt;
-</code></pre>
-<ul>
-<li>复合选择器会有权重叠加，如：</li>
-</ul>
-<pre><code>ul li {
-    color: red;
-}
-li {
-    color: green;
-}
-&lt;ul&gt;
-    &lt;!-- 显示为红色，而不是绿色，因为标签选择器的权重为 0 0 0 1，所以复合选择器 ul li 的权重为 0 0 0 1 + 0 0 0 1 = 0 0 0 2，0 0 0 2 &gt; 标签选择器 li 的权重 0 0 0 1，所以最后显示为红色而不是绿色 --&gt;
-    &lt;li&gt;Hello&lt;/li&gt;
-&lt;/ul&gt;
-</code></pre>
-<p>再如：</p>
-<pre><code>.nav li {
-    color: pink;
-}
-ul li {
-    color: red;
-}
-li {
-    color: green;
-}
-&lt;ul class=&quot;nav&quot;&gt;
-    &lt;!-- 显示为粉色，不是红色也不是绿色，复合选择器 .nav li 的权重为 0 0 1 0 + 0 0 0 1 = 0 0 1 1，该值大于复合选择器 ul li 的权重 0 0 0 2，也大于标签选择器 li 的权重 0 0 0 1，所以最后显示为粉色 --&gt;
-    &lt;li&gt;Hello&lt;/li&gt;
-&lt;/ul&gt;
-</code></pre>
-<ul>
-<li>权重虽然会有叠加，但一定不会有进位，如 0 0 0 9 + 0 0 0 2 = 0 0 0 11 而不是 0 0 1 1</li>
-</ul>
+<h4 id="时间复杂度-2">时间复杂度</h4>
+<p>O(n)</p>
+<h4 id="空间复杂度-2">空间复杂度</h4>
+<p>O(n)</p>
 
                 </div>
             </article>
@@ -310,8 +213,8 @@ li {
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="http://blog.kuranado.com/post/githubgitlab-tong-shi-guan-li-duo-ge-ssh-keymd/" class="post-title gt-a-link">
-                    同时管理 GitHub/GitLab/Gitee 等多个 SSH  Key.md
+                <a href="http://blog.kuranado.com/post/css-wen-ben-yi-chu-xian-shi-sheng-lue-hao-md/" class="post-title gt-a-link">
+                    CSS 文本溢出显示省略号.md
                 </a>
             </div>
         
