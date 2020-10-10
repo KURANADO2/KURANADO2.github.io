@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-09T10:53:56.312Z</updated>
+    <updated>2020-10-10T03:55:22.597Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -108,9 +108,9 @@
 <ol>
 <li>先强制一行内显示文本，禁止自动换行</li>
 <li>超出部分隐藏</li>
-<li>使用省略号代替隐藏的超出部分<br>
-默认自动换行：</li>
+<li>使用省略号代替隐藏的超出部分</li>
 </ol>
+<p>默认自动换行：</p>
 <pre><code>div {
     width: 100px;
     height: 50px;
@@ -163,8 +163,8 @@
     </entry>
     <entry>
         <title type="html"><![CDATA[装饰器模式.md]]></title>
-        <id>http://blog.kuranado.com/post/guan-cha-zhe-mo-shi/</id>
-        <link href="http://blog.kuranado.com/post/guan-cha-zhe-mo-shi/">
+        <id>http://blog.kuranado.com/post/zhuang-shi-qi-mo-shi/</id>
+        <link href="http://blog.kuranado.com/post/zhuang-shi-qi-mo-shi/">
         </link>
         <updated>2020-10-08T03:23:26.000Z</updated>
         <content type="html"><![CDATA[<p>装饰器模式也称为包装器模式，往往以 Decorator 或 Wrapper 结尾的类都是使用的装饰器模式</p>
