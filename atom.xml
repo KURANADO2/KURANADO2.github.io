@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-10T03:55:22.597Z</updated>
+    <updated>2020-10-10T11:27:02.886Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,63 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[CSS margin 负值的巧妙应用.md]]></title>
+        <id>http://blog.kuranado.com/post/css-margin-fu-zhi-de-qiao-miao-ying-yong-md/</id>
+        <link href="http://blog.kuranado.com/post/css-margin-fu-zhi-de-qiao-miao-ying-yong-md/">
+        </link>
+        <updated>2020-10-10T11:21:47.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="margin-负值的巧妙运用">margin 负值的巧妙运用</h2>
+<p>先看如下代码：</p>
+<pre><code>ul li {
+    float: left;
+    list-style: none;
+    width: 100px;
+    height: 100px;
+    border: 1px solid skyblue;
+}
+&lt;ul&gt;
+    &lt;li&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602328932.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>可以看到相邻 li 之间的 border 左右贴在一块，像素数为 2，而我们一般不需要这种效果，所以向左浮动时，可以让每个 li margin-left = -1，即每个 li 向左多走一个像素，这样就能让相邻的 border 上下重叠：</p>
+<pre><code>ul li {
+    float: left;
+    margin-left: -1px;
+    list-style: none;
+    width: 100px;
+    height: 100px;
+    border: 1px solid skyblue;
+}
+&lt;ul&gt;
+    &lt;li&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1602328945.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>效果是实现了，如果现在要求鼠标悬浮在某个 li 上面时，将其边框改成红色，相信大家很容易写出如下代码：</p>
+<pre><code>ul li:hover {
+    border: 1px solid red;
+}
+</code></pre>
+<p>鼠标悬浮在最后一个 li 上，它的四个边框确实都变成了红色，但是鼠标移到前三个 li 上时，边框却是如下效果：</p>
+<p>这就是因为 margin-left: 1px; 导致左边 li 的右边框被右边 li 的左边框给压住了<br>
+为了解决这个问题，可以在鼠标悬浮时为 li 添加一个 relative 定位，因为 relative 定位占有原先的位置（不脱标）且会压住浮动的盒子：</p>
+<pre><code>ul li:hover {
+    position: relative;
+    border: 1px solid red;
+}
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602328967.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>那如果每个 li 中上面都有一些元素，比如按钮，就需要每个 li 都是相对定位，li 上面的元素使用绝对定位，这时候在鼠标悬浮到某个 li 时，只要给当前鼠标悬浮的 li 设置一个更大的 z-index 就可以正常压住其他 li 的边框了</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[LeetCode - 1160. 拼写单词]]></title>
         <id>http://blog.kuranado.com/post/leetcode-1160-pin-xie-dan-ci/</id>
@@ -1331,355 +1388,6 @@ public class Computer {
 <li><a href="https://mrdear.cn/2018/03/06/experience/design_patterns--builder-model/">学长博客</a></li>
 <li><a href="https://www.youtube.com/watch?v=03ly8k1FkVc">【GOF23设计模式】 建造者模式详解</a></li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CSS 定位.md]]></title>
-        <id>http://blog.kuranado.com/post/css-ding-wei-md/</id>
-        <link href="http://blog.kuranado.com/post/css-ding-wei-md/">
-        </link>
-        <updated>2020-10-05T02:02:39.000Z</updated>
-        <content type="html"><![CDATA[<p>[TOC]</p>
-<h2 id="为什么需要定位">为什么需要定位</h2>
-<p>使用标准流或浮动很难快速实现如下效果：</p>
-<ol>
-<li>某个元素可以自由的在一个盒子内移动位置，并且压住其它盒子</li>
-<li>当我们滚动窗口的时候，盒子可以固定在屏幕的某个位置</li>
-</ol>
-<p>而定位具有如下特性：</p>
-<ul>
-<li>定位可以让盒子自由的在某个盒子内移动位置或者固定在屏幕中某个位置，并且可以压住其它盒子</li>
-</ul>
-<h2 id="定位组成">定位组成</h2>
-<p>定位 = 定位模式 + 边偏移</p>
-<h3 id="边偏移">边偏移</h3>
-<p>边偏移决定了元素的最终位置，也就是定位的盒子移动到的最终位置</p>
-<ul>
-<li>top 顶部偏移量，定义元素相对其父元素上边线的距离</li>
-<li>bottom 底部偏移量，定义元素相对其父元素下边线的距离</li>
-<li>left 左侧偏移量，定义元素相对其父元素左边线的距离</li>
-<li>right 右侧偏移量，定义元素相对其父元素右边线的距离</li>
-</ul>
-<p>如果一个定位盒子既设置了 left，又设置了 right，则默认会执行 left；如果一个定位盒子既设置了 top，又设置了 bottom，则默认会执行 top。不过一般情况，我们也不会为同一个定位盒子这样设置边偏移</p>
-<h3 id="定位模式">定位模式</h3>
-<p>定位模式用于指定一个元素在文档中的定位方式</p>
-<ul>
-<li>position
-<ul>
-<li>static 静态定位（了解）</li>
-<li>relative 相对定位（重要）</li>
-<li>absolute 绝对定位（重要）</li>
-<li>fixed 固定定位（重要）</li>
-<li>sticky 粘性定位（了解）</li>
-</ul>
-</li>
-</ul>
-<h4 id="static-静态定位">static 静态定位</h4>
-<p>静态定位就是元素的默认定位方式，无定位的意思。静态定位按照标准流特性摆放位置，它没有边偏移</p>
-<h4 id="relative-相对定位">relative 相对定位</h4>
-<p>相对定位在元素移动位置时，是相对于它原来的位置来移动的</p>
-<ul>
-<li>相对定位最典型的应用就是给绝对定位当爹的</li>
-<li>移动前在标准流的位置会继续占有，也就是<strong>不脱标</strong></li>
-</ul>
-<pre><code>.one {
-    position: relative;
-    top: 100px;
-    left: 100px;
-    width: 200px;
-    height: 200px;
-    background-color: purple;
-}
-.two {
-    width: 200px;
-    height: 200px;
-    background-color: gray;
-}
-&lt;div class=&quot;one&quot;&gt;&lt;/div&gt;
-&lt;div class=&quot;two&quot;&gt;&lt;/div&gt;
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601863410.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<h4 id="absolute-绝对定位">absolute 绝对定位</h4>
-<p>绝对定位是相对于它的祖先元素来移动位置的</p>
-<ul>
-<li>如果绝对定位的元素没有祖先元素，或者<strong>祖先元素没有定位</strong>，则以浏览器为准定位</li>
-</ul>
-<pre><code>.father {
-    width: 200px;
-    height: 200px;
-    background-color: purple;
-}
-.son {
-    position: absolute;
-    top: 100px;
-    right: 100px;
-    width: 200px;
-    height: 200px;
-    background-color: gray;
-}
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1601863424.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<ul>
-<li>如果祖先元素有定位（相对定位、绝对定位、固定定位都可以），则以<strong>最近</strong>一级有定位的祖先元素为参考点移动位置</li>
-<li>绝对定位不再占有原先的位置，也就是会<strong>脱标</strong></li>
-</ul>
-<p>子绝父相：子绝父相是开发中常用的定位方式，即：子级使用相对定位，不会占有位置，可以放到父盒子里面的任何一个地方，不会影响其它兄弟的盒子；父盒子需要加定位限制子盒子在父盒子内的显示；父盒子布局时，需要占有位置，因此父亲只能是相对定位，这就是父觉子相的由来。<strong>总结：因为父级需要占有位置，因此是相对定位，子盒子不需要占有位置，则是绝对定位</strong></p>
-<h4 id="fixed-固定定位">fixed 固定定位</h4>
-<p>固定定位用于指定元素固定于浏览器可视窗口的位置</p>
-<ul>
-<li>以浏览器的<strong>可视窗口</strong>为参照点移动元素</li>
-</ul>
-<pre><code>div {
-    position: fixed;
-    top: 20px;
-    right: 100px;
-}    
-&lt;div&gt;&lt;img src=&quot;./images/pvp.png&quot; alt=&quot;&quot;&gt;&lt;/div&gt;
-</code></pre>
-<p><img src="http://image.kuranado.com/blog/1601863442.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-缩小浏览器窗口：<br>
-<img src="http://image.kuranado.com/blog/1601863448.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<ul>
-<li>跟父元素没有任何关系</li>
-<li>不会随滚动条滚动</li>
-<li>固定定位不占有原先的位置，也就是会脱标</li>
-</ul>
-<p>固定定位小技巧：固定在版心右侧位置：</p>
-<ol>
-<li>让固定定位的盒子 left: 50%，也就是走到浏览器可视区域（也可以看做版心）的一半的位置</li>
-<li>为固定定位的盒子添加 margin-left: 版心宽度一般的距离，当然也可以再多加几像素，保留一定空间<br>
-这样就可以让固定定位的盒子贴着版心右侧对齐了</li>
-</ol>
-<pre><code>/* 版心 */
-.w {
-    margin: 0 auto;
-    width: 800px;
-    height: 1400px;
-    background-color: hotpink;
-}
-/* 固定定位盒子 */
-.fixed {
-    position: fixed;
-    top: 200px;
-    left: 50%;
-    margin-left: 405px;
-    width: 50px;
-    height: 100px;
-    background-color: skyblue;
-}
-&lt;div class=&quot;w&quot;&gt;&lt;/div&gt;
-&lt;div class=&quot;fixed&quot;&gt;&lt;/div&gt;
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1601863460.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<h4 id="粘性定位">粘性定位</h4>
-<p>粘性定位可以被认为是相对定位和固定定位的混合</p>
-<ul>
-<li>以浏览器的可视窗口为参照点移动元素（固定定位的特点）</li>
-<li>粘性定位占有原先的位置（相对定位的特点）</li>
-<li>必须添加 top、left、right、bottom 中的其中一个才生效</li>
-<li>兼容性较差（IE 完全不支持）</li>
-</ul>
-<pre><code>body {
-    height: 3000px;
-}
-.nav {
-    position: sticky;
-    top: 0;
-    width: 800px;
-    height: 50px;
-    margin: 200px auto;
-    background-color: skyblue;
-}
-&lt;div class=&quot;nav&quot;&gt;我是粘性定位&lt;/div&gt;
-</code></pre>
-<p>起始位置：<br>
-<img src="http://image.kuranado.com/blog/1601863470.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-鼠标滚动到为粘性定位盒子设置的 top 值时，盒子将黏住不再跟着滚动：<br>
-<img src="http://image.kuranado.com/blog/1601863477.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="定位的层叠次序">定位的层叠次序</h2>
-<p>在使用定位布局时，可能会出现盒子重叠的情况，这时需要使用 z-index 属性控制盒子的上下顺序</p>
-<ul>
-<li>z-index 属性值可以是整数、0 或负数，数值越大，盒子越靠上，如果没有指定数值，则默认值为 auto</li>
-<li>如果属性值相同，则按照书写顺序，后来居上</li>
-<li>数字后面不能加单位</li>
-<li>只有定位的盒子才有 z-index 属性<br>
-未加 index 按照书写顺序，后来居上：</li>
-</ul>
-<pre><code>div {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-.one {
-    width: 100px;
-    height: 100px;
-    background-color: red;
-}
-.two {
-    width: 75px;
-    height: 75px;
-    background-color: green;
-}
-.three {
-    width: 50px;
-    height: 50px;
-    background-color: blue;
-}
-&lt;div class=&quot;one&quot;&gt;我是第一个盒子&lt;/div&gt;
-&lt;div class=&quot;two&quot;&gt;我是第二个盒子&lt;/div&gt;
-&lt;div class=&quot;three&quot;&gt;我是第三个盒子&lt;/div&gt;
-</code></pre>
-<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1601863487.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>指定 z-index：</p>
-<pre><code>div {
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-.one {
-    z-index: 3;
-    width: 100px;
-    height: 100px;
-    background-color: red;
-}
-.two {
-    z-index: 2;
-    width: 75px;
-    height: 75px;
-    background-color: green;
-}
-.three {
-    z-index: 1;
-    width: 50px;
-    height: 50px;
-    background-color: blue;
-}
-&lt;div class=&quot;one&quot;&gt;我是第一个盒子&lt;/div&gt;
-&lt;div class=&quot;two&quot;&gt;我是第二个盒子&lt;/div&gt;
-&lt;div class=&quot;three&quot;&gt;我是第三个盒子&lt;/div&gt;
-</code></pre>
-<figure data-type="image" tabindex="5"><img src="http://image.kuranado.com/blog/1601863495.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<h2 id="总结">总结</h2>
-<table>
-<thead>
-<tr>
-<th>定位模式</th>
-<th>是否脱标</th>
-<th>移动位置</th>
-<th>是否常用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>static 静态定位</td>
-<td>否</td>
-<td>不能使用边偏移</td>
-<td>很少</td>
-</tr>
-<tr>
-<td>relative 相对定位</td>
-<td>否（占有位置）</td>
-<td>相对于自身位置移动</td>
-<td>常用</td>
-</tr>
-<tr>
-<td>absolute 绝对定位</td>
-<td>是（不占有位置）</td>
-<td>带有定位的父级</td>
-<td>常用</td>
-</tr>
-<tr>
-<td>fixed 固定定位</td>
-<td>是（不占有位置）</td>
-<td>浏览器的可视窗口</td>
-<td>常用</td>
-</tr>
-<tr>
-<td>stick 粘性定位</td>
-<td>否（占有位置）</td>
-<td>浏览器可视窗口</td>
-<td>很少</td>
-</tr>
-</tbody>
-</table>
-<h2 id="拓展">拓展</h2>
-<h3 id="如何让绝对定位的盒子水平居中垂直居中">如何让绝对定位的盒子水平居中/垂直居中</h3>
-<p>首先加了绝对定位的盒子不能通过 margin: 0 auto; 水平居中，但是可以通过如下算法实现水平居中：</p>
-<ol>
-<li>left: 50%; 让盒子的左侧移动到父级元素的水平中心位置</li>
-<li>margin-left: 负的盒子自身宽度一半的px; 让盒子向左移动自身宽度的一半</li>
-</ol>
-<pre><code>div {
-    position: absolute;
-    left: 50%;
-    margin-left: -100px;
-    width: 200px;
-    height: 200px;
-    background-color: skyblue;
-}
-&lt;div&gt;&lt;/div&gt;
-</code></pre>
-<p><img src="http://image.kuranado.com/blog/1601863507.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-改变浏览器窗口大小，盒子也始终处于水平居中位置</p>
-<p>同理如果让盒子垂直居中，则算法如下：</p>
-<ol>
-<li>top: 50%; 让盒子的上侧移动到父级元素的垂直中心位置</li>
-<li>margin-top: 负的盒子自身高度一半的px; 让盒子向上移动自身高度的一半</li>
-</ol>
-<p>如果想让盒子既水平又垂直居中，算法如下：</p>
-<ol>
-<li>
-<p>left: 50%;</p>
-</li>
-<li>
-<p>margin-left: 负的盒子自身宽度一半的px;</p>
-</li>
-<li>
-<p>top: 50%;</p>
-</li>
-<li>
-<p>margin-top: 负的盒子自身高度一半的px;</p>
-</li>
-</ol>
-<h3 id="绝对定位或固定定位的特殊特性">绝对定位或固定定位的特殊特性</h3>
-<ol>
-<li>行内元素添加绝对定位或固定定位，可以直接设置宽度和高度</li>
-</ol>
-<pre><code>span {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background-color: skyblue;
-}
-&lt;span&gt;Hello&lt;/span&gt;
-</code></pre>
-<figure data-type="image" tabindex="6"><img src="http://image.kuranado.com/blog/1601863520.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<ol start="2">
-<li>块级元素添加绝对定位或固定定位，如果不给宽度或高度，则默认大小是内容的大小</li>
-</ol>
-<pre><code>div {
-    position: absolute;
-    background-color: skyblue;
-}
-&lt;div&gt;Hello&lt;/div&gt;
-</code></pre>
-<p><img src="http://image.kuranado.com/blog/1601863533.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-3. 绝对定位或固定定位会完全压住盒子<br>
-和浮动元素不同，浮动元素只会压住下面标准流的盒子，而不会压住下面标准流盒子里的文字或图片，但绝对定位或固定定位会压住下面标准流所有的内容：</p>
-<pre><code>* {
-    margin: 0;
-    padding: 0;
-}
-div {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background-color: skyblue;
-}
-&lt;div&gt;&lt;/div&gt;
-&lt;p&gt;绝对定位或固定定位会压住下面标准流所有的内容&lt;/p&gt;
-</code></pre>
-<figure data-type="image" tabindex="7"><img src="http://image.kuranado.com/blog/1601863543.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
