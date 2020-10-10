@@ -6,7 +6,7 @@
 
 <title>CSS margin 负值的巧妙应用.md | KURANADO</title>
 
-<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1602329417495">
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1602329583320">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
@@ -97,7 +97,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1602329417495" action="/search/index.html">
+            <form id="gridea-search-form" style="position: relative" data-update="1602329583320" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
             </form>
@@ -171,7 +171,7 @@
 </code></pre>
 <p>鼠标悬浮在最后一个 li 上，它的四个边框确实都变成了红色，但是鼠标移到前三个 li 上时，边框却是如下效果：</p>
 <figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602329410.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>这就是因为 margin-left: 1px; 导致左边 li 的右边框被右边 li 的左边框给压住了<br>
+<p>这就是因为 margin-left: -1px; 导致左边 li 的右边框被右边 li 的左边框给压住了<br>
 为了解决这个问题，可以在鼠标悬浮时为 li 添加一个 relative 定位，因为 relative 定位占有原先的位置（不脱标）且会压住浮动的盒子：</p>
 <pre><code>ul li:hover {
     position: relative;

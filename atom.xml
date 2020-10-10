@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-10T11:30:22.109Z</updated>
+    <updated>2020-10-10T11:33:18.234Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -57,7 +57,7 @@
 </code></pre>
 <p>鼠标悬浮在最后一个 li 上，它的四个边框确实都变成了红色，但是鼠标移到前三个 li 上时，边框却是如下效果：</p>
 <figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602329410.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>这就是因为 margin-left: 1px; 导致左边 li 的右边框被右边 li 的左边框给压住了<br>
+<p>这就是因为 margin-left: -1px; 导致左边 li 的右边框被右边 li 的左边框给压住了<br>
 为了解决这个问题，可以在鼠标悬浮时为 li 添加一个 relative 定位，因为 relative 定位占有原先的位置（不脱标）且会压住浮动的盒子：</p>
 <pre><code>ul li:hover {
     position: relative;
