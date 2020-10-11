@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>VsCode 中 Emmet 语法快速生成HTML 和 CSS 代码.md | KURANADO</title>
+<title>CSS 浏览器私有前缀.md | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1602387401412">
 
@@ -109,16 +109,12 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    VsCode 中 Emmet 语法快速生成HTML 和 CSS 代码.md
+                    CSS 浏览器私有前缀.md
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-09-30 ·
+                        · 2020-10-11 ·
                     </time>
-                    
-                        <a href="http://blog.kuranado.com/tag/7UybBkxqc/" class="post-tags">
-                            # VsCode
-                        </a>
                     
                         <a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/" class="post-tags">
                             # CSS
@@ -136,152 +132,22 @@
                 <div class="post-content">
                     <p>[TOC]</p>
 <blockquote>
-<p>敲完简写后，按 Tab 自动完成</p>
+<p>浏览器私有前缀是为了兼容老版本的浏览器，如果 CSS 代码只运行在较新版本的浏览器上则无需添加</p>
 </blockquote>
-<h2 id="html">HTML</h2>
+<h2 id="私有前缀">私有前缀</h2>
 <ul>
-<li><code>div</code></li>
+<li><code>-moz-</code> Firefox 的私有前缀</li>
+<li><code>-ms-</code> IE 的私有前缀</li>
+<li><code>-webkit-</code> Safari 和 Chrome 的私有前缀</li>
+<li><code>-o-</code> Opera 的私有前缀</li>
 </ul>
-<pre><code>&lt;div&gt;&lt;/div&gt;
-</code></pre>
-<ul>
-<li><code>div*3</code></li>
-</ul>
-<pre><code>&lt;div&gt;&lt;/div&gt;
-&lt;div&gt;&lt;/div&gt;
-&lt;div&gt;&lt;/div&gt;
-</code></pre>
-<ul>
-<li><code>{}</code> 定义标签内的内容，<code>div{Hello}</code></li>
-</ul>
-<pre><code>&lt;div&gt;Hello&lt;/div&gt;
-</code></pre>
-<ul>
-<li><code>div{Hello}*3</code></li>
-</ul>
-<pre><code>&lt;div&gt;Hello&lt;/div&gt;
-&lt;div&gt;Hello&lt;/div&gt;
-&lt;div&gt;Hello&lt;/div&gt;
-</code></pre>
-<ul>
-<li>父子关系标签，使用 <code>&gt;</code>，如 <code>ul&gt;li</code>：</li>
-</ul>
-<pre><code>&lt;ul&gt;
-    &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</code></pre>
-<p><code>div&gt;p</code>：</p>
-<pre><code>&lt;div&gt;
-    &lt;p&gt;&lt;/p&gt;
-&lt;/div&gt;
-</code></pre>
-<ul>
-<li>兄弟关系标签，使用 <code>+</code>，如 <code>div+p</code>：</li>
-</ul>
-<pre><code>&lt;div&gt;&lt;/div&gt;
-&lt;p&gt;&lt;/p&gt;
-</code></pre>
-<ul>
-<li><code>()</code> 指定优先级，如 <code>ul&gt;(li+bq)</code>：</li>
-</ul>
-<pre><code>&lt;ul&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;blockquote&gt;&lt;/blockquote&gt;
-&lt;/ul&gt;
-</code></pre>
-<p><code>(ul&gt;li)+bq</code>：</p>
-<pre><code>&lt;ul&gt;
-    &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;&lt;/blockquote&gt;
-</code></pre>
-<ul>
-<li>带有类选择器，如 <code>.gray</code>，默认生成 class 为 gray 的 div：</li>
-</ul>
-<pre><code>&lt;div class=&quot;gray&quot;&gt;&lt;/div&gt;
-</code></pre>
-<p>如果要生成其它标签 class 为 gray，则 <code>p.gray</code>：</p>
-<pre><code>&lt;p class=&quot;gray&quot;&gt;&lt;/p&gt;
-</code></pre>
-<p>一次生成多个 class 选择器，如 <code>.box1.box2.box3</code>：</p>
-<pre><code>&lt;div class=&quot;box1 box2 box3&quot;&gt;&lt;/div&gt;
-</code></pre>
-<p><code>p.box1.box2.box3</code>：</p>
-<pre><code>&lt;p class=&quot;box1 box2 box3&quot;&gt;&lt;/p&gt;
-</code></pre>
-<ul>
-<li>带有 ID 选择器，如 <code>#gray</code>，默认生成 id 为 gray 的 div：</li>
-</ul>
-<pre><code>&lt;div id=&quot;gray&quot;&gt;&lt;/div&gt;
-</code></pre>
-<p>如果要生成其它标签 id 为 gray，则 <code>p#gray</code>：</p>
-<pre><code>&lt;p id=&quot;gray&quot;&gt;&lt;/p&gt;
-</code></pre>
-<p>既有类选择器，又有 id 选择器，如 <code>p.box1.box2#gray</code>：</p>
-<pre><code>&lt;p class=&quot;box1 box2&quot; id=&quot;gray&quot;&gt;&lt;/p&gt;
-</code></pre>
-<ul>
-<li><code>[]</code> 表示属性，如 <code>ul&gt;li&gt;a[href=&quot;#&quot;]</code>：</li>
-</ul>
-<pre><code>&lt;ul&gt;
-    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</code></pre>
-<ul>
-<li><code>$</code> 表示自增，如 <code>div{$}*3</code>：</li>
-</ul>
-<pre><code>&lt;div&gt;1&lt;/div&gt;
-&lt;div&gt;2&lt;/div&gt;
-&lt;div&gt;3&lt;/div&gt;
-</code></pre>
-<p><code>div.gray$*3</code>：</p>
-<pre><code>&lt;div class=&quot;gray1&quot;&gt;&lt;/div&gt;
-&lt;div class=&quot;gray2&quot;&gt;&lt;/div&gt;
-&lt;div class=&quot;gray3&quot;&gt;&lt;/div&gt;
-</code></pre>
-<p><code>p.gray${$}*3</code>：</p>
-<pre><code>&lt;p class=&quot;gray1&quot;&gt;1&lt;/p&gt;
-&lt;p class=&quot;gray2&quot;&gt;2&lt;/p&gt;
-&lt;p class=&quot;gray3&quot;&gt;3&lt;/p&gt;
-</code></pre>
-<p><code>ul&gt;li.gray${Hello$}*3</code>：</p>
-<pre><code>&lt;ul&gt;
-    &lt;li class=&quot;gray1&quot;&gt;Hello1&lt;/li&gt;
-    &lt;li class=&quot;gray2&quot;&gt;Hello2&lt;/li&gt;
-    &lt;li class=&quot;gray3&quot;&gt;Hello3&lt;/li&gt;
-&lt;/ul&gt;
-</code></pre>
-<h2 id="css">CSS</h2>
-<p>CSS 中一般取每个单词首字母，然后 Tab 即可自动补全/生成：</p>
-<ul>
-<li><code>w200</code>：</li>
-</ul>
-<pre><code>width: 200px;
-</code></pre>
-<ul>
-<li><code>h200</code>：</li>
-</ul>
-<pre><code>height: 200px;
-</code></pre>
-<ul>
-<li><code>lh26px</code>：</li>
-</ul>
-<pre><code>line-height: 26px;
-</code></pre>
-<ul>
-<li><code>ti2em</code>：</li>
-</ul>
-<pre><code>text-indent: 2em;
-</code></pre>
-<ul>
-<li><code>tdn</code>：</li>
-</ul>
-<pre><code>text-decoration: none;
-</code></pre>
-<ul>
-<li><code>tac</code>：</li>
-</ul>
-<pre><code>text-align: center;
+<p>国产浏览器基本也全是使用上面四种前缀中的一种</p>
+<h2 id="提倡写法">提倡写法</h2>
+<p>先写私有前缀，再写不带前缀，例如：</p>
+<pre><code>-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+-o-border-radius: 10px;
+border-radius: 10px;
 </code></pre>
 
                 </div>
@@ -291,8 +157,8 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="http://blog.kuranado.com/post/css-xuan-ze-qi-md/" class="post-title gt-a-link">
-                    CSS 选择器.md
+                <a href="http://blog.kuranado.com/post/css-margin-fu-zhi-de-qiao-miao-ying-yong-md/" class="post-title gt-a-link">
+                    CSS margin 负值的巧妙应用.md
                 </a>
             </div>
         
