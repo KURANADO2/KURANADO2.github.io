@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-11T03:37:07.314Z</updated>
+    <updated>2020-10-13T11:20:10.605Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,120 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[CSS3 选择器.md]]></title>
+        <id>http://blog.kuranado.com/post/css3-xuan-ze-qi-md/</id>
+        <link href="http://blog.kuranado.com/post/css3-xuan-ze-qi-md/">
+        </link>
+        <updated>2020-10-13T11:16:58.000Z</updated>
+        <content type="html"><![CDATA[<p>[TOC]</p>
+<h2 id="属性选择器">属性选择器</h2>
+<pre><code>/* 选择所有拥有 type 属性的元素 */
+input[type]
+/* 选择所有拥有 type 属性，且该属性值为 password 的元素 */
+input[type=&quot;password&quot;]
+/* 选择所有以具有 class 属性，且属性值以 icon 开头的 div 标签 */
+div[class^=&quot;icon&quot;]
+/* 选择所有以具有 class 属性，且属性值以 icon 结尾的 div 标签 */
+div[class$=&quot;icon&quot;]
+/* 选择所有以具有 class 属性，且属性值中包含 icon 的 div 标签 */
+div[class*=&quot;icon&quot;]
+</code></pre>
+<h2 id="结构伪类选择器">结构伪类选择器</h2>
+<pre><code>/* 选择 ul 下的第一个子元素 */
+ul :first-child
+/* 选择 ul 下的第一个子元素，且该子元素必须是 li */
+ul li:first-child
+/* 选择 ul 下的第一个子元素，且该子元素必须是 li */
+ul li:last-child
+/* 选择 ul 下的第 3 （n 从 1 开始）个子元素，且该子元素必须是 li */
+ul li:nth-child(3)
+/* 选择 ul 下所有偶数位子元素（2、4、6...），且该子元素必须是 li */
+ul li:nth-child(even)
+/* 选择 ul 下所有偶数位子元素（1、3、5...），且该子元素必须是 li */
+ul li:nth-child(odd)
+/* 选择 ul 下所有 li 子元素（只能是字母 n，不能是其他字母），n 从 0 开始，每匹配一个元素后，n 自增 1（刚开始为 0，一个元素也匹配不到，自增为 1 后，菜开始匹配到元素） */
+ul li:nth-child(n)
+/* 选择 ul 下所有偶数位子元素（2、4、6...），且该子元素必须是 li（2 * 0、2 * 1、2 * 2、2 * 3...）*/
+ul li:nth-child(2n)
+/* 选择 ul 下所有奇数位子元素（1、3、5...），且该子元素必须是 li（2 * 0 + 1、2 * 1 + 1、2 * 2 + 1...）*/
+ul li:nth-child(2n)
+/* 选择 ul 下所有 5 的倍数位子元素（5、10、15...），且该子元素必须是 li */
+ul li:nth-child(5n)
+/* 选择 ul 下从第 5 个开始（包含第 5 个）后面的子元素（5、6、7...），且该子元素必须是 li（0 + 5、1 + 5、2 + 5） */
+ul li:nth-child(n+5)
+/* 选择 ul 下前 5 （包含第 5 个）子元素（1、2、3、4、5），且该子元素必须是 li（-0 + 5、-1 + 5、-2 + 5、-3 + 5、-4 + 5）*/
+ul li:nth-child(-n+5)
+</code></pre>
+<p>nth-child() 和 nth-of-type() 用法完全相同，都可以在括号中填数字，关键字（even、odd）和公式（如 n、2n、5n 等等），但 nth-child 和 nth-of-type 有如下区别：<br>
+nth-child()：</p>
+<pre><code>/* 没有选中任何元素，因为 nth-child 会先把所有的盒子都排列成序号，然后再看元素是否匹配，这里第一个 p 标签序号为 1，第一个 div 标签选好为 2，第二个 div 标签序号为 3，所以 nth-child(1) 先找到第一个 1 标签，然后校验该标签是否是 div 标签，因为第一个标签是 p 而不是 div，所以没有任何效果 */
+section div:nth-child(1) {
+    background-color: red;
+}
+&lt;section&gt;
+    &lt;p&gt;光头强&lt;/p&gt;
+    &lt;div&gt;熊大&lt;/div&gt;
+    &lt;div&gt;熊二&lt;/div&gt;
+&lt;/section&gt;
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602587848.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>nth-of-type()：</p>
+<pre><code>/* 成功选中第一个 div，因为 nth-of-type 会对指定的盒子进行编号，这里制定了盒子必须是 div */
+section div:nth-of-type(1) {
+    background-color: red;
+}
+&lt;section&gt;
+    &lt;p&gt;光头强&lt;/p&gt;
+    &lt;div&gt;熊大&lt;/div&gt;
+    &lt;div&gt;熊二&lt;/div&gt;
+&lt;/section&gt;
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1602587861.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="伪元素选择器">伪元素选择器</h2>
+<p>帮助我们使用 CSS 创建新标签，而不需要显示去写 HTML 标签，从而简化 HTML 结构</p>
+<table>
+<thead>
+<tr>
+<th>选择符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>::before</td>
+<td>在父元素内容的前面创建元素</td>
+</tr>
+<tr>
+<td>::after</td>
+<td>在父元素内容的后面创建元素</td>
+</tr>
+</tbody>
+</table>
+<p>注意：</p>
+<ul>
+<li>::before 和 ::after 创建的伪元素属于行内元素（根据需要将其转换为块级元素或行内块元素）</li>
+<li>新创建的这个元素在 DOM 树中是找不到的，所以称之为伪元素</li>
+<li>before 和 after <strong>必须有 content 属性</strong>，即便内容为空</li>
+</ul>
+<pre><code>div {
+    width: 200px;
+    height: 100px;
+    background-color: skyblue;
+}
+div::before {
+    content: &quot;我&quot;;
+}
+div::after {
+    content: &quot;小猪佩奇&quot;;
+}
+&lt;div&gt;
+    是
+&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602587871.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[CSS 浏览器私有前缀.md]]></title>
         <id>http://blog.kuranado.com/post/css-liu-lan-qi-si-you-qian-zhui-md/</id>
@@ -878,175 +992,6 @@ span {
 这时 icomoon 就会加载出我们以前下载的图标<br>
 <img src="http://image.kuranado.com/blog/1601955602.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
 之后在此基础上选择其他想要的新图标，选完后下载字体包，解压，将 fonts 文件夹复制到页面根目录下，替换原先的 fonts 文件夹即可（替换文件夹，需把旧文件夹删掉，然后把新文件夹复制进去即可，以完成彻底替换，否则字体可能会不生效）</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Mac - Hammerspoon.md]]></title>
-        <id>http://blog.kuranado.com/post/mac-hammerspoonmd/</id>
-        <link href="http://blog.kuranado.com/post/mac-hammerspoonmd/">
-        </link>
-        <updated>2020-10-06T01:50:03.000Z</updated>
-        <summary type="html"><![CDATA[<p>最近在<a href="https://mrdear.cn/posts/osx_app_switcher.html">学长博客</a>中发现一个非常好玩的效率软件：<a href="http://www.hammerspoon.org/">Hammerspoon</a>，通过编写 Lua 脚本，完成各种有趣的小功能</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>最近在<a href="https://mrdear.cn/posts/osx_app_switcher.html">学长博客</a>中发现一个非常好玩的效率软件：<a href="http://www.hammerspoon.org/">Hammerspoon</a>，通过编写 Lua 脚本，完成各种有趣的小功能</p>
-<!-- more -->
-<p>[TOC]</p>
-<h2 id="hammerspoon-作用">Hammerspoon 作用</h2>
-<ul>
-<li>替代 Magnet 进行窗口移动<br>
-之前一直用 Magnet 移动窗口，使用 Hammerspoon 之后完全可以替代 Magnet，以下为 Magnet 横屏和竖屏分别支持的快捷键截图<br>
-横屏：<br>
-<img src="http://image.kuranado.com/blog/1601949462.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-竖屏：<br>
-<img src="http://image.kuranado.com/blog/1601949470.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
-<li>为应用配置快捷键，比 ⌘⇥ 和 Alfred 切换程序更高效（建议只为高频使用的一些软件分配快捷键）</li>
-</ul>
-<h2 id="个人配置快捷键列表">个人配置快捷键列表</h2>
-<table>
-<thead>
-<tr>
-<th>快捷键</th>
-<th>功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>⌃⌥←</td>
-<td>左半屏</td>
-</tr>
-<tr>
-<td>⌃⌥→</td>
-<td>右半屏</td>
-</tr>
-<tr>
-<td>⌃⌥↑</td>
-<td>上半屏</td>
-</tr>
-<tr>
-<td>⌃⌥↓</td>
-<td>下半屏</td>
-</tr>
-<tr>
-<td>⌃⌥D</td>
-<td>左 1/3（横屏）或上 1/3（竖屏）</td>
-</tr>
-<tr>
-<td>⌃⌥F</td>
-<td>中 1/3</td>
-</tr>
-<tr>
-<td>⌃⌥G</td>
-<td>右 1/3（横屏）或下 1/3（竖屏）</td>
-</tr>
-<tr>
-<td>⌃⌥E</td>
-<td>左 2/3（横屏）或上 2/3（竖屏）</td>
-</tr>
-<tr>
-<td>⌃⌥T</td>
-<td>右 2/3（横屏）或下 2/3（竖屏）</td>
-</tr>
-<tr>
-<td>⌃⌥C</td>
-<td>居中</td>
-</tr>
-<tr>
-<td>⌃⌥=</td>
-<td>等比例放大窗口</td>
-</tr>
-<tr>
-<td>⌃⌥-</td>
-<td>等比例缩小窗口</td>
-</tr>
-<tr>
-<td>⌃⌥↩︎</td>
-<td>最大化</td>
-</tr>
-<tr>
-<td>⌃⌥⌘←</td>
-<td>窗口由主屏移动到副屏</td>
-</tr>
-<tr>
-<td>⌃⌥⌘→</td>
-<td>窗口由副屏移动到主屏</td>
-</tr>
-<tr>
-<td>⌥Q</td>
-<td>打开 QQ</td>
-</tr>
-<tr>
-<td>⌥W</td>
-<td>打开 WeChat</td>
-</tr>
-<tr>
-<td>⌥V</td>
-<td>打开 Visual Studio Code</td>
-</tr>
-<tr>
-<td>⌥F</td>
-<td>打开 Finder</td>
-</tr>
-<tr>
-<td>⌥C</td>
-<td>打开 Chrome</td>
-</tr>
-<tr>
-<td>⌥J</td>
-<td>打开 Intellij IDEA</td>
-</tr>
-<tr>
-<td>⌥N</td>
-<td>打开 WizNote</td>
-</tr>
-<tr>
-<td>⌥G</td>
-<td>打开 Gridea</td>
-</tr>
-<tr>
-<td>⌥D</td>
-<td>打开 DataGrip</td>
-</tr>
-<tr>
-<td>⌥T</td>
-<td>打开 iTerm2</td>
-</tr>
-<tr>
-<td>⌥M</td>
-<td>打开 MailMaster</td>
-</tr>
-<tr>
-<td>⌥P</td>
-<td>打开 Postman</td>
-</tr>
-<tr>
-<td>⌥O</td>
-<td>打开 Word</td>
-</tr>
-<tr>
-<td>⌥E</td>
-<td>打开 Excel</td>
-</tr>
-</tbody>
-</table>
-<h2 id="个人配置文件">个人配置文件</h2>
-<p>见 GitHub：<a href="https://github.com/KURANADO2/hammerspoon-kuranado/blob/main/init.lua">https://github.com/KURANADO2/hammerspoon-kuranado/blob/main/init.lua</a></p>
-<h2 id="关于应用-bundle-id">关于应用 bundle id</h2>
-<p>上面配置中使用快捷键切换应用，需要拿到应用的 bundle id（请注意 bundle id 配置到 hammerspoon 中需要区分大小写，否则 console 会报错），可通过如下方式拿到：</p>
-<pre><code>osascript -e 'id of app &quot;Name of App&quot;'
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602148909.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<h2 id="参考">参考</h2>
-<ul>
-<li><a href="https://mrdear.cn/posts/osx_app_switcher.html">学长博客 - OSX--OSX应用快速切换方案</a></li>
-<li><a href="https://www.hammerspoon.org/go/">官方 Quick Start</a></li>
-<li><a href="http://www.hammerspoon.org/docs/">官方文档</a></li>
-<li><a href="https://sspai.com/post/53992">少数派 - 免费又强大的 macOS 自动化工具，Hammerspoon 可以让你少买很多 App</a></li>
-<li><a href="https://www.v2ex.com/t/553241">V2EX - 推荐一个 MacOS 上用了就无法自拔的神器</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/72499152">Hammerspoon - 岂止于窗口管理</a></li>
-<li><a href="https://github.com/rtoshiro/hammerspoon-init">hammerspoon-init</a></li>
-<li><a href="https://www.runoob.com/lua/lua-tutorial.html">菜鸟教程 - Lua 教程</a></li>
-<li><a href="https://robservatory.com/easily-see-any-apps-bundle-identifier/">Easily see any app’s bundle identifier</a></li>
-</ul>
 ]]></content>
     </entry>
 </feed>

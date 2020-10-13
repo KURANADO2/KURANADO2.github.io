@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>原地算法总结.md | KURANADO</title>
+<title>CSS3 选择器.md | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1602587991917">
 
@@ -109,88 +109,133 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    原地算法总结.md
+                    CSS3 选择器.md
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-09-25 ·
+                        · 2020-10-13 ·
                     </time>
                     
-                        <a href="http://blog.kuranado.com/tag/tfVz-s3hI/" class="post-tags">
-                            # LeetCode
+                        <a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/" class="post-tags">
+                            # CSS
                         </a>
                     
-                        <a href="http://blog.kuranado.com/tag/qjEtrVrzm/" class="post-tags">
-                            # Algorithm
+                        <a href="http://blog.kuranado.com/tag/Eb-3VtzRjb/" class="post-tags">
+                            # HTML
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/AIzjXFqb32/" class="post-tags">
+                            # 前端
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>在做<a href="https://leetcode-cn.com/problems/game-of-life/">289. 生命游戏</a>这道题时，题目的进阶描述中提到了<code>原地算法</code>，头一次听说这个名词，做个总结</p>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601018996.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<blockquote>
-<p>在计算机科学中，一个原地算法（in-place algorithm）基本上不需要额外辅助的数据结构，然而，允许少量额外的辅助变量来转换数据的算法。当算法运行时，输入的数据通常会被要输出的部分覆盖掉。不是原地算法有时候称为非原地（not-in-place）或不得其所（out-of-place）。在计算复杂性理论中，原地算法包含使用<strong>O(1)空间复杂度</strong>的所有算法，DSPACE(1)类型。<br>
-一句话总结就是：原地算法不依赖额外的资源或者依赖少数的额外资源，仅依靠<strong>输出来覆盖输入</strong>的一种算法操作。<br>
-综上，当我们的输入数据没有其他用处时，可以考虑将输入数据覆盖掉，将覆盖后的结果作为输出。<br>
-下面为几个典型使用原地算法解决的例题：</p>
-</blockquote>
-<h2 id="例题一">例题一</h2>
-<p>给定一个排序数组，你需要在原地删除重复出现的元素，使得每个元素只出现一次，返回移除后数组的新长度。<br>
-不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。<br>
-示例 1:</p>
-<pre><code>给定数组 nums = [1,1,2],
-函数应该返回新的长度 2, 并且原数组 nums 的前两个元素被修改为 1, 2。
-你不需要考虑数组中超出新长度后面的元素。
+                    <p>[TOC]</p>
+<h2 id="属性选择器">属性选择器</h2>
+<pre><code>/* 选择所有拥有 type 属性的元素 */
+input[type]
+/* 选择所有拥有 type 属性，且该属性值为 password 的元素 */
+input[type=&quot;password&quot;]
+/* 选择所有以具有 class 属性，且属性值以 icon 开头的 div 标签 */
+div[class^=&quot;icon&quot;]
+/* 选择所有以具有 class 属性，且属性值以 icon 结尾的 div 标签 */
+div[class$=&quot;icon&quot;]
+/* 选择所有以具有 class 属性，且属性值中包含 icon 的 div 标签 */
+div[class*=&quot;icon&quot;]
 </code></pre>
-<p>示例2:</p>
-<pre><code>给定 nums = [0,0,1,1,1,2,2,3,3,4],
-函数应该返回新的长度 5, 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4。
-你不需要考虑数组中超出新长度后面的元素。
+<h2 id="结构伪类选择器">结构伪类选择器</h2>
+<pre><code>/* 选择 ul 下的第一个子元素 */
+ul :first-child
+/* 选择 ul 下的第一个子元素，且该子元素必须是 li */
+ul li:first-child
+/* 选择 ul 下的第一个子元素，且该子元素必须是 li */
+ul li:last-child
+/* 选择 ul 下的第 3 （n 从 1 开始）个子元素，且该子元素必须是 li */
+ul li:nth-child(3)
+/* 选择 ul 下所有偶数位子元素（2、4、6...），且该子元素必须是 li */
+ul li:nth-child(even)
+/* 选择 ul 下所有偶数位子元素（1、3、5...），且该子元素必须是 li */
+ul li:nth-child(odd)
+/* 选择 ul 下所有 li 子元素（只能是字母 n，不能是其他字母），n 从 0 开始，每匹配一个元素后，n 自增 1（刚开始为 0，一个元素也匹配不到，自增为 1 后，菜开始匹配到元素） */
+ul li:nth-child(n)
+/* 选择 ul 下所有偶数位子元素（2、4、6...），且该子元素必须是 li（2 * 0、2 * 1、2 * 2、2 * 3...）*/
+ul li:nth-child(2n)
+/* 选择 ul 下所有奇数位子元素（1、3、5...），且该子元素必须是 li（2 * 0 + 1、2 * 1 + 1、2 * 2 + 1...）*/
+ul li:nth-child(2n)
+/* 选择 ul 下所有 5 的倍数位子元素（5、10、15...），且该子元素必须是 li */
+ul li:nth-child(5n)
+/* 选择 ul 下从第 5 个开始（包含第 5 个）后面的子元素（5、6、7...），且该子元素必须是 li（0 + 5、1 + 5、2 + 5） */
+ul li:nth-child(n+5)
+/* 选择 ul 下前 5 （包含第 5 个）子元素（1、2、3、4、5），且该子元素必须是 li（-0 + 5、-1 + 5、-2 + 5、-3 + 5、-4 + 5）*/
+ul li:nth-child(-n+5)
 </code></pre>
-<h3 id="代码实现">代码实现</h3>
-<pre><code class="language-java">public int removeDuplicates(int[] nums) {
-
-    if (nums == null || nums.length == 0) {
-        return 0;
-    }
-    int pos = 0, count = 1;
-    for (int i = 0; i &lt; nums.length; i++) {
-        if (nums[pos] == nums[i]) {
-            nums[pos] = nums[i];
-        } else {
-            pos++;
-            nums[pos] = nums[i];
-            count++;
-        }
-    }
-    return count;
+<p>nth-child() 和 nth-of-type() 用法完全相同，都可以在括号中填数字，关键字（even、odd）和公式（如 n、2n、5n 等等），但 nth-child 和 nth-of-type 有如下区别：<br>
+nth-child()：</p>
+<pre><code>/* 没有选中任何元素，因为 nth-child 会先把所有的盒子都排列成序号，然后再看元素是否匹配，这里第一个 p 标签序号为 1，第一个 div 标签选好为 2，第二个 div 标签序号为 3，所以 nth-child(1) 先找到第一个 1 标签，然后校验该标签是否是 div 标签，因为第一个标签是 p 而不是 div，所以没有任何效果 */
+section div:nth-child(1) {
+    background-color: red;
 }
+&lt;section&gt;
+    &lt;p&gt;光头强&lt;/p&gt;
+    &lt;div&gt;熊大&lt;/div&gt;
+    &lt;div&gt;熊二&lt;/div&gt;
+&lt;/section&gt;
 </code></pre>
-<h2 id="例题二">例题二</h2>
-<p>将具有 n 项内容的数组 a 翻转过来<br>
-看到这题的常规思路是创建一个大小相等的新数组，用适当的顺序填充副本，最后的新数组记为结果，如下面的伪代码：</p>
-<pre><code>function reverse(a[0..n-1])
-    allocate b[0..n-1] # 额外设定一个数组
-    for i from 0 to n-1 # 从 0 到 n-1 遍历数组 a
-        b[n -1 - i] := a[i] 
-    return b
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602587848.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>nth-of-type()：</p>
+<pre><code>/* 成功选中第一个 div，因为 nth-of-type 会对指定的盒子进行编号，这里制定了盒子必须是 div */
+section div:nth-of-type(1) {
+    background-color: red;
+}
+&lt;section&gt;
+    &lt;p&gt;光头强&lt;/p&gt;
+    &lt;div&gt;熊大&lt;/div&gt;
+    &lt;div&gt;熊二&lt;/div&gt;
+&lt;/section&gt;
 </code></pre>
-<p>这种方法虽然简单，但是需要 O(n) 的额外空间以使数组 a 和 b 同时可用。此外，分配存储空间和释放存储空间通常是缓慢的操作<br>
-其实本题完全可以不用新建数组，而是可以直接修改原数组达到题目要求效果，也就是使用原地算法，用它自己翻转的内容来覆盖掉原先的内容。这样，无论数组有多大，它都只需要辅助变量 i 和 tmp</p>
-<h3 id="代码实现-2">代码实现：</h3>
-<pre><code>function reverse_in_place(a[0..n-1])
-    for i from 0 to floor((n-2)/2)
-        tmp := a[i]
-        a[i] := a[n − 1 − i]
-        a[n − 1 − i] := tmp
-</code></pre>
-<h2 id="例题三">例题三</h2>
-<p><a href="https://leetcode-cn.com/problems/game-of-life/">生命游戏</a></p>
-<h2 id="参考">参考</h2>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1602587861.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="伪元素选择器">伪元素选择器</h2>
+<p>帮助我们使用 CSS 创建新标签，而不需要显示去写 HTML 标签，从而简化 HTML 结构</p>
+<table>
+<thead>
+<tr>
+<th>选择符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>::before</td>
+<td>在父元素内容的前面创建元素</td>
+</tr>
+<tr>
+<td>::after</td>
+<td>在父元素内容的后面创建元素</td>
+</tr>
+</tbody>
+</table>
+<p>注意：</p>
 <ul>
-<li><a href="https://www.jianshu.com/p/567b1dc38db7">原地算法（in-place algorithm）</a></li>
-<li><a href="https://blog.csdn.net/m0_37941483/article/details/89814847">算法系列之原地算法(in-place algorithm)</a></li>
+<li>::before 和 ::after 创建的伪元素属于行内元素（根据需要将其转换为块级元素或行内块元素）</li>
+<li>新创建的这个元素在 DOM 树中是找不到的，所以称之为伪元素</li>
+<li>before 和 after <strong>必须有 content 属性</strong>，即便内容为空</li>
 </ul>
+<pre><code>div {
+    width: 200px;
+    height: 100px;
+    background-color: skyblue;
+}
+div::before {
+    content: &quot;我&quot;;
+}
+div::after {
+    content: &quot;小猪佩奇&quot;;
+}
+&lt;div&gt;
+    是
+&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602587871.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 
                 </div>
             </article>
@@ -199,8 +244,8 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="http://blog.kuranado.com/post/nginx-an-zhuang-ssl-zheng-shu-md/" class="post-title gt-a-link">
-                    Nginx 安装 SSL 证书.md
+                <a href="http://blog.kuranado.com/post/css-liu-lan-qi-si-you-qian-zhui-md/" class="post-title gt-a-link">
+                    CSS 浏览器私有前缀.md
                 </a>
             </div>
         
