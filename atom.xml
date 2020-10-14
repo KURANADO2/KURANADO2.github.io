@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-13T11:20:10.605Z</updated>
+    <updated>2020-10-14T08:49:07.091Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,45 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[CSS3 盒子模型.md]]></title>
+        <id>http://blog.kuranado.com/post/css3-he-zi-mo-xing-md/</id>
+        <link href="http://blog.kuranado.com/post/css3-he-zi-mo-xing-md/">
+        </link>
+        <updated>2020-10-14T08:26:55.000Z</updated>
+        <content type="html"><![CDATA[<p>CSS3 通过 box-sizing 属性指定盒子模型</p>
+<ul>
+<li>box-sizing: content-box 盒子宽为 width + padding + border，高位 height + padding + border + magin 也就是默认的盒子模型。PC 端如果需要完全兼容，就用该传统模式</li>
+</ul>
+<pre><code>div {
+    /* 盒子会被 padding 和 border 撑大 */
+    box-sizing: content-box;
+    width: 200px;
+    height: 200px;
+    background-color: skyblue;
+    padding: 20px;
+    border: 20px solid pink;
+}
+&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602664045.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<ul>
+<li>box-sizing: border-box <strong>重点</strong>，盒子宽就是 width（前提是设置的 padding 和 brorder 不会超过 width），高就是 height（前提是设置的 padding 和 brorder 不会超过 height）。PC 端如果不要求兼容，则使用该盒子模型；因为移动端浏览器都是比较新的内核，所以移动端全部使用该盒子模型</li>
+</ul>
+<pre><code>div {
+    /* 盒子不会被 padding 和 border 撑大 */
+    box-sizing: border-box;
+    width: 200px;
+    height: 200px;
+    background-color: skyblue;
+    padding: 20px;
+    border: 20px solid pink;
+}
+&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1602664056.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[CSS3 选择器.md]]></title>
         <id>http://blog.kuranado.com/post/css3-xuan-ze-qi-md/</id>
@@ -918,80 +957,6 @@ class Solution {
 &lt;/div&gt;
 </code></pre>
 <figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602036463.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CSS 字体图标.md]]></title>
-        <id>http://blog.kuranado.com/post/css-zi-ti-tu-biao-md/</id>
-        <link href="http://blog.kuranado.com/post/css-zi-ti-tu-biao-md/">
-        </link>
-        <updated>2020-10-06T03:38:37.000Z</updated>
-        <content type="html"><![CDATA[<p>[TOC]</p>
-<h2 id="常用字体图标网站">常用字体图标网站</h2>
-<ul>
-<li><a href="https://icomoon.io/app/#/select">icomoon.io</a></li>
-<li><a href="https://www.iconfont.cn/">iconfont.cn</a></li>
-</ul>
-<h2 id="字体图标格式">字体图标格式</h2>
-<p>为了兼容性而存在 .ttf/.woff/.eot/.svg 字体</p>
-<h2 id="字体图标的引入">字体图标的引入</h2>
-<p>以 icomoon 举例：</p>
-<ol>
-<li>进入 <a href="https://icomoon.io/app/#/select">icomoon.io</a>，选择字体后下载，解压如下：<br>
-<img src="http://image.kuranado.com/blog/1601955553.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
-<li>把下载包中的 fonts 文件夹放入页面根目录下</li>
-<li>在 CSS 样式中全局声明字体：简单理解就是将字体文件通过 CSS 引入到我们的页面中，一定要注意文件路径是否正确，把下面这段代码（可从下载包中的 style.css 得到）复制到 CSS 文件中</li>
-</ol>
-<pre><code>/** 字体声明 **/
-@font-face {
-  font-family: 'icomoon';
-  src: url('fonts/icomoon.eot?bypbup');
-  src: url('fonts/icomoon.eot?bypbup#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?bypbup') format('truetype'),
-    url('fonts/icomoon.woff?bypbup') format('woff'),
-    url('fonts/icomoon.svg?bypbup#icomoon') format('svg');
-  font-weight: normal;
-  font-style: normal;
-  font-display: block;
-}
-</code></pre>
-<ol start="4">
-<li>打开下载包中的 demo.html，复制需要的图标到代码中<br>
-<img src="http://image.kuranado.com/blog/1601955565.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
-</ol>
-<pre><code>/** 字体声明 **/
-@font-face {
-    font-family: 'icomoon';
-    src: url('fonts/icomoon.eot?bypbup');
-    src: url('fonts/icomoon.eot?bypbup#iefix') format('embedded-opentype'),
-        url('fonts/icomoon.ttf?bypbup') format('truetype'),
-        url('fonts/icomoon.woff?bypbup') format('woff'),
-        url('fonts/icomoon.svg?bypbup#icomoon') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
-}
-span {
-    /** 指定字体为 icomoon **/
-    font-family: 'icomoon';
-    /** 既然是图标是字体，当然也可以为其设置字体的相关属性 **/
-    color: skyblue;
-    font-size: 16px;
-}
-&lt;body&gt;
-    &lt;!-- 虽然下面的图标看起来好像一样，但其实是不一样的，如果是在 CSS3 中，使用伪元素选择器 ::after/::before，content 中都可以使用转义图标，如 content: '\e905' 将同样会显示正确的图标 --&gt;
-    &lt;span&gt;&lt;/span&gt;
-    &lt;span&gt;&lt;/span&gt;
-    &lt;span&gt;&lt;/span&gt;
-&lt;/body&gt;
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601955574.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<h2 id="字体图标的追加">字体图标的追加</h2>
-<p>如果项目中想要在原来的基础上引入新的字体图标，可进入 <a href="https://icomoon.io/app/#/select">icomoon.io</a>，导入原来字体包的 selection.json 文件<br>
-<img src="http://image.kuranado.com/blog/1601955593.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-这时 icomoon 就会加载出我们以前下载的图标<br>
-<img src="http://image.kuranado.com/blog/1601955602.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-之后在此基础上选择其他想要的新图标，选完后下载字体包，解压，将 fonts 文件夹复制到页面根目录下，替换原先的 fonts 文件夹即可（替换文件夹，需把旧文件夹删掉，然后把新文件夹复制进去即可，以完成彻底替换，否则字体可能会不生效）</p>
 ]]></content>
     </entry>
 </feed>
