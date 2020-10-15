@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-14T08:49:07.091Z</updated>
+    <updated>2020-10-15T11:01:27.974Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,32 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[LeetCode - 836. 矩形重叠]]></title>
+        <id>http://blog.kuranado.com/post/leetcode-836-ju-xing-chong-die/</id>
+        <link href="http://blog.kuranado.com/post/leetcode-836-ju-xing-chong-die/">
+        </link>
+        <updated>2020-10-15T10:58:39.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="836-矩形重叠"><a href="https://leetcode-cn.com/problems/rectangle-overlap/">836. 矩形重叠</a> 2020年3月18日星期三</h2>
+<p>月度打卡题<br>
+刚开始在平板上画了画，发现重叠的情况有很多种，于是利用<strong>逆向思维</strong>，找出所有不重叠的情况，如下图，看起来比较复杂，但仔细一看，下图描述的情况其实非常简单，即如果不想交，则：矩形 r2 要么在矩形 r1 的左边，下面要么在矩形 r1 的右边，要么在矩形 r1 的上边，要么在矩形 r1 的下边，可以写出如下表达式：</p>
+<p>r2.x<sub>2</sub> &lt; r1.x<sub>1</sub> || r2.x<sub>1</sub> &gt; r1.x<sub>2</sub> || r2.y<sub>1</sub> &gt; r1.y<sub>2</sub> || r2.y<sub>2</sub> &lt; r1.y<sub>1</sub></p>
+<p>不重叠则是对上述表达式取反，大学学数字逻辑时，都知道取反后表单时为：</p>
+<p>r2.x<sub>2</sub> &gt;= r1.x<sub>1</sub> || r2.x<sub>1</sub> &gt;= r1.x<sub>2</sub> || r2.y<sub>1</sub> &gt;= r1.y<sub>2</sub> || r2.y<sub>2</sub> &lt;= r1.y<sub>1</sub></p>
+<p>由于题目要求只是边重叠并不算做矩形重叠，去掉等于号即可</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602759551.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h3 id="最终代码-0ms">最终代码 0ms</h3>
+<pre><code class="language-java">class Solution {
+    public boolean isRectangleOverlap(int[] rec1, int[] rec2) {
+        if (rec2[2] &gt; rec1[0] &amp;&amp; rec2[0] &lt; rec1[2] &amp;&amp; rec2[1] &lt; rec1[3] &amp;&amp; rec2[3] &gt; rec1[1]) {
+            return true;
+        }
+        return false;
+    }
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[CSS3 盒子模型.md]]></title>
         <id>http://blog.kuranado.com/post/css3-he-zi-mo-xing-md/</id>
@@ -752,211 +778,6 @@ class Solution {
     }
 }
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CSS 制作三角.md]]></title>
-        <id>http://blog.kuranado.com/post/css-zhi-zuo-san-jiao-md/</id>
-        <link href="http://blog.kuranado.com/post/css-zhi-zuo-san-jiao-md/">
-        </link>
-        <updated>2020-10-07T02:05:20.000Z</updated>
-        <content type="html"><![CDATA[<p>在很多网站，鼠标悬浮在某个按钮上，都会出现一个带有小箭头的小浮框，接下来就来讲解这样一个小箭头的实现原理：<br>
-<a href="https://www.jd.com/">京东</a>：<br>
-<img src="http://image.kuranado.com/blog/1602036362.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<a href="https://www.mi.com/">小米</a><br>
-<img src="http://image.kuranado.com/blog/1602036369.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-编写如下代码：</p>
-<pre><code>.box {
-    /* 盒子宽高一定要都设置为 0 */
-    width: 0;
-    height: 0;
-    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
-    font-size: 0;
-    line-height: 0;
-    border-top: 50px solid red;
-    border-right: 50px solid green;
-    border-bottom: 50px solid blue;
-    border-left: 50px solid skyblue;
-}
-&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
-</code></pre>
-<p>效果图：<br>
-<img src="http://image.kuranado.com/blog/1602036385.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-生成了 4 个箭头，箭头的大小取决于 border 的粗细<br>
-那如果只想生成一个小箭头，只需要将其他边框颜色设置为透明即可：</p>
-<pre><code>.box {
-    width: 0;
-    height: 0;
-    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
-    font-size: 0;
-    line-height: 0;
-    /* 生成向下的箭头 */
-    border: 50px solid transparent;
-    border-top: 50px solid skyblue;
-}
-&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
-</code></pre>
-<p><img src="http://image.kuranado.com/blog/1602036394.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-综上，想要实现京东或小米的箭头效果，只要一个相对定位的大盒子上放一个绝对定位的小箭头就可以了，遂编写如下代码：</p>
-<pre><code>.box {
-    position: relative;
-    width: 300px;
-    height: 100px;
-    background-color: #A1E75A;
-    border-radius: 5px;
-}
-.arrow {
-    position: absolute;
-    /** 此处为了让向右的箭头能垂直居中，所以 top 设置为大盒子的高度的一半 - 等腰三角形的底边的一半即可（等腰直角三角形高 = 底边的一半）= 100/2 - 10 = 40px **/
-    top: 40px;
-    left: 300px;
-    width: 0;
-    height: 0;
-    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
-    font-size: 0;
-    line-height: 0;
-    border: 10px solid transparent;
-    border-left: 10px solid #A1E75A;
-}
-&lt;div class=&quot;box&quot;&gt;
-    &lt;div class=&quot;arrow&quot;&gt;&lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
-<p><img src="http://image.kuranado.com/blog/1602036404.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-怎么样，是不是有点像微信的聊天框呢，哈哈哈！<br>
-有时还可以看到这样的形状：<br>
-<img src="http://image.kuranado.com/blog/1602036412.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-左边部分是一个梯形，根据我们上面分析问题的经验，这个梯形可以分解成一个红色矩形加一个白色的直角三角形实现，可是我们上面的代码得到的是一个普通等腰三角形，应该如何设置 border 才能得到这样一个直角三角形呢？不妨按照如下思路来一步步实现：</p>
-<ol>
-<li>boder-bottom 设置为 0<br>
-去除下边框</li>
-</ol>
-<pre><code>.box {
-    /* 盒子宽高一定要都设置为 0 */
-    width: 0;
-    height: 0;
-    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
-    font-size: 0;
-    line-height: 0;
-    border-top: 50px solid red;
-    border-right: 50px solid green;
-    /* border-bottom: 50px solid blue; */
-    border-left: 50px solid skyblue;
-}
-&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
-</code></pre>
-<p><img src="http://image.kuranado.com/blog/1602036422.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-2. 增大 boder-top<br>
-为了得到一个高大于地板的直角三角形，所以这里调大 border-top</p>
-<pre><code>.box {
-    /* 盒子宽高一定要都设置为 0 */
-    width: 0;
-    height: 0;
-    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
-    font-size: 0;
-    line-height: 0;
-    border-top: 100px solid red;
-    border-right: 50px solid green;
-    /* border-bottom: 50px solid blue; */
-    border-left: 50px solid skyblue;
-}
-&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
-</code></pre>
-<p><img src="http://image.kuranado.com/blog/1602036431.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-3. boder-left 设置为 0<br>
-去除左边框</p>
-<pre><code>.box {
-    /* 盒子宽高一定要都设置为 0 */
-    width: 0;
-    height: 0;
-    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
-    font-size: 0;
-    line-height: 0;
-    border-top: 100px solid red;
-    border-right: 50px solid green;
-    /* border-bottom: 50px solid blue; */
-    /* border-left: 50px solid skyblue; */
-}
-&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
-</code></pre>
-<p><img src="http://image.kuranado.com/blog/1602036440.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-4. border-top 改为透明色</p>
-<pre><code>.box {
-    /* 盒子宽高一定要都设置为 0 */
-    width: 0;
-    height: 0;
-    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
-    font-size: 0;
-    line-height: 0;
-    border-top: 100px solid transparent;
-    border-right: 50px solid green;
-    /* border-bottom: 50px solid blue; */
-    /* border-left: 50px solid skyblue; */
-}
-&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
-</code></pre>
-<p><img src="http://image.kuranado.com/blog/1602036448.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-这样我们就得到了想要的高大于底边的直角三角形，当然代码可以简写成如下形式：</p>
-<pre><code>.box {
-    /* 盒子宽高一定要都设置为 0 */
-    width: 0;
-    height: 0;
-    /* 设置 font-size 和 line-height 是为了兼容性，一般不用加 */
-    font-size: 0;
-    line-height: 0;
-    border-style: solid;
-    border-width: 100px 50px 0 0;
-    border-color: transparent green transparent transparent;
-}
-</code></pre>
-<p>有了上面的基础，现在回到京东的案例，我们只需要为该三角形设置绝对定位，将其定位到红色矩形的最右侧，然后将其颜色改为白色即可，具体代码如下：</p>
-<pre><code>* {
-    margin: 0;
-    padding: 0;
-}
-.price {
-    width: 160px;
-    height: 24px;
-    line-height: 24px;
-    border: 1px solid red;
-}
-.price .miaosha {
-    float: left;
-    position: relative;
-    width: 90px;
-    height: 100%;
-    text-align: center;
-    color: white;
-    font-weight: 700;
-    background-color: red;
-}
-.price .miaosha i {
-    position: absolute;
-    top: 0;
-    left: 80px;
-    width: 0;
-    height: 0;
-    font-size: 0;
-    line-height: 0;
-    border-style: solid;
-    border-width: 24px 10px 0 0;
-    border-color: transparent white transparent transparent;
-}
-.origin {
-    padding-left: 10px;
-    font-size: 14px;
-    color: gray;
-    text-decoration: line-through;
-}
-&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
-&lt;div class=&quot;price&quot;&gt;
-    &lt;sapn class=&quot;miaosha&quot;&gt;
-        ¥1650&lt;i&gt;&lt;/i&gt;
-    &lt;/sapn&gt;
-    &lt;span class=&quot;origin&quot;&gt;¥5650&lt;/span&gt;
-&lt;/div&gt;
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602036463.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
