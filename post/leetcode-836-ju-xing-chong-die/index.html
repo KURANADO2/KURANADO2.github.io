@@ -6,7 +6,7 @@
 
 <title>LeetCode - 836. 矩形重叠 | KURANADO</title>
 
-<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1602759657921">
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1603105676835">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
@@ -97,7 +97,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1602759657921" action="/search/index.html">
+            <form id="gridea-search-form" style="position: relative" data-update="1603105676835" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
             </form>
@@ -130,7 +130,7 @@
 <p>月度打卡题<br>
 刚开始在平板上画了画，发现重叠的情况有很多种，于是利用<strong>逆向思维</strong>，找出所有不重叠的情况，如下图，看起来比较复杂，但仔细一看，下图描述的情况其实非常简单，即如果不想交，则：矩形 r2 要么在矩形 r1 的左边，下面要么在矩形 r1 的右边，要么在矩形 r1 的上边，要么在矩形 r1 的下边，可以写出如下表达式：</p>
 <p>r2.x<sub>2</sub> &lt; r1.x<sub>1</sub> || r2.x<sub>1</sub> &gt; r1.x<sub>2</sub> || r2.y<sub>1</sub> &gt; r1.y<sub>2</sub> || r2.y<sub>2</sub> &lt; r1.y<sub>1</sub></p>
-<p>不重叠则是对上述表达式取反，大学学数字逻辑时，都知道取反后表单时为：</p>
+<p>不重叠则是对上述表达式取反，大学学数字逻辑时，都知道取反后表达式为：</p>
 <p>r2.x<sub>2</sub> &gt;= r1.x<sub>1</sub> || r2.x<sub>1</sub> &gt;= r1.x<sub>2</sub> || r2.y<sub>1</sub> &gt;= r1.y<sub>2</sub> || r2.y<sub>2</sub> &lt;= r1.y<sub>1</sub></p>
 <p>由于题目要求只是边重叠并不算做矩形重叠，去掉等于号即可</p>
 <figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602759551.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>

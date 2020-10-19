@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-15T11:01:27.974Z</updated>
+    <updated>2020-10-19T11:08:26.188Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,51 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[CSS3 过渡.md]]></title>
+        <id>http://blog.kuranado.com/post/css3-guo-du-md/</id>
+        <link href="http://blog.kuranado.com/post/css3-guo-du-md/">
+        </link>
+        <updated>2020-10-19T11:06:04.000Z</updated>
+        <content type="html"><![CDATA[<ul>
+<li>transition: 要过渡的属性1 花费时间1 运动曲线1 何时开始1, 要过渡的属性2 花费时间2 运动曲线2 何时开始2; 谁想要过渡效果，就为谁设置 trasition 属性
+<ul>
+<li>要过渡的属性 即想要变化的 CSS 属性，如 width、heigth、background-color、padding、margin、border 都可以，如果想要所有的属性都有过渡效果，则将该值设置为 all</li>
+<li>花费时间 过渡需要花费的时间，单位 s，如 .5s（单位 s 不可省略）</li>
+<li>运动曲线 可省略，默认为 ease<br>
+<img src="http://image.kuranado.com/blog/1603105590.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
+<li>何时开始 可省略，默认为 0s，表示立即触发。单位 s（单位 s 不可省略）</li>
+</ul>
+</li>
+</ul>
+<pre><code>div {
+    width: 100px;
+    height: 100px;
+    background-color: skyblue;
+    /* 口诀：过渡写到本身上，谁做动画给谁加 */
+    transition: width 1s ease .5s;
+}
+div:hover {
+    width: 200px;
+}
+&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<p>当鼠标悬浮在 div 上时，0.5s 后，该 div 的宽度会在 1s 内由原来的 100px 过渡到 200px</p>
+<pre><code>div {
+    width: 100px;
+    height: 100px;
+    background-color: skyblue;
+    transition: width 1s ease .5s, heigth 1s ease .5s;
+}
+div:hover {
+    width: 200px;
+    height: 200px;
+}
+&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<p>当鼠标悬浮在 div 上时，0.5s 后，该 div 的宽度会在 1s 内由原来的 100px 过渡到 200px，同时高度也会在 1s 内由原来的 100px 过渡到 200px</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[LeetCode - 836. 矩形重叠]]></title>
         <id>http://blog.kuranado.com/post/leetcode-836-ju-xing-chong-die/</id>
@@ -20,7 +65,7 @@
 <p>月度打卡题<br>
 刚开始在平板上画了画，发现重叠的情况有很多种，于是利用<strong>逆向思维</strong>，找出所有不重叠的情况，如下图，看起来比较复杂，但仔细一看，下图描述的情况其实非常简单，即如果不想交，则：矩形 r2 要么在矩形 r1 的左边，下面要么在矩形 r1 的右边，要么在矩形 r1 的上边，要么在矩形 r1 的下边，可以写出如下表达式：</p>
 <p>r2.x<sub>2</sub> &lt; r1.x<sub>1</sub> || r2.x<sub>1</sub> &gt; r1.x<sub>2</sub> || r2.y<sub>1</sub> &gt; r1.y<sub>2</sub> || r2.y<sub>2</sub> &lt; r1.y<sub>1</sub></p>
-<p>不重叠则是对上述表达式取反，大学学数字逻辑时，都知道取反后表单时为：</p>
+<p>不重叠则是对上述表达式取反，大学学数字逻辑时，都知道取反后表达式为：</p>
 <p>r2.x<sub>2</sub> &gt;= r1.x<sub>1</sub> || r2.x<sub>1</sub> &gt;= r1.x<sub>2</sub> || r2.y<sub>1</sub> &gt;= r1.y<sub>2</sub> || r2.y<sub>2</sub> &lt;= r1.y<sub>1</sub></p>
 <p>由于题目要求只是边重叠并不算做矩形重叠，去掉等于号即可</p>
 <figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602759551.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
@@ -695,86 +740,6 @@ public class IOTest {
             return S;
         }
         return sb.toString();
-    }
-}
-</code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[LeetCode - 2 两数相加]]></title>
-        <id>http://blog.kuranado.com/post/leetcode-2-liang-shu-xiang-jia/</id>
-        <link href="http://blog.kuranado.com/post/leetcode-2-liang-shu-xiang-jia/">
-        </link>
-        <updated>2020-10-07T02:13:23.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="2-两数相加"><a href="https://leetcode-cn.com/problems/add-two-numbers/">2 两数相加</a> 2020年3月16日星期一</h2>
-<p>太久没做过算法题，题目看了好久愣是没搞懂什么意思，昨天晚上想了好久，今天又在平板上画了好多遍，最后直接一边写代码一边思考独立做出来了，使用了递归，最后提交结果用时 2ms，战胜 99.98% 的 Java 提交记录，还是蛮有成就感的，嘻嘻😬</p>
-<p>下面为我的思路：</p>
-<p>根据题目可以大概知道需要处理以下几个问题：</p>
-<ol>
-<li>进位问题</li>
-<li>两个链表长度不相等问题</li>
-</ol>
-<p>第一步，不考虑进位，并且假设输入数据的两个链表长度是相同的，可简单写出如下代码：</p>
-<pre><code class="language-java">    public static ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
-        int x = l1.val + l2.val;
-        ListNode r = new ListNode(x % 10);
-        if (l1.next != null) {
-            r.next = addTwoNumbers2(l1.next, l2.next);
-        }
-        return r;
-    }
-</code></pre>
-<p>第二步，如果两个链表的长度是不相同的，只要其中一个链表还没有被遍历完，就继续递归，并为另一个已遍历完的链表创建下一节点，只不过把节点值设置为 0，就可以将两个链表变为相同长度链表：</p>
-<pre><code class="language-java">    public static ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
-        if (l1 == null) {
-            l1 = new ListNode(0);
-        }
-        if (l2 == null) {
-            l2 = new ListNode(0);
-        }
-        int x = l1.val + l2.val;
-        ListNode r = new ListNode(x % 10);
-        if (l1.next != null || l2.next != null) {
-            r.next = addTwoNumbers2(l1.next, l2.next);
-        }
-        return r;
-    }
-</code></pre>
-<p>最后再考虑进位问题，下面为完整代码：</p>
-<h3 id="完整代码2ms">完整代码：2ms</h3>
-<pre><code class="language-java">/**
- * Definition for singly-linked list.
- * public class ListNode {
- * int val;
- * ListNode next;
- * ListNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-       if (l1 == null) {
-            l1 = new ListNode(0);
-        }
-        if (l2 == null) {
-            l2 = new ListNode(0);
-        }
-        int x = l1.val + l2.val;
-        ListNode r = new ListNode(x % 10);
-        if (l1.next != null || l2.next != null) {
-            if (x &gt;= 10) {
-                if (l1.next != null) {
-                    l1.next.val += 1;
-                } else {
-                    l2.next.val += 1;
-                }
-            }
-            r.next = addTwoNumbers(l1.next, l2.next);
-        } else {
-            if (x &gt;= 10) {
-                r.next = new ListNode(1);
-            }
-        }
-        return r;
     }
 }
 </code></pre>

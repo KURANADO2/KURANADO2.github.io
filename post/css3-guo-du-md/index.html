@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>Mac - Hammerspoon.md | KURANADO</title>
+<title>CSS3 过渡.md | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1603105676835">
 
@@ -109,182 +109,64 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    Mac - Hammerspoon.md
+                    CSS3 过渡.md
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-10-06 ·
+                        · 2020-10-19 ·
                     </time>
                     
-                        <a href="http://blog.kuranado.com/tag/xzqpm4g0S/" class="post-tags">
-                            # Mac
+                        <a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/" class="post-tags">
+                            # CSS
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/Eb-3VtzRjb/" class="post-tags">
+                            # HTML
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/AIzjXFqb32/" class="post-tags">
+                            # 前端
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>最近在<a href="https://mrdear.cn/posts/osx_app_switcher.html">学长博客</a>中发现一个非常好玩的效率软件：<a href="http://www.hammerspoon.org/">Hammerspoon</a>，通过编写 Lua 脚本，完成各种有趣的小功能</p>
-<!-- more -->
-<p>[TOC]</p>
-<h2 id="hammerspoon-作用">Hammerspoon 作用</h2>
+                    <ul>
+<li>transition: 要过渡的属性1 花费时间1 运动曲线1 何时开始1, 要过渡的属性2 花费时间2 运动曲线2 何时开始2; 谁想要过渡效果，就为谁设置 trasition 属性
 <ul>
-<li>替代 Magnet 进行窗口移动<br>
-之前一直用 Magnet 移动窗口，使用 Hammerspoon 之后完全可以替代 Magnet，以下为 Magnet 横屏和竖屏分别支持的快捷键截图<br>
-横屏：<br>
-<img src="http://image.kuranado.com/blog/1601949462.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-竖屏：<br>
-<img src="http://image.kuranado.com/blog/1601949470.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
-<li>为应用配置快捷键，比 ⌘⇥ 和 Alfred 切换程序更高效（建议只为高频使用的一些软件分配快捷键）</li>
+<li>要过渡的属性 即想要变化的 CSS 属性，如 width、heigth、background-color、padding、margin、border 都可以，如果想要所有的属性都有过渡效果，则将该值设置为 all</li>
+<li>花费时间 过渡需要花费的时间，单位 s，如 .5s（单位 s 不可省略）</li>
+<li>运动曲线 可省略，默认为 ease<br>
+<img src="http://image.kuranado.com/blog/1603105590.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
+<li>何时开始 可省略，默认为 0s，表示立即触发。单位 s（单位 s 不可省略）</li>
 </ul>
-<h2 id="个人配置快捷键列表">个人配置快捷键列表</h2>
-<table>
-<thead>
-<tr>
-<th>快捷键</th>
-<th>功能</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>⌃⌥←</td>
-<td>左半屏</td>
-</tr>
-<tr>
-<td>⌃⌥→</td>
-<td>右半屏</td>
-</tr>
-<tr>
-<td>⌃⌥↑</td>
-<td>上半屏</td>
-</tr>
-<tr>
-<td>⌃⌥↓</td>
-<td>下半屏</td>
-</tr>
-<tr>
-<td>⌃⌥D</td>
-<td>左 1/3（横屏）或上 1/3（竖屏）</td>
-</tr>
-<tr>
-<td>⌃⌥F</td>
-<td>中 1/3</td>
-</tr>
-<tr>
-<td>⌃⌥G</td>
-<td>右 1/3（横屏）或下 1/3（竖屏）</td>
-</tr>
-<tr>
-<td>⌃⌥E</td>
-<td>左 2/3（横屏）或上 2/3（竖屏）</td>
-</tr>
-<tr>
-<td>⌃⌥T</td>
-<td>右 2/3（横屏）或下 2/3（竖屏）</td>
-</tr>
-<tr>
-<td>⌃⌥C</td>
-<td>居中</td>
-</tr>
-<tr>
-<td>⌃⌥=</td>
-<td>等比例放大窗口</td>
-</tr>
-<tr>
-<td>⌃⌥-</td>
-<td>等比例缩小窗口</td>
-</tr>
-<tr>
-<td>⌃⌥↩︎</td>
-<td>最大化</td>
-</tr>
-<tr>
-<td>⌃⌥⌘←</td>
-<td>窗口由主屏移动到副屏</td>
-</tr>
-<tr>
-<td>⌃⌥⌘→</td>
-<td>窗口由副屏移动到主屏</td>
-</tr>
-<tr>
-<td>⌥Q</td>
-<td>打开 QQ</td>
-</tr>
-<tr>
-<td>⌥W</td>
-<td>打开 WeChat</td>
-</tr>
-<tr>
-<td>⌥V</td>
-<td>打开 Visual Studio Code</td>
-</tr>
-<tr>
-<td>⌥F</td>
-<td>打开 Finder</td>
-</tr>
-<tr>
-<td>⌥C</td>
-<td>打开 Chrome</td>
-</tr>
-<tr>
-<td>⌥J</td>
-<td>打开 Intellij IDEA</td>
-</tr>
-<tr>
-<td>⌥N</td>
-<td>打开 WizNote</td>
-</tr>
-<tr>
-<td>⌥G</td>
-<td>打开 Gridea</td>
-</tr>
-<tr>
-<td>⌥D</td>
-<td>打开 DataGrip</td>
-</tr>
-<tr>
-<td>⌥T</td>
-<td>打开 iTerm2</td>
-</tr>
-<tr>
-<td>⌥M</td>
-<td>打开 MailMaster</td>
-</tr>
-<tr>
-<td>⌥P</td>
-<td>打开 Postman</td>
-</tr>
-<tr>
-<td>⌥O</td>
-<td>打开 Word</td>
-</tr>
-<tr>
-<td>⌥E</td>
-<td>打开 Excel</td>
-</tr>
-<tr>
-<td>⌥S</td>
-<td>打开 SecureCRT</td>
-</tr>
-</tbody>
-</table>
-<h2 id="个人配置文件">个人配置文件</h2>
-<p>见 GitHub：<a href="https://github.com/KURANADO2/hammerspoon-kuranado/blob/main/init.lua">https://github.com/KURANADO2/hammerspoon-kuranado/blob/main/init.lua</a></p>
-<h2 id="关于应用-bundle-id">关于应用 bundle id</h2>
-<p>上面配置中使用快捷键切换应用，需要拿到应用的 bundle id（请注意 bundle id 配置到 hammerspoon 中需要区分大小写，否则 console 会报错），可通过如下方式拿到：</p>
-<pre><code>osascript -e 'id of app &quot;Name of App&quot;'
+</li>
+</ul>
+<pre><code>div {
+    width: 100px;
+    height: 100px;
+    background-color: skyblue;
+    /* 口诀：过渡写到本身上，谁做动画给谁加 */
+    transition: width 1s ease .5s;
+}
+div:hover {
+    width: 200px;
+}
+&lt;div&gt;&lt;/div&gt;
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602148909.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<h2 id="参考">参考</h2>
-<ul>
-<li><a href="https://mrdear.cn/posts/osx_app_switcher.html">学长博客 - OSX--OSX应用快速切换方案</a></li>
-<li><a href="https://www.hammerspoon.org/go/">官方 Quick Start</a></li>
-<li><a href="http://www.hammerspoon.org/docs/">官方文档</a></li>
-<li><a href="https://sspai.com/post/53992">少数派 - 免费又强大的 macOS 自动化工具，Hammerspoon 可以让你少买很多 App</a></li>
-<li><a href="https://www.v2ex.com/t/553241">V2EX - 推荐一个 MacOS 上用了就无法自拔的神器</a></li>
-<li><a href="https://zhuanlan.zhihu.com/p/72499152">Hammerspoon - 岂止于窗口管理</a></li>
-<li><a href="https://github.com/rtoshiro/hammerspoon-init">hammerspoon-init</a></li>
-<li><a href="https://www.runoob.com/lua/lua-tutorial.html">菜鸟教程 - Lua 教程</a></li>
-<li><a href="https://robservatory.com/easily-see-any-apps-bundle-identifier/">Easily see any app’s bundle identifier</a></li>
-</ul>
+<p>当鼠标悬浮在 div 上时，0.5s 后，该 div 的宽度会在 1s 内由原来的 100px 过渡到 200px</p>
+<pre><code>div {
+    width: 100px;
+    height: 100px;
+    background-color: skyblue;
+    transition: width 1s ease .5s, heigth 1s ease .5s;
+}
+div:hover {
+    width: 200px;
+    height: 200px;
+}
+&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<p>当鼠标悬浮在 div 上时，0.5s 后，该 div 的宽度会在 1s 内由原来的 100px 过渡到 200px，同时高度也会在 1s 内由原来的 100px 过渡到 200px</p>
 
                 </div>
             </article>
@@ -293,8 +175,8 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="http://blog.kuranado.com/post/builder-mo-shi-md/" class="post-title gt-a-link">
-                    Builder 模式.md
+                <a href="http://blog.kuranado.com/post/leetcode-836-ju-xing-chong-die/" class="post-title gt-a-link">
+                    LeetCode - 836. 矩形重叠
                 </a>
             </div>
         
