@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>CSS margin 负值的巧妙应用.md | KURANADO</title>
+<title>常见正则示例.md | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1603373167795">
 
@@ -109,77 +109,158 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    CSS margin 负值的巧妙应用.md
+                    常见正则示例.md
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-10-10 ·
+                        · 2020-10-22 ·
                     </time>
                     
-                        <a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/" class="post-tags">
-                            # CSS
+                        <a href="http://blog.kuranado.com/tag/r2fWjh6LA/" class="post-tags">
+                            # RegEx
                         </a>
                     
-                        <a href="http://blog.kuranado.com/tag/Eb-3VtzRjb/" class="post-tags">
-                            # HTML
-                        </a>
-                    
-                        <a href="http://blog.kuranado.com/tag/AIzjXFqb32/" class="post-tags">
-                            # 前端
+                        <a href="http://blog.kuranado.com/tag/A6QRVjXFT-/" class="post-tags">
+                            # 正则表达式
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <h2 id="margin-负值的巧妙运用">margin 负值的巧妙运用</h2>
-<p>先看如下代码：</p>
-<pre><code>ul li {
-    float: left;
-    list-style: none;
-    width: 100px;
-    height: 100px;
-    border: 1px solid skyblue;
-}
-&lt;ul&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
+                    <h2 id="url">URL</h2>
+<p>简单写法：</p>
+<h3 id="表达式">表达式</h3>
+<pre><code>https?:\/\/[-\w.]+(:\d+)?(\/([\w\/_.]*)?)?
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602328932.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>可以看到相邻 li 之间的 border 左右贴在一块，像素数为 2，而我们一般不需要这种效果，所以向左浮动时，可以让每个 li margin-left = -1，即每个 li 向左多走一个像素，这样就能让相邻的 border 上下重叠：</p>
-<pre><code>ul li {
-    float: left;
-    margin-left: -1px;
-    list-style: none;
-    width: 100px;
-    height: 100px;
-    border: 1px solid skyblue;
-}
-&lt;ul&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
+<ul>
+<li><code>https?:\/\/</code> 匹配 <code>http://</code> 或 <code>https://</code></li>
+<li><code>[-\w.]+</code> 匹配主机名</li>
+<li><code>(:\d+)?</code> 匹配一个可选的端口号</li>
+<li><code>(\/([\w\/_.]*)?)?</code> 匹配路径</li>
+</ul>
+<h3 id="测试文本">测试文本</h3>
+<pre><code>https://www.forta.com/blog
+https://www.forta.com:80/blog/index.do
+http://www.forta.com
+http://ben:password@www.forta.com/
+http://localhost/index.php?username=1&amp;type=2
+http://localhost:8500
 </code></pre>
-<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1602328945.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>效果是实现了，如果现在要求鼠标悬浮在某个 li 上面时，将其边框改成红色，相信大家很容易写出如下代码：</p>
-<pre><code>ul li:hover {
-    border: 1px solid red;
-}
+<h3 id="匹配结果">匹配结果</h3>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1603372932.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>虽然第四条和第五条匹配不正确，但该写法已经可以满足绝大部分使用场景了，如需要匹配的更精准，参考下面的写法：</p>
+<p>复杂写法：</p>
+<h3 id="表达式-2">表达式</h3>
+<pre><code>https?:\/\/(\w*:\w*@)?[-\w.]+(:\d+)?(\/([\w\/_.]*(\?\S+)?)?)?
 </code></pre>
-<p>鼠标悬浮在最后一个 li 上，它的四个边框确实都变成了红色，但是鼠标移到前三个 li 上时，边框却是如下效果：</p>
-<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602329410.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>这就是因为 margin-left: -1px; 导致左边 li 的右边框被右边 li 的左边框给压住了<br>
-为了解决这个问题，可以在鼠标悬浮时为 li 添加一个 relative 定位，因为 relative 定位占有原先的位置（不脱标）且会压住浮动的盒子：</p>
-<pre><code>ul li:hover {
-    position: relative;
-    border: 1px solid red;
-}
+<ul>
+<li><code>(\w*:\w*@)?</code> 匹配 Url 中的用户名和密码</li>
+<li><code>(\?\S+)?</code> 匹配查询参数</li>
+</ul>
+<h3 id="匹配结果-2">匹配结果</h3>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1603372958.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>这种写法虽然匹配的更精准，但性能上也会大打折扣</p>
+<hr>
+<h2 id="ip-地址">IP 地址</h2>
+<p>IP 地址范围为 0.0.0.0 ~ 255.255.255.255，总结如下：</p>
+<ol>
+<li>任意的 1 位或 2 位数字</li>
+<li>任意的以 1 开头的 3 位数字</li>
+<li>任意的以 2 开头，第二位数字在 0 到 4 之间的 3 位数字</li>
+<li>任意的以 25 开头，第三位数字在 0 到 5 之间的 3 位数字<br>
+很容易写出如下正则：</li>
+</ol>
+<pre><code>(((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))
 </code></pre>
-<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1602328967.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>那如果每个 li 中上面都有一些元素，比如按钮，就需要每个 li 都是相对定位，li 上面的元素使用绝对定位，这时候在鼠标悬浮到某个 li 时，只要给当前鼠标悬浮的 li 设置一个更大的 z-index 就可以正常压住其他 li 的边框了</p>
+<p>但这个正则却是错误的，如 IP 地址：<code>12.159.46.200</code> 的匹配结果如下图，最后的 0 无法被匹配，这是因为 <code>20</code> 已经被子表达式 <code>(\d{1, 2})</code> 匹配，并没有被 <code>(25[0-5])</code> 匹配<br>
+<img src="http://image.kuranado.com/blog/1603372978.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+正确的写法如下：</p>
+<pre><code>((((25[0-5])\d)|(2[0-4]\d)|(1\d{2})|(\d{1,2}))\.){3}(((25[0-5])\d)|(2[0-4]\d)|(1\d{2})|(\d{1,2}))
+</code></pre>
+<p>匹配结果：<br>
+<img src="http://image.kuranado.com/blog/1603372987.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<hr>
+<h2 id="邮箱地址">邮箱地址</h2>
+<h3 id="表达式-3">表达式</h3>
+<pre><code>(\w+\.)*\w+@(\w+\.)+[A-z]+
+</code></pre>
+<h3 id="测试文本-2">测试文本</h3>
+<pre><code>jing@163.com
+jing.xin@mail.kuranado.com
+</code></pre>
+<h3 id="匹配结果-3">匹配结果</h3>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1603372998.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<hr>
+<h2 id="身份证号">身份证号</h2>
+<h3 id="表达式-4">表达式</h3>
+<pre><code>^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{4}$
+</code></pre>
+<h3 id="测试文本-3">测试文本</h3>
+<pre><code>322225199809020429
+</code></pre>
+<h2 id="手机号">手机号</h2>
+<h3 id="表达式-5">表达式</h3>
+<pre><code>^1(3|4|5|6|7|8|9)\d{9}$
+</code></pre>
+<h3 id="测试文本-4">测试文本</h3>
+<pre><code>18855465629
+</code></pre>
+<h2 id="html-注释">HTML 注释</h2>
+<h3 id="表达式-6">表达式</h3>
+<pre><code>&lt;!-{2,}.*?-{2,}&gt;
+</code></pre>
+<h3 id="测试文本-5">测试文本</h3>
+<pre><code>&lt;!-- comment --&gt;
+&lt;!---- -- comment -- -----&gt;
+</code></pre>
+<h3 id="匹配结果-4">匹配结果</h3>
+<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1603373014.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<hr>
+<h2 id="java-单行注释">Java 单行注释</h2>
+<h3 id="表达式-7">表达式</h3>
+<pre><code>\/\/.*
+</code></pre>
+<h3 id="测试文本-6">测试文本</h3>
+<pre><code>// comment
+</code></pre>
+<h3 id="匹配结果-5">匹配结果</h3>
+<figure data-type="image" tabindex="5"><img src="http://image.kuranado.com/blog/1603373023.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<hr>
+<h2 id="java-多行注释">Java 多行注释</h2>
+<h3 id="表达式-8">表达式</h3>
+<pre><code>/\*[\s\S]*?\*/
+</code></pre>
+<h3 id="测试文本-7">测试文本</h3>
+<pre><code>public class UpgradeEntity {
+    /**
+     * This field was generated by MyBatis Generator.
+     * This field corresponds to the database columnT_UPGRADE_TASK.ID
+     *
+     * @mbggenerated Wed Oct 14 14:39:23 CST 2020
+     */
+    private long id;
+
+    /**
+     * This field was generated by MyBatis Generator.
+     * This field corresponds to the database columnT_UPGRADE_TASK.UPGRADE_NAMES
+     *
+     * @mbggenerated Wed Oct 14 14:39:23 CST 2020
+     */
+    private String upgradeNames;
+
+    /**
+     * This field was generated by MyBatis Generator.
+     * This field corresponds to the database columnT_UPGRADE_TASK.UPGRADE_DESCRIPTION
+     *
+     * @mbggenerated Wed Oct 14 14:39:23 CST 2020
+     */
+    private String upgradeDescription;
+</code></pre>
+<h3 id="匹配结果-6">匹配结果</h3>
+<figure data-type="image" tabindex="6"><img src="http://image.kuranado.com/blog/1603373053.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="参考">参考</h2>
+<ul>
+<li>《正则表达式必知必会修订版》</li>
+</ul>
 
                 </div>
             </article>
@@ -188,8 +269,8 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="http://blog.kuranado.com/post/leetcode-1160-pin-xie-dan-ci/" class="post-title gt-a-link">
-                    LeetCode - 1160. 拼写单词
+                <a href="http://blog.kuranado.com/post/css3-guo-du-md/" class="post-title gt-a-link">
+                    CSS3 过渡.md
                 </a>
             </div>
         
