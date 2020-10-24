@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-22T13:26:30.053Z</updated>
+    <updated>2020-10-24T03:30:39.088Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,79 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[LeetCode 409. 最长回文串]]></title>
+        <id>http://blog.kuranado.com/post/leetcode-409-zui-chang-hui-wen-chuan/</id>
+        <link href="http://blog.kuranado.com/post/leetcode-409-zui-chang-hui-wen-chuan/">
+        </link>
+        <updated>2020-10-24T03:28:24.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="409-最长回文串"><a href="https://leetcode-cn.com/problems/longest-palindrome/">409. 最长回文串</a> 2020年3月19日星期四</h2>
+<p>月度打卡题</p>
+<p>仔细研究了下规律，得到如下结论：</p>
+<ul>
+<li>字母个数如果是偶数，则必然满足，直接把个数相加</li>
+<li>如果只有一个字母的个数是奇数，则必然满足，直接把该字母对应个数（奇数）直接相加</li>
+<li>如果存在 &gt; 1 个字母的个数是奇数，则其中任意一个字母个数（奇数）直接相加，其他字母个数 - 1 后再相加</li>
+</ul>
+<p>综上，其实最终结论就是：只要是字母对应个数是偶数，直接相加，如果是奇数，第一个奇数也直接相加，剩余的奇数 - 1 后再相加</p>
+<h3 id="最终代码-3ms">最终代码 3ms</h3>
+<pre><code class="language-java">class Solution {
+    public int longestPalindrome(String s) {
+        int[] arr = new int[52];
+
+        for (int i = 0; i &lt; s.length(); i++) {
+            char c = s.charAt(i);
+            if (c &gt;= 'A' &amp;&amp; c &lt;= 'Z') {
+                arr[c - 'A']++;
+            }
+            if (c &gt;= 'a' &amp;&amp; c &lt;= 'z') {
+                arr[c - 71]++;
+            }
+        }
+        int sum = 0;
+        boolean firstOdd = true;
+        int odd = 0;
+        for (int i = 0; i &lt; arr.length; i++) {
+            if (arr[i] == 0) {
+                continue;
+            }
+            if (arr[i] % 2 == 0) {
+                sum += arr[i];
+            } else {
+                sum += arr[i] - 1;
+                odd = 1;
+            }
+        }
+        sum += odd;
+        return sum;
+    }
+}
+</code></pre>
+<p>LeetCode 上 1ms 的执行范例：</p>
+<pre><code class="language-java">class Solution {
+    public int longestPalindrome(String s) {
+        if (s == null) return 0;
+        
+        int[] f = new int[75];
+        for (char ch : s.toCharArray()) {
+            f[ch - '0']++;
+        }
+        int res = 0, odd = 0;
+        for (int num : f) {
+            if (num == 0) continue;
+            res += num / 2 * 2;
+            
+            if (num % 2 == 1) {
+                odd = 1;    
+            } 
+        }
+        res += odd;
+        return res;
+    }
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[常见正则示例.md]]></title>
         <id>http://blog.kuranado.com/post/chang-jian-zheng-ze-shi-li-md/</id>
@@ -611,242 +684,6 @@ border-radius: 10px;
 &lt;/div&gt;
 </code></pre>
 <figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602240571.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[装饰器模式.md]]></title>
-        <id>http://blog.kuranado.com/post/zhuang-shi-qi-mo-shi/</id>
-        <link href="http://blog.kuranado.com/post/zhuang-shi-qi-mo-shi/">
-        </link>
-        <updated>2020-10-08T03:23:26.000Z</updated>
-        <content type="html"><![CDATA[<p>装饰器模式也称为包装器模式，往往以 Decorator 或 Wrapper 结尾的类都是使用的装饰器模式</p>
-<h2 id="什么是装饰器模式">什么是装饰器模式？</h2>
-<blockquote>
-<p>装饰器模式又称装饰模式、包装模式。用于动态的给一个对象添加一些额外的职责。就增加功能来说，装饰器模式比生成子类更为灵活</p>
-</blockquote>
-<h2 id="装饰模式结构">装饰模式结构</h2>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602130112.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<ul>
-<li>Component 组件对象的接口，可以给这些对象动态的添加职责</li>
-<li>ConcreteComponent 具体的组件对象，实现组件对象接口，通常就是被装饰器装饰的原始对象，可以给这个对象添加职责</li>
-<li>Decorator 所有装饰器的抽象父类，需要定义一个与组件接口一致的接口，并持有一个 Component 对象，也就是持有一个被装饰的对象（注意这个被装饰的对象不一定是最原始的那个对象了，有可能是被其它装饰器装饰过后的对象）</li>
-<li>ConcreateDecorator 实际的装饰器对象，实现具体要向被装饰对象添加的功能</li>
-</ul>
-<h2 id="装饰器模式实现简单示例">装饰器模式实现简单示例</h2>
-<h3 id="1-定义组件接口">1. 定义组件接口</h3>
-<pre><code class="language-java">import lombok.Data;
-
-/**
- * @Author: Xinling Jing
- * @Date: 2019-07-21 15:59
- */
-@Data
-public abstract class BasePerson {
-
-    private String name;
-
-    public abstract String show();
-}
-</code></pre>
-<h3 id="2-定义具体组件类该组件类的对象将被装饰器装饰">2. 定义具体组件类，该组件类的对象将被装饰器装饰</h3>
-<p>所有人开始都是一丝不挂</p>
-<pre><code class="language-java">/**
- * @Author: Xinling Jing
- * @Date: 2019-07-21 16:01
- */
-public class ConcretPerson extends BasePerson {
-
-    @Override
-    public String show() {
-        return this.getName() + &quot;裸体&quot;;
-    }
-}
-</code></pre>
-<h3 id="3-定义装饰器接口需要和被装饰的对象实现同样的接口">3. 定义装饰器接口，需要和被装饰的对象实现同样的接口</h3>
-<pre><code class="language-java">/**
- * @Author: Xinling Jing
- * @Date: 2019-07-21 16:01
- */
-public abstract class BaseDecorator extends BasePerson {
-
-    private BasePerson person;
-
-    public BaseDecorator(BasePerson person) {
-        this.person = person;
-    }
-
-    @Override
-    public String show() {
-        return person.show();
-    }
-}
-</code></pre>
-<h3 id="4-定义具体装饰器类">4. 定义具体装饰器类</h3>
-<h4 id="穿内裤的装饰器">穿内裤的装饰器</h4>
-<pre><code class="language-java">/**
- * @Author: Xinling Jing
- * @Date: 2019-07-21 16:14
- */
-public class PantsDecorator extends BaseDecorator {
-
-    public PantsDecorator(BasePerson person) {
-        super(person);
-    }
-
-    @Override
-    public String show() {
-        return String.join(&quot; -&gt; &quot;, super.show(), &quot;穿上了红胖次&quot;);
-    }
-}
-</code></pre>
-<h4 id="穿裤子的装饰器">穿裤子的装饰器</h4>
-<pre><code class="language-java">/**
- * @Author: Xinling Jing
- * @Date: 2019-07-21 16:21
- */
-public class TrousersDecorator extends BaseDecorator {
-
-    public TrousersDecorator(BasePerson person) {
-        super(person);
-    }
-
-    @Override
-    public String show() {
-        return String.join(&quot; -&gt; &quot;, super.show(), &quot;穿上了裤子&quot;);
-    }
-}
-</code></pre>
-<h4 id="穿-t-恤的装饰器">穿 T 恤的装饰器</h4>
-<pre><code class="language-java">/**
- * @Author: Xinling Jing
- * @Date: 2019-07-21 16:23
- */
-public class TShirtDecorator extends BaseDecorator {
-
-    public TShirtDecorator(BasePerson person) {
-        super(person);
-    }
-
-    @Override
-    public String show() {
-        return String.join(&quot; -&gt; &quot;, super.show(), &quot;穿上了 T 恤&quot;);
-    }
-}
-</code></pre>
-<h4 id="梳头发的装饰器">梳头发的装饰器</h4>
-<pre><code class="language-java">/**
- * @Author: Xinling Jing
- * @Date: 2019-07-21 16:25
- */
-public class HairstyleDecorator extends BaseDecorator {
-
-    public HairstyleDecorator(BasePerson person) {
-        super(person);
-    }
-
-    @Override
-    public String show() {
-        return String.join(&quot; -&gt; &quot;, super.show(), &quot;梳了一个性感的发型&quot;);
-    }
-}
-</code></pre>
-<h3 id="5-客户端调用">5. 客户端调用</h3>
-<p>客户端首先创建被装饰的组件对象，然后创建一种或多种装饰器对象，然后把装饰器对象组合起来：</p>
-<pre><code class="language-java">/**
- * @Author: Xinling Jing
- * @Date: 2019-07-21 16:26
- */
-public class Client {
-
-    public static void main(String[] args) {
-        
-        // 小明家很穷，出门只能穿得起一条内裤
-        PantsDecorator decorator = new PantsDecorator(new ConcretPerson(&quot;小明&quot;));
-        System.out.println(decorator.show());
-
-        // 康康不仅穿了内裤，还穿了裤子和 T 恤
-        TShirtDecorator decorator2 = new TShirtDecorator(new TrousersDecorator(new PantsDecorator(new ConcretPerson(
-            &quot;康康&quot;))));
-        System.out.println(decorator2.show());
-
-        // 西瓜个头比较小，只需要穿条内裤，然后梳理下发型就可以了
-        HairstyleDecorator decorator3 = new HairstyleDecorator(new PantsDecorator(new ConcretPerson(&quot;西瓜&quot;)));
-        System.out.println(decorator3.show());
-    }
-}
-</code></pre>
-<p>输出结果如下：</p>
-<pre><code>小明裸体 -&gt; 穿上了红胖次
-康康裸体 -&gt; 穿上了红胖次 -&gt; 穿上了裤子 -&gt; 穿上了 T 恤
-西瓜裸体 -&gt; 穿上了红胖次 -&gt; 梳了一个性感的发型
-</code></pre>
-<p>结构如下：</p>
-<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1602130129.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<h2 id="常见装饰器模式实现">常见装饰器模式实现</h2>
-<h3 id="io-流">IO 流</h3>
-<p>结构如下：</p>
-<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602130138.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>各个类在装饰器中扮演的角色如下：</p>
-<ul>
-<li><code>InputStream</code> 对应 <code>Component</code></li>
-<li><code>FileInputStream</code> 对应 <code>ConcretComponent</code></li>
-<li><code>FilterInputStream</code> 对应 <code>Decorator</code></li>
-<li><code>DataInputStream</code>、<code>BufferedInputStream</code>、<code>PushbackInputStream</code> 均是具体的装饰器实现</li>
-</ul>
-<p>示例代码：</p>
-<pre><code class="language-java">/**
- * @Author: Xinling Jing
- * @Date: 2019-07-21 18:21
- */
-public class IOTest {
-
-    public static void main(String[] args) {
-
-        DataInputStream dataInputStream = null;
-        try {
-            dataInputStream = new DataInputStream(new BufferedInputStream(new FileInputStream(&quot;/Users/jing/Desktop&quot; +
-                &quot;/IOTest.txt&quot;)));
-            byte[] buff = new byte[dataInputStream.available()];
-            dataInputStream.read(buff);
-            System.out.println(new String(buff));
-        } catch (IOException e) {
-             e.printStackTrace();
-        } finally {
-            try {
-                if (dataInputStream != null) {
-                    dataInputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-}
-</code></pre>
-<h2 id="总结">总结</h2>
-<p>下面开始装饰器模式的技术总结：</p>
-<ul>
-<li>装饰器模式的本质是<strong>动态组合</strong></li>
-<li>装饰器用来装饰组件，装饰器一定要实现和组件类一致的接口，保证它们是同一个类型，并且具有同一个外观，这样组合完成的装饰才能递归调用下去</li>
-<li>各个装饰器之间最好是完全独立的功能，不要有依赖，以在装饰组合的时候，可以随心所欲，不受先后顺序的限制，也就是说先装饰谁和后装饰谁都应该是一样的，否则会大大降低装饰器组合的灵活性。虽然在实际应用中，可以根据具体的功能要求而有顺序的限制，但应该尽量避免这种情况</li>
-</ul>
-<h3 id="优点">优点</h3>
-<ul>
-<li>装饰模式比继承更灵活。继承是静态的，一旦继承，所有子类都有一样的功能，然而有时候有些子类可能并不需要这些继承而来的功能；装饰模式把功能分离到多个装饰器中，然后通过对象组合的方式，在运行时动态的组合功能，每个被装饰的对象最终拥有哪些功能，是由运行时期动态组合的功能来决定的</li>
-<li>功能容易复用。一个对象可以使用多个装饰器，一个装饰器也可以用来装饰多个对象，从而实现功能复用</li>
-</ul>
-<h3 id="缺点">缺点</h3>
-<ul>
-<li>会产生很多细粒度的对象。装饰模式是把一系列复杂的功能分散到多个装饰器当中，一般每个装饰器只实现一个功能，这样会产生很多细粒度的对象，而且功能越复杂，需要的细粒度对象也就越多，大量小对象占据内存，一定程度上会影响性能</li>
-</ul>
-<h2 id="参考资料">参考资料</h2>
-<ul>
-<li>《研磨设计模式》</li>
-</ul>
-<h2 id="源码">源码</h2>
-<ul>
-<li><a href="https://github.com/KURANADO2/DesignPatterns">https://github.com/KURANADO2/DesignPatterns</a></li>
-</ul>
 ]]></content>
     </entry>
 </feed>

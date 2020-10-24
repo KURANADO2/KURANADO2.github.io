@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>CSS 属性书写顺序.md | KURANADO</title>
+<title>LeetCode 409. 最长回文串 | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1603510206747">
 
@@ -109,34 +109,88 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    CSS 属性书写顺序.md
+                    LeetCode 409. 最长回文串
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-10-04 ·
+                        · 2020-10-24 ·
                     </time>
                     
-                        <a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/" class="post-tags">
-                            # CSS
+                        <a href="http://blog.kuranado.com/tag/tfVz-s3hI/" class="post-tags">
+                            # LeetCode
                         </a>
                     
-                        <a href="http://blog.kuranado.com/tag/Eb-3VtzRjb/" class="post-tags">
-                            # HTML
-                        </a>
-                    
-                        <a href="http://blog.kuranado.com/tag/AIzjXFqb32/" class="post-tags">
-                            # 前端
+                        <a href="http://blog.kuranado.com/tag/qjEtrVrzm/" class="post-tags">
+                            # Algorithm
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>建议遵循以下规则：</p>
-<ol>
-<li>布局定位属性：display/position/float/clear/visibility/overflow（建议 display 第一个写，毕竟关系到模式）</li>
-<li>自身属性：width/heigth/margin/padding/border/background</li>
-<li>文本属性：color/font/text-decoration/text-align/vertical-align/white-space/break-word</li>
-<li>其它属性（CSS3）：content/cursor/border-radius/box-shadow/text-shadow/background:linear-gradient/...</li>
-</ol>
+                    <h2 id="409-最长回文串"><a href="https://leetcode-cn.com/problems/longest-palindrome/">409. 最长回文串</a> 2020年3月19日星期四</h2>
+<p>月度打卡题</p>
+<p>仔细研究了下规律，得到如下结论：</p>
+<ul>
+<li>字母个数如果是偶数，则必然满足，直接把个数相加</li>
+<li>如果只有一个字母的个数是奇数，则必然满足，直接把该字母对应个数（奇数）直接相加</li>
+<li>如果存在 &gt; 1 个字母的个数是奇数，则其中任意一个字母个数（奇数）直接相加，其他字母个数 - 1 后再相加</li>
+</ul>
+<p>综上，其实最终结论就是：只要是字母对应个数是偶数，直接相加，如果是奇数，第一个奇数也直接相加，剩余的奇数 - 1 后再相加</p>
+<h3 id="最终代码-3ms">最终代码 3ms</h3>
+<pre><code class="language-java">class Solution {
+    public int longestPalindrome(String s) {
+        int[] arr = new int[52];
+
+        for (int i = 0; i &lt; s.length(); i++) {
+            char c = s.charAt(i);
+            if (c &gt;= 'A' &amp;&amp; c &lt;= 'Z') {
+                arr[c - 'A']++;
+            }
+            if (c &gt;= 'a' &amp;&amp; c &lt;= 'z') {
+                arr[c - 71]++;
+            }
+        }
+        int sum = 0;
+        boolean firstOdd = true;
+        int odd = 0;
+        for (int i = 0; i &lt; arr.length; i++) {
+            if (arr[i] == 0) {
+                continue;
+            }
+            if (arr[i] % 2 == 0) {
+                sum += arr[i];
+            } else {
+                sum += arr[i] - 1;
+                odd = 1;
+            }
+        }
+        sum += odd;
+        return sum;
+    }
+}
+</code></pre>
+<p>LeetCode 上 1ms 的执行范例：</p>
+<pre><code class="language-java">class Solution {
+    public int longestPalindrome(String s) {
+        if (s == null) return 0;
+        
+        int[] f = new int[75];
+        for (char ch : s.toCharArray()) {
+            f[ch - '0']++;
+        }
+        int res = 0, odd = 0;
+        for (int num : f) {
+            if (num == 0) continue;
+            res += num / 2 * 2;
+            
+            if (num % 2 == 1) {
+                odd = 1;    
+            } 
+        }
+        res += odd;
+        return res;
+    }
+}
+</code></pre>
 
                 </div>
             </article>
@@ -145,8 +199,8 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="http://blog.kuranado.com/post/leetcode-1-liang-shu-zhi-he/" class="post-title gt-a-link">
-                    LeetCode - 1 两数之和
+                <a href="http://blog.kuranado.com/post/chang-jian-zheng-ze-shi-li-md/" class="post-title gt-a-link">
+                    常见正则示例.md
                 </a>
             </div>
         
