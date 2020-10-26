@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-24T03:30:39.088Z</updated>
+    <updated>2020-10-26T12:47:39.212Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,75 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[LeetCode - 3. 无重复字符的最长子串]]></title>
+        <id>http://blog.kuranado.com/post/leetcode-3-wu-chong-fu-zi-fu-de-zui-chang-zi-chuan/</id>
+        <link href="http://blog.kuranado.com/post/leetcode-3-wu-chong-fu-zi-fu-de-zui-chang-zi-chuan/">
+        </link>
+        <updated>2020-10-26T12:40:09.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="3-无重复字符的最长子串"><a href="https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/">3. 无重复字符的最长子串</a> 2020年3月20日星期五 - 2020年3月21日星期六</h2>
+<p>做完最小的 k 个数完成打卡，紧接着看了这一题，先用 Set 实现了一遍，执行用时 131 ms，第二天，在 iPad 上画了点草稿，使用双层循环又实现了一遍，执行用时 6ms</p>
+<h3 id="解法一-131ms">解法一 131ms</h3>
+<p>代码简单明了，但用时很多</p>
+<pre><code class="language-java">class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int max = -1;
+        Set&lt;Character&gt; set = new HashSet&lt;&gt;();
+        int j = 0;
+        for (int i = 0; i &lt; s.length(); i++) {
+            char c = s.charAt(i);
+            boolean add = set.add(c);
+            if (!add) {
+                if (set.size() &gt; max) {
+                    max = set.size();
+                }
+                set.clear();
+                while (j &lt; i) {
+                    if (s.charAt(j) == c) {
+                        i = j;
+                        j++;
+                        break;
+                    }
+                    j++;
+                }
+            }
+        }
+        return Math.max(set.size(), max);
+    }
+}
+</code></pre>
+<h3 id="解法二-6ms">解法二 6ms</h3>
+<p>代码其实也不难，需要定义一个变量跳索引，用于跳过已经判断过的符号。第一次提交时，没有判断输入是空字符串的情况，导致判题返回解答错误</p>
+<pre><code class="language-java">class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        if (&quot;&quot;.equals(s)) {
+            return
+                0;
+        }
+        int max = -1;
+        int tmp = 0;
+        int length = 1;
+        for (int i = 0; i &lt; s.length(); i++) {
+            for (int j = tmp; j &lt; i; j++) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    length = i - tmp;
+                    tmp = j + 1;
+                    break;
+                }
+                if (j == s.length() - 2) {
+                    length = s.length() - tmp;
+                }
+            }
+            if (length &gt; max) {
+                max = length;
+            }
+        }
+        return max;
+    }
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[LeetCode 409. 最长回文串]]></title>
         <id>http://blog.kuranado.com/post/leetcode-409-zui-chang-hui-wen-chuan/</id>
@@ -620,70 +689,6 @@ border-radius: 10px;
 <p>O(n)</p>
 <h4 id="空间复杂度-2">空间复杂度</h4>
 <p>O(n)</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CSS 文本溢出显示省略号.md]]></title>
-        <id>http://blog.kuranado.com/post/css-wen-ben-yi-chu-xian-shi-sheng-lue-hao-md/</id>
-        <link href="http://blog.kuranado.com/post/css-wen-ben-yi-chu-xian-shi-sheng-lue-hao-md/">
-        </link>
-        <updated>2020-10-09T10:48:23.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="单行文本溢出显示省略号">单行文本溢出显示省略号</h2>
-<p>单行文本溢出显示省略号必须满足如下三个条件：</p>
-<ol>
-<li>先强制一行内显示文本，禁止自动换行</li>
-<li>超出部分隐藏</li>
-<li>使用省略号代替隐藏的超出部分</li>
-</ol>
-<p>默认自动换行：</p>
-<pre><code>div {
-    width: 100px;
-    height: 50px;
-    background-color: skyblue;
-}
-&lt;div&gt;
-    单行文本溢出显示省略号
-&lt;/div&gt;
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602240539.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<pre><code>div {
-    width: 100px;
-    height: 50px;
-    /* 1. 禁止自动换行，white-space 默认值为 normal，表示自动换行 */
-    white-space: nowrap;
-    /* 2. 隐藏溢出部分 */
-    overflow: hidden;
-    /* 3.  文字溢出时，使用省略号代替显示隐藏的溢出部分 */
-    text-overflow: ellipsis;
-    background-color: skyblue;
-}
-&lt;div&gt;
-    单行文本溢出显示省略号
-&lt;/div&gt;
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1602240551.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<h2 id="多行文本溢出显示省略号">多行文本溢出显示省略号</h2>
-<p>如下方法有较大的兼容性问题，适合于 WebKit 内核浏览器或移动端浏览器（移动端浏览器大部分是 WebKit 内核）</p>
-<pre><code>div {
-    width: 100px;
-    height: 65px;
-    /* 1. 隐藏溢出部分 */
-    overflow: hidden;
-    /* 2. 文字溢出时，使用省略号代替显示隐藏的超出部分 */
-    text-overflow: ellipsis;
-    background-color: skyblue;
-    /* 弹性伸缩盒子模型显示 */
-    display: -webkit-box;
-    /* 限制在一个块内元素显示文本的行数，想让第几行末尾显示省略号，该属性值就等于几 */
-    -webkit-line-clamp: 3;
-    /* 设置或检索伸缩和对象的子元素的排列方式 */
-    -webkit-box-orient: vertical;
-}
-&lt;div&gt;
-    多行文本溢出显示省略号，不需要记代码，用时直接复制即可
-&lt;/div&gt;
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602240571.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
