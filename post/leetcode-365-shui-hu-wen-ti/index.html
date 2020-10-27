@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>CSS3 选择器.md | KURANADO</title>
+<title>LeetCode - 365. 水壶问题 | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1603812726168">
 
@@ -109,133 +109,74 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    CSS3 选择器.md
+                    LeetCode - 365. 水壶问题
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-10-13 ·
+                        · 2020-10-27 ·
                     </time>
                     
-                        <a href="http://blog.kuranado.com/tag/-ZJ3OiF_K/" class="post-tags">
-                            # CSS
+                        <a href="http://blog.kuranado.com/tag/tfVz-s3hI/" class="post-tags">
+                            # LeetCode
                         </a>
                     
-                        <a href="http://blog.kuranado.com/tag/Eb-3VtzRjb/" class="post-tags">
-                            # HTML
-                        </a>
-                    
-                        <a href="http://blog.kuranado.com/tag/AIzjXFqb32/" class="post-tags">
-                            # 前端
+                        <a href="http://blog.kuranado.com/tag/qjEtrVrzm/" class="post-tags">
+                            # Algorithm
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <p>[TOC]</p>
-<h2 id="属性选择器">属性选择器</h2>
-<pre><code>/* 选择所有拥有 type 属性的元素 */
-input[type]
-/* 选择所有拥有 type 属性，且该属性值为 password 的元素 */
-input[type=&quot;password&quot;]
-/* 选择所有以具有 class 属性，且属性值以 icon 开头的 div 标签 */
-div[class^=&quot;icon&quot;]
-/* 选择所有以具有 class 属性，且属性值以 icon 结尾的 div 标签 */
-div[class$=&quot;icon&quot;]
-/* 选择所有以具有 class 属性，且属性值中包含 icon 的 div 标签 */
-div[class*=&quot;icon&quot;]
-</code></pre>
-<h2 id="结构伪类选择器">结构伪类选择器</h2>
-<pre><code>/* 选择 ul 下的第一个子元素 */
-ul :first-child
-/* 选择 ul 下的第一个子元素，且该子元素必须是 li */
-ul li:first-child
-/* 选择 ul 下的第一个子元素，且该子元素必须是 li */
-ul li:last-child
-/* 选择 ul 下的第 3 （n 从 1 开始）个子元素，且该子元素必须是 li */
-ul li:nth-child(3)
-/* 选择 ul 下所有偶数位子元素（2、4、6...），且该子元素必须是 li */
-ul li:nth-child(even)
-/* 选择 ul 下所有偶数位子元素（1、3、5...），且该子元素必须是 li */
-ul li:nth-child(odd)
-/* 选择 ul 下所有 li 子元素（只能是字母 n，不能是其他字母），n 从 0 开始，每匹配一个元素后，n 自增 1（刚开始为 0，一个元素也匹配不到，自增为 1 后，菜开始匹配到元素） */
-ul li:nth-child(n)
-/* 选择 ul 下所有偶数位子元素（2、4、6...），且该子元素必须是 li（2 * 0、2 * 1、2 * 2、2 * 3...）*/
-ul li:nth-child(2n)
-/* 选择 ul 下所有奇数位子元素（1、3、5...），且该子元素必须是 li（2 * 0 + 1、2 * 1 + 1、2 * 2 + 1...）*/
-ul li:nth-child(2n)
-/* 选择 ul 下所有 5 的倍数位子元素（5、10、15...），且该子元素必须是 li */
-ul li:nth-child(5n)
-/* 选择 ul 下从第 5 个开始（包含第 5 个）后面的子元素（5、6、7...），且该子元素必须是 li（0 + 5、1 + 5、2 + 5） */
-ul li:nth-child(n+5)
-/* 选择 ul 下前 5 （包含第 5 个）子元素（1、2、3、4、5），且该子元素必须是 li（-0 + 5、-1 + 5、-2 + 5、-3 + 5、-4 + 5）*/
-ul li:nth-child(-n+5)
-</code></pre>
-<p>nth-child() 和 nth-of-type() 用法完全相同，都可以在括号中填数字，关键字（even、odd）和公式（如 n、2n、5n 等等），但 nth-child 和 nth-of-type 有如下区别：<br>
-nth-child()：</p>
-<pre><code>/* 没有选中任何元素，因为 nth-child 会先把所有的盒子都排列成序号，然后再看元素是否匹配，这里第一个 p 标签序号为 1，第一个 div 标签选好为 2，第二个 div 标签序号为 3，所以 nth-child(1) 先找到第一个 1 标签，然后校验该标签是否是 div 标签，因为第一个标签是 p 而不是 div，所以没有任何效果 */
-section div:nth-child(1) {
-    background-color: red;
+                    <h2 id="365-水壶问题"><a href="https://leetcode-cn.com/problems/water-and-jug-problem/">365. 水壶问题</a> 2020年3月21日星期六</h2>
+<p>月度打卡题<br>
+提交了 5 次，代码 50 行左右，'除零异常、超时（死循环）、解答错误，晚上 11 点多，看了题解，是个数学问题，几行代码搞定。感受到智商被碾压，服气，很服气！！！</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1603812653.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>首先看两个示例：<br>
+示例 1：x = 3, y = 5, z = 4<br>
+示例 2：x = 3, y = 11, z = 13<br>
+对于示例 1：可以满足题目条件，具体操作步骤为：</p>
+<ol>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 0 + 3 = 3L</li>
+<li>A 装满水，倒到 B 中，因为 A 剩下的容量为 y - 3 = 2L，所以 A 只能向 B 中倒入 2L 水，剩下 1L 留在 A 中。此时 A 中水量为 1L，B 中水量为 5L</li>
+<li>B 中水全部倒掉，A 中的 1L 水倒入 B 中。此时 A 中水量为 0L，B 中水量为 1L</li>
+<li>A 装满水。此时 A 中水量为 3L，B 中水量为 1L，加在一块等于 4L，也就是等于 z，示例一数据满足条件</li>
+</ol>
+<p>对于示例 2：可以满足题目条件，具体操作步骤为：</p>
+<ol>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 0 + 3 = 3L</li>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 3 + 3 = 6L</li>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 6 + 3 = 9L</li>
+<li>A 装满水，倒到 B 中，因为 A 剩下的容量为 y - 9 = 2L，所以 A 只能向 B 中倒入 2L 水，剩下 1L 留在 A 中。此时 A 中水量为 1L，B 中水量为 11L</li>
+<li>B 中水全部倒掉，A 中的 1L 水倒入 B 中。此时 A 中水量为 0L，B 中水量为 1L</li>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 1 + 3 = 4L</li>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 4 + 3 = 7L</li>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 7 + 3 = 10L</li>
+<li>A 装满水，倒到 B 中，因为 A 剩下的容量为 y - 10 = 1L，所以 A 只能向 B 中倒入 1L 水，剩下 2L 留在 A 中。此时 A 中水量为 2L，B 中水量为 11L，加在一块等于 13L，也就是等于 z，示例二数据满足条件</li>
+</ol>
+<p>从上面的模拟可以发现，我们的每一步操作，都只会给水的总量带来 x 或 y 的变化，即要么增加或减少 xL 水，要么增加或减少 yL 水<br>
+如对于示例一的每一步操作，两壶水的总量变化如下：</p>
+<ol>
+<li>A 中水量为 0L，B 中水量为 3L，总水量 = 0 + 3 = 3L</li>
+<li>A 中水量为 1L，B 中水量为 5L，总水量 = 1 + 5 = 6L</li>
+<li>A 中水量为 0L，B 中水量为 1L，总水量为 0 + 1 = 1L</li>
+<li>A 中水量为 3L，B 中水量为 1L，总水量为 3 + 1 = 4L</li>
+</ol>
+<p>确实是每一步操作都只会对两壶水的总量带来 x 或 y 的变化，对于示例一，变化过程为 0 + x + x - y + x = 0 + 3 + 3 - 5 + 3 = 4<br>
+同样对于示例二，也是满足这个规律的，此处就不再赘述了<br>
+也就是说，只要能够找到一对整数 a、b，满足 ax + by = z，就说明是满足条件的，例如对于示例一，a = 3，b = -1<br>
+根据<a href="https://baike.baidu.com/item/%E8%A3%B4%E8%9C%80%E5%AE%9A%E7%90%86/5186593?fromtitle=%E8%B4%9D%E7%A5%96%E5%AE%9A%E7%90%86&amp;fromid=5185441">裴蜀定理</a>：<br>
+<strong>ax + by = z 有解当且仅当 z 是 x，y 的最大公约数的倍数</strong>，也就是 z % gcd(x, y) == 0</p>
+<p>以上就是本题的解题思路，此外还需要注意，如果 z == 0 是直接满足条件的，不需要进行任何计算。另外这里求最大公约数的算法为欧几里得算法。最终代码如下：</p>
+<h3 id="最终代码-0ms">最终代码 0ms</h3>
+<pre><code class="language-java">class Solution {
+    public boolean canMeasureWater(int x, int y, int z) {
+        return z == 0 || (x + y &gt;= z &amp;&amp; z % gcd(x, y) == 0);
+    }
+
+    int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
 }
-&lt;section&gt;
-    &lt;p&gt;光头强&lt;/p&gt;
-    &lt;div&gt;熊大&lt;/div&gt;
-    &lt;div&gt;熊二&lt;/div&gt;
-&lt;/section&gt;
 </code></pre>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602587848.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>nth-of-type()：</p>
-<pre><code>/* 成功选中第一个 div，因为 nth-of-type 会对指定的盒子进行编号，这里制定了盒子必须是 div */
-section div:nth-of-type(1) {
-    background-color: red;
-}
-&lt;section&gt;
-    &lt;p&gt;光头强&lt;/p&gt;
-    &lt;div&gt;熊大&lt;/div&gt;
-    &lt;div&gt;熊二&lt;/div&gt;
-&lt;/section&gt;
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1602587861.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<h2 id="伪元素选择器">伪元素选择器</h2>
-<p>帮助我们使用 CSS 创建新标签，而不需要显示去写 HTML 标签，从而简化 HTML 结构</p>
-<table>
-<thead>
-<tr>
-<th>选择符</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>::before</td>
-<td>在父元素内容的前面创建元素</td>
-</tr>
-<tr>
-<td>::after</td>
-<td>在父元素内容的后面创建元素</td>
-</tr>
-</tbody>
-</table>
-<p>注意：</p>
-<ul>
-<li>::before 和 ::after 创建的伪元素属于行内元素（根据需要将其转换为块级元素或行内块元素）</li>
-<li>新创建的这个元素在 DOM 树中是找不到的，所以称之为伪元素</li>
-<li>before 和 after <strong>必须有 content 属性</strong>，即便内容为空</li>
-</ul>
-<pre><code>div {
-    width: 200px;
-    height: 100px;
-    background-color: skyblue;
-}
-div::before {
-    content: &quot;我&quot;;
-}
-div::after {
-    content: &quot;小猪佩奇&quot;;
-}
-&lt;div&gt;
-    是
-&lt;/div&gt;
-</code></pre>
-<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602587871.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 
                 </div>
             </article>
@@ -244,8 +185,8 @@ div::after {
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="http://blog.kuranado.com/post/css-liu-lan-qi-si-you-qian-zhui-md/" class="post-title gt-a-link">
-                    CSS 浏览器私有前缀.md
+                <a href="http://blog.kuranado.com/post/leetcode-3-wu-chong-fu-zi-fu-de-zui-chang-zi-chuan/" class="post-title gt-a-link">
+                    LeetCode - 3. 无重复字符的最长子串
                 </a>
             </div>
         

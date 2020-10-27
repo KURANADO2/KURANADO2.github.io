@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-26T12:47:39.212Z</updated>
+    <updated>2020-10-27T15:32:18.701Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,65 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[LeetCode - 365. 水壶问题]]></title>
+        <id>http://blog.kuranado.com/post/leetcode-365-shui-hu-wen-ti/</id>
+        <link href="http://blog.kuranado.com/post/leetcode-365-shui-hu-wen-ti/">
+        </link>
+        <updated>2020-10-27T15:30:26.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="365-水壶问题"><a href="https://leetcode-cn.com/problems/water-and-jug-problem/">365. 水壶问题</a> 2020年3月21日星期六</h2>
+<p>月度打卡题<br>
+提交了 5 次，代码 50 行左右，'除零异常、超时（死循环）、解答错误，晚上 11 点多，看了题解，是个数学问题，几行代码搞定。感受到智商被碾压，服气，很服气！！！</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1603812653.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>首先看两个示例：<br>
+示例 1：x = 3, y = 5, z = 4<br>
+示例 2：x = 3, y = 11, z = 13<br>
+对于示例 1：可以满足题目条件，具体操作步骤为：</p>
+<ol>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 0 + 3 = 3L</li>
+<li>A 装满水，倒到 B 中，因为 A 剩下的容量为 y - 3 = 2L，所以 A 只能向 B 中倒入 2L 水，剩下 1L 留在 A 中。此时 A 中水量为 1L，B 中水量为 5L</li>
+<li>B 中水全部倒掉，A 中的 1L 水倒入 B 中。此时 A 中水量为 0L，B 中水量为 1L</li>
+<li>A 装满水。此时 A 中水量为 3L，B 中水量为 1L，加在一块等于 4L，也就是等于 z，示例一数据满足条件</li>
+</ol>
+<p>对于示例 2：可以满足题目条件，具体操作步骤为：</p>
+<ol>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 0 + 3 = 3L</li>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 3 + 3 = 6L</li>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 6 + 3 = 9L</li>
+<li>A 装满水，倒到 B 中，因为 A 剩下的容量为 y - 9 = 2L，所以 A 只能向 B 中倒入 2L 水，剩下 1L 留在 A 中。此时 A 中水量为 1L，B 中水量为 11L</li>
+<li>B 中水全部倒掉，A 中的 1L 水倒入 B 中。此时 A 中水量为 0L，B 中水量为 1L</li>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 1 + 3 = 4L</li>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 4 + 3 = 7L</li>
+<li>A 装满水，倒到 B 中。此时 A 中水量为 0L，B 中水量为 7 + 3 = 10L</li>
+<li>A 装满水，倒到 B 中，因为 A 剩下的容量为 y - 10 = 1L，所以 A 只能向 B 中倒入 1L 水，剩下 2L 留在 A 中。此时 A 中水量为 2L，B 中水量为 11L，加在一块等于 13L，也就是等于 z，示例二数据满足条件</li>
+</ol>
+<p>从上面的模拟可以发现，我们的每一步操作，都只会给水的总量带来 x 或 y 的变化，即要么增加或减少 xL 水，要么增加或减少 yL 水<br>
+如对于示例一的每一步操作，两壶水的总量变化如下：</p>
+<ol>
+<li>A 中水量为 0L，B 中水量为 3L，总水量 = 0 + 3 = 3L</li>
+<li>A 中水量为 1L，B 中水量为 5L，总水量 = 1 + 5 = 6L</li>
+<li>A 中水量为 0L，B 中水量为 1L，总水量为 0 + 1 = 1L</li>
+<li>A 中水量为 3L，B 中水量为 1L，总水量为 3 + 1 = 4L</li>
+</ol>
+<p>确实是每一步操作都只会对两壶水的总量带来 x 或 y 的变化，对于示例一，变化过程为 0 + x + x - y + x = 0 + 3 + 3 - 5 + 3 = 4<br>
+同样对于示例二，也是满足这个规律的，此处就不再赘述了<br>
+也就是说，只要能够找到一对整数 a、b，满足 ax + by = z，就说明是满足条件的，例如对于示例一，a = 3，b = -1<br>
+根据<a href="https://baike.baidu.com/item/%E8%A3%B4%E8%9C%80%E5%AE%9A%E7%90%86/5186593?fromtitle=%E8%B4%9D%E7%A5%96%E5%AE%9A%E7%90%86&amp;fromid=5185441">裴蜀定理</a>：<br>
+<strong>ax + by = z 有解当且仅当 z 是 x，y 的最大公约数的倍数</strong>，也就是 z % gcd(x, y) == 0</p>
+<p>以上就是本题的解题思路，此外还需要注意，如果 z == 0 是直接满足条件的，不需要进行任何计算。另外这里求最大公约数的算法为欧几里得算法。最终代码如下：</p>
+<h3 id="最终代码-0ms">最终代码 0ms</h3>
+<pre><code class="language-java">class Solution {
+    public boolean canMeasureWater(int x, int y, int z) {
+        return z == 0 || (x + y &gt;= z &amp;&amp; z % gcd(x, y) == 0);
+    }
+
+    int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[LeetCode - 3. 无重复字符的最长子串]]></title>
         <id>http://blog.kuranado.com/post/leetcode-3-wu-chong-fu-zi-fu-de-zui-chang-zi-chuan/</id>
@@ -602,93 +661,6 @@ border-radius: 10px;
 </code></pre>
 <figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1602328967.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 <p>那如果每个 li 中上面都有一些元素，比如按钮，就需要每个 li 都是相对定位，li 上面的元素使用绝对定位，这时候在鼠标悬浮到某个 li 时，只要给当前鼠标悬浮的 li 设置一个更大的 z-index 就可以正常压住其他 li 的边框了</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[LeetCode - 1160. 拼写单词]]></title>
-        <id>http://blog.kuranado.com/post/leetcode-1160-pin-xie-dan-ci/</id>
-        <link href="http://blog.kuranado.com/post/leetcode-1160-pin-xie-dan-ci/">
-        </link>
-        <updated>2020-10-09T10:52:02.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="1160-拼写单词"><a href="https://leetcode-cn.com/problems/find-words-that-can-be-formed-by-characters/">1160. 拼写单词</a> 2020年3月17日星期二</h2>
-<p>月度打卡题<br>
-首先能想到的肯定是要对 chars 打表</p>
-<h3 id="解法一-46-ms">解法一 46 ms</h3>
-<p>在刚看到这题时，白天是想到了要用数组的，晚上真正回家做的时候竟全然忘记数组，使用了 Map，不过使用数组还是 Map 都大差不差，这一题的主要解题差距还是在于遍历问题，解法一是多遍历了一层的方法，比较耗时</p>
-<pre><code class="language-java">class Solution {
-    public int countCharacters(String[] words, String chars) {
-        Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;(26);
-        for (int i = 0; i &lt; chars.length(); i++) {
-            String s = chars.substring(i, i + 1);
-            Integer sum = map.get(s);
-            if (sum == null) {
-                sum = 1;
-            } else {
-                sum++;
-            }
-            map.put(s, sum);
-        }
-        int result = 0;
-        for (int i = 0; i &lt; words.length; i++) {
-            Map&lt;String, Integer&gt; mapCopy = new HashMap&lt;&gt;(map);
-            String word = words[i];
-            boolean flag = true;
-            for (int j = 0; j &lt; word.length(); j++) {
-                String s = word.substring(j, j + 1);
-                Integer sum = mapCopy.get(s);
-                if (sum == null || sum == 0) {
-                    flag = false;
-                    break;
-                } else {
-                    sum--;
-                    mapCopy.put(s, sum);
-                }
-            }
-            if (flag) {
-                result += word.length();
-            }
-        }
-        return result;
-    }
-}
-</code></pre>
-<h3 id="时间复杂度">时间复杂度</h3>
-<p>O(n<sup>2</sup>)</p>
-<h3 id="空间复杂度">空间复杂度</h3>
-<p>O(n)</p>
-<h3 id="解法二-6-ms">解法二 6 ms</h3>
-<p>相较解法一，少了一层遍历，</p>
-<pre><code class="language-java">class Solution {
-    public int countCharacters(String[] words, String chars) {
-        int[] table = new int[26];
-        for (int i = 0; i &lt; chars.length(); i++) {
-            table[chars.charAt(i) - 'a'] ++;
-        }
-        int result = 0;
-        for (int i = 0; i &lt; words.length; i++) {
-            String word = words[i];
-            boolean flag = true;
-            int[] tmp = new int[26];
-            for (int j = 0; j &lt; word.length(); j++) {
-                int index = word.charAt(j) - 'a';
-                if (tmp[index] == table[index]) {
-                    flag = false;
-                    break;
-                }
-                tmp[index]++;
-            }
-            if (flag) {
-                result += word.length();
-            }
-        }
-        return result;
-    }
-}
-</code></pre>
-<h4 id="时间复杂度-2">时间复杂度</h4>
-<p>O(n)</p>
-<h4 id="空间复杂度-2">空间复杂度</h4>
-<p>O(n)</p>
 ]]></content>
     </entry>
 </feed>
