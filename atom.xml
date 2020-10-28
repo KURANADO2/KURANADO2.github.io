@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-27T15:32:18.701Z</updated>
+    <updated>2020-10-28T07:52:39.989Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,300 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[CSS3 2D 转换.md]]></title>
+        <id>http://blog.kuranado.com/post/css3-2d-zhuan-huan-md/</id>
+        <link href="http://blog.kuranado.com/post/css3-2d-zhuan-huan-md/">
+        </link>
+        <updated>2020-10-28T07:48:18.000Z</updated>
+        <content type="html"><![CDATA[<p>[TOC]</p>
+<blockquote>
+<p>CSS3 trasform 属性可实现元素的位移、旋转、缩放等效果</p>
+</blockquote>
+<h2 id="translate-移动">translate 移动</h2>
+<ul>
+<li>transform:
+<ul>
+<li>translate(x, y) 沿着 x 轴和 y 轴移动位置，单位可以为像素、百分比（移动距离为相对于自身元素的百分比，而不是父元素的百分比）</li>
+<li>translateX(x) 沿着 x 轴移动位置，等价于 translate(x, 0)</li>
+<li>translateY(y) 沿着 y 轴移动位置，等价于 translate(0, y)</li>
+</ul>
+</li>
+</ul>
+<pre><code>div {
+    width: 200px;
+    height: 200px;
+    background-color: skyblue;
+    transform: translate(30%, 0);
+}
+&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<p>沿 x 轴方向移动 200px * 30% = 60px</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1603871371.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>对行内元素没有效果</li>
+<li>translate 最大的优点是<strong>不会影响其它元素的位置</strong></li>
+</ul>
+<pre><code>div:first-child {
+    width: 200px;
+    height: 200px;
+    background-color: skyblue;
+    transform: translate(100px, 100px);
+}
+div:last-child {
+    width: 200px;
+    height: 200px;
+    background-color: pink;
+}
+&lt;div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1603871383.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h3 id="traslate-实现盒子水平垂直居中">traslate 实现盒子水平/垂直居中</h3>
+<p>方法一：<br>
+也就是以前实现盒子在父元素内水平垂直剧中的方法</p>
+<pre><code>* {
+    margin: 0;
+    padding: 0;
+}
+div {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background-color: skyblue;
+}
+p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* 该值为自身元素高度的一半，如果自身高度改变，则需要重新修改该值 */
+    margin-top: -50px;
+    /* 该值为自身元素宽度的一半，如果自身宽度改变，则需要重新修改该值 */
+    margin-left: -50px;
+    width: 100px;
+    height: 100px;
+    background-color: pink;
+}
+&lt;div&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<p>方法二：使用 traslate 的写法：</p>
+<pre><code>* {
+    margin: 0;
+    padding: 0;
+}
+div {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background-color: skyblue;
+}
+p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    /* 即便自身宽度或高度变化，也无需做任何修改，盒子仍然保持水平/垂直居中 */
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background-color: pink;
+}
+&lt;div&gt;
+    &lt;p&gt;&lt;/p&gt;
+&lt;/div&gt;
+</code></pre>
+<p>两种方法的实现效果完全相同，但推荐使用第二种方法：</p>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1603871399.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="rotate-旋转">rotate 旋转</h2>
+<ul>
+<li>transform:
+<ul>
+<li>rotate(度数) 单位 deg，如 rotate(45deg)，度数大于零顺时针旋转，度数小于零逆时针旋转。默认旋转的中心点是元素的中心点</li>
+</ul>
+</li>
+<li>transform-origin: x y; 设置旋转的中心点
+<ul>
+<li>x y 可以是像素，可以是百分比，还可以是方位名词
+<ul>
+<li>像素 如：trasform-origin: 50px 50px; 以元素左上角向右 50px 和向下 50px 的点为旋转中心</li>
+<li>百分比 如：trasform-origin: 50% 50%; 以元素中心点为旋转中心</li>
+<li>方位名词 可取值：top right left bottom center，如：transform-origin: center center; 表示以元素中心点为旋转中心；transform-origin: left bottom; 表示以元素左下角为旋转中心</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 10px solid skyblue;
+    transition: all 10s;
+}
+img:hover {
+    transform: rotate(9960deg);
+}
+&lt;img src=&quot;./images/pvp.png&quot; alt=&quot;&quot;&gt;
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1603871414.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<pre><code>div {
+    overflow: hidden;
+    margin: 0 auto;
+    width: 100px;
+    height: 100px;
+    background-color: skyblue;
+}
+div::before {
+    content: '旋转动画效果';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: pink;
+    transform: rotate(90deg);
+    transform-origin: left bottom;
+    transition: all .3s;
+}
+div:hover::before {
+    /* 复原为 0deg */
+    transform: rotate(0deg);
+    transform-origin: left bottom;
+}
+&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="5"><img src="http://image.kuranado.com/blog/1603871426.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h3 id="rotate-实现三角箭头">rotate 实现三角箭头</h3>
+<p>很多时候用到下图这种三角箭头都是使用字体图标：</p>
+<figure data-type="image" tabindex="6"><img src="http://image.kuranado.com/blog/1603871436.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>其实使用 rotate 也完全可以实现，这需要定义一个正方形，只设置右边框和下边框，然后顺时针旋转 45deg 就可以了：</p>
+<pre><code>div {
+    position: relative;
+    width: 249px;
+    height: 30px;
+    border: 1px solid black;
+}
+div::after {
+    position: absolute;
+    top: 9px;
+    right: 20px;
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    transform: rotate(45deg);
+    transition: all .1s;
+}
+div:hover::after {
+    /* 45deg + 180deg = 225deg，让箭头翻转为向上 */
+    transform: rotate(225deg);
+}
+&lt;div&gt;&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="7"><img src="http://image.kuranado.com/blog/1603871445.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="scale-缩放">scale 缩放</h2>
+<ul>
+<li>transform:
+<ul>
+<li>scale 值为缩放倍数，倍数为 1 表示不变，大于 1 表示放大，小于 1 表示缩小。默认缩放的中心点是元素的中心点；
+<ul>
+<li>transform: scale(宽度缩放倍数, 高度缩放倍数); 如：transform: scale(0.5，0.8); 表示宽度变为原来的 0.5 倍（一半），高度变为原来的 0.8 倍</li>
+<li>transform: scale(等比例缩放倍数); 如：transform: scale(2); 表示宽度变为原来的 2 倍，高度也变为原来的两倍，等价于 transform: scale(2，2);</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>transform-origin: x y; 设置缩放的中心点
+<ul>
+<li>x y 可以是像素，可以是百分比，还可以是方位名词
+<ul>
+<li>像素 如：trasform-origin: 50px 50px; 以元素左上角向右 50px 和向下 50px 的点为缩放中心</li>
+<li>百分比 如：trasform-origin: 50% 50%; 以元素中心点为缩放中心</li>
+<li>方位名词 可取值：top right left bottom center，如：transform-origin: center center; 表示以元素中心点为缩放中心；transform-origin: left bottom; 表示以元素左下角为缩放中心</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>注意</strong>：</p>
+<ul>
+<li>scale 最大的优点是<strong>不会影响其它元素的位置</strong></li>
+</ul>
+<h3 id="scale-图片悬浮案例">scale 图片悬浮案例</h3>
+<pre><code>div {
+    float: left;
+    margin-right: 20px;
+    overflow: hidden;
+    width: 300px;
+    height: 280px;
+}
+div img {
+    width: 100%;
+    height: 100%;
+    transition: all .4s;
+}
+div img:hover{
+    transform: scale(1.1);
+}
+&lt;div&gt;
+    &lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;./images/happy.jpg&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;div&gt;
+    &lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;./images/happy.jpg&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;
+&lt;/div&gt;
+&lt;div&gt;
+    &lt;a href=&quot;#&quot;&gt;&lt;img src=&quot;./images/happy.jpg&quot; alt=&quot;&quot;/&gt;&lt;/a&gt;
+&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="8"><img src="http://image.kuranado.com/blog/1603871457.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h3 id="scale-分页按钮案例">scale 分页按钮案例</h3>
+<pre><code>.page ul li {
+    float: left;
+    margin: 0 10px;
+    list-style: none;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border: 1px solid skyblue;
+    border-radius: 50%;
+    transition: all .1s;
+}
+.page ul li a {
+    text-decoration: none;
+    color: black
+}
+.page ul li:hover {
+    transform: scale(1.2);
+}
+&lt;div class=&quot;page&quot;&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;1&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;2&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;3&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;4&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;5&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;6&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;7&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;8&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;9&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+<figure data-type="image" tabindex="9"><img src="http://image.kuranado.com/blog/1603871467.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="transform-综合写法注意事项">transform 综合写法注意事项</h2>
+<p>transform 属性可同时使用多个转换，如：transform: translate() rotate() scale，这种情况下请注意属性值的先后顺序将会影响转换效果<br>
+如：</p>
+<pre><code>transform: rotate(180deg) translate(150px, 50px);
+</code></pre>
+<p>和：</p>
+<pre><code>transform: translate(150px, 50px) rotate(180deg);
+</code></pre>
+<p>的效果是完全不同的，前者先顺时针旋转 180deg，然后在旋转后的基础上向右移动 150px，向下移动 50px；而后者是先向右移动 150px，向下移动 50px，再顺时针旋转 180deg<br>
+所以，当我们同时有位移和其它属性时，记得要将位移放到最前面</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[LeetCode - 365. 水壶问题]]></title>
         <id>http://blog.kuranado.com/post/leetcode-365-shui-hu-wen-ti/</id>
@@ -603,64 +897,6 @@ div::after {
 -o-border-radius: 10px;
 border-radius: 10px;
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CSS margin 负值的巧妙应用.md]]></title>
-        <id>http://blog.kuranado.com/post/css-margin-fu-zhi-de-qiao-miao-ying-yong-md/</id>
-        <link href="http://blog.kuranado.com/post/css-margin-fu-zhi-de-qiao-miao-ying-yong-md/">
-        </link>
-        <updated>2020-10-10T11:21:47.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="margin-负值的巧妙运用">margin 负值的巧妙运用</h2>
-<p>先看如下代码：</p>
-<pre><code>ul li {
-    float: left;
-    list-style: none;
-    width: 100px;
-    height: 100px;
-    border: 1px solid skyblue;
-}
-&lt;ul&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</code></pre>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1602328932.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>可以看到相邻 li 之间的 border 左右贴在一块，像素数为 2，而我们一般不需要这种效果，所以向左浮动时，可以让每个 li margin-left = -1，即每个 li 向左多走一个像素，这样就能让相邻的 border 上下重叠：</p>
-<pre><code>ul li {
-    float: left;
-    margin-left: -1px;
-    list-style: none;
-    width: 100px;
-    height: 100px;
-    border: 1px solid skyblue;
-}
-&lt;ul&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</code></pre>
-<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1602328945.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>效果是实现了，如果现在要求鼠标悬浮在某个 li 上面时，将其边框改成红色，相信大家很容易写出如下代码：</p>
-<pre><code>ul li:hover {
-    border: 1px solid red;
-}
-</code></pre>
-<p>鼠标悬浮在最后一个 li 上，它的四个边框确实都变成了红色，但是鼠标移到前三个 li 上时，边框却是如下效果：</p>
-<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602329410.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>这就是因为 margin-left: -1px; 导致左边 li 的右边框被右边 li 的左边框给压住了<br>
-为了解决这个问题，可以在鼠标悬浮时为 li 添加一个 relative 定位，因为 relative 定位占有原先的位置（不脱标）且会压住浮动的盒子：</p>
-<pre><code>ul li:hover {
-    position: relative;
-    border: 1px solid red;
-}
-</code></pre>
-<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1602328967.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>那如果每个 li 中上面都有一些元素，比如按钮，就需要每个 li 都是相对定位，li 上面的元素使用绝对定位，这时候在鼠标悬浮到某个 li 时，只要给当前鼠标悬浮的 li 设置一个更大的 z-index 就可以正常压住其他 li 的边框了</p>
 ]]></content>
     </entry>
 </feed>
