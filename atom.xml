@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2020-10-28T07:52:39.989Z</updated>
+    <updated>2020-11-11T08:03:06.134Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,36 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2020, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[搬砖工具 - 人生第一块静电容键盘 NIZ 宁芝 micro 82]]></title>
+        <id>http://blog.kuranado.com/post/ban-zhuan-gong-ju-ren-sheng-di-yi-kuai-jing-dian-rong-jian-pan-niz-ning-zhi-micro-82/</id>
+        <link href="http://blog.kuranado.com/post/ban-zhuan-gong-ju-ren-sheng-di-yi-kuai-jing-dian-rong-jian-pan-niz-ning-zhi-micro-82/">
+        </link>
+        <updated>2020-11-11T07:53:20.000Z</updated>
+        <content type="html"><![CDATA[<p>最近一直想换块布局紧凑的键盘，个人对于键盘布局的要求很简单：<br>
+- 紧凑小巧<br>
+- 必须要有方向键和 F1~F12<br>
+- 有 ⌘ 键和 ⌥ 键，以适用 Mac，不然为了保持和 Mac 键盘布局一致，必须通过 Karabiner 或其它软件实现 Alt 键和 Win 键的位置对调<br>
+晚上在京东刷到了宁芝的 82 键静电容键盘，键盘布局刚好符合我的要求，虽然默认是适应于 Windows 的 Alt 和 Win，但会附赠一套 ⌘ 和 ⌥ 键帽用于替换，而且可以通过设置切换 Mac 系统和 Win 系统，再也不需要通过 Karabiner 对调按键了<br>
+只是从来没用过静电容键盘，手感是否适合自己就不太确定了。在 B 站看了几段开箱评测视频，感觉应该不会有什么大问题。而且静电容键盘一般比机械键盘贵上不少，想必手感也不会比机械键盘差吧🤔<br>
+至于价格的话，双模版八百多块，因为后天就是双十一，今天买的话，即便双十一降价了，也可以申请价保，所以还是用上了之前的京东卡下单了这款键盘<br>
+另外也有粗略浏览了下传说中的 HHKB，首先价格就不在我的承受范围之内</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1605081464.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>第二键帽布局上面，缺少方向键和 F1~F12，虽然可以通过加 FN 键弥补，但却意味着大量的快捷键都需要加按 FN，实在是令人难以忍受</p>
+<p>第二天吃完晚饭，拿到了键盘，上几张图片：</p>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1605081524.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>轴体（不知道是不是应该叫轴体）和机械键盘完全不同：</p>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1605081550.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>和老键盘（ikbc c104）的对比：</p>
+<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1605081562.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>说下自己简单使用中的感受吧！<br>
+- 相较机械键盘，静电容键盘长时间使用起来会更轻松一些，按压力度真的很小，打起字来挺舒服（现在的日记内容全是用这块新键盘写出来的），包装附赠的一些增大压力的小弹簧个人觉得没有必要使用<br>
+- 声音沉闷，不会发出机械键盘那样咔哒咔哒的吵闹声，而是有种沙沙沙的感觉<br>
+- 键盘布局方面很小巧、紧凑，按键虽少，但对于我来说很重要的方向键、HOME、END 却一个没少<br>
+- 蓝牙延迟方面，系统自带蓝牙和附赠的蓝牙接收器都试了一下，肉眼可见的延迟，最终还是插上了附赠的 USB-TypeC 连接线，瞬间延迟消失，所以如果注重无线使用的话，个人并不推荐这款键盘<br>
+跟了我我 4 年的 ikbc 终于可以光荣退休了</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[CSS3 2D 转换.md]]></title>
         <id>http://blog.kuranado.com/post/css3-2d-zhuan-huan-md/</id>
@@ -870,33 +900,6 @@ div::after {
 &lt;/div&gt;
 </code></pre>
 <figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1602587871.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CSS 浏览器私有前缀.md]]></title>
-        <id>http://blog.kuranado.com/post/css-liu-lan-qi-si-you-qian-zhui-md/</id>
-        <link href="http://blog.kuranado.com/post/css-liu-lan-qi-si-you-qian-zhui-md/">
-        </link>
-        <updated>2020-10-11T03:33:57.000Z</updated>
-        <content type="html"><![CDATA[<p>[TOC]</p>
-<blockquote>
-<p>浏览器私有前缀是为了兼容老版本的浏览器，如果 CSS 代码只运行在较新版本的浏览器上则无需添加</p>
-</blockquote>
-<h2 id="私有前缀">私有前缀</h2>
-<ul>
-<li><code>-moz-</code> Firefox 的私有前缀</li>
-<li><code>-ms-</code> IE 的私有前缀</li>
-<li><code>-webkit-</code> Safari 和 Chrome 的私有前缀</li>
-<li><code>-o-</code> Opera 的私有前缀</li>
-</ul>
-<p>国产浏览器基本也全是使用上面四种前缀中的一种</p>
-<h2 id="提倡写法">提倡写法</h2>
-<p>先写私有前缀，再写不带前缀，例如：</p>
-<pre><code>-moz-border-radius: 10px;
--webkit-border-radius: 10px;
--o-border-radius: 10px;
-border-radius: 10px;
-</code></pre>
 ]]></content>
     </entry>
 </feed>

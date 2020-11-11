@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>Nginx 安装 SSL 证书.md | KURANADO</title>
+<title>搬砖工具 - 人生第一块静电容键盘 NIZ 宁芝 micro 82 | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1605081762246">
 
@@ -109,126 +109,53 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    Nginx 安装 SSL 证书.md
+                    搬砖工具 - 人生第一块静电容键盘 NIZ 宁芝 micro 82
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-09-25 ·
+                        · 2020-11-11 ·
                     </time>
                     
-                        <a href="http://blog.kuranado.com/tag/EbMZ5TaKp/" class="post-tags">
-                            # Nginx
-                        </a>
-                    
-                        <a href="http://blog.kuranado.com/tag/ZK7puSVb5W/" class="post-tags">
-                            # HTTPS
+                        <a href="http://blog.kuranado.com/tag/EPkU4sR-p/" class="post-tags">
+                            # 键盘
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <h2 id="安全组开启-443-端口">安全组开启 443 端口</h2>
-<p><img src="http://image.kuranado.com/blog/1601013606.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-以腾讯云为例，<strong>入站规则</strong>和<strong>出站规则</strong>都需要添加 443<br>
-<img src="http://image.kuranado.com/blog/1601013628.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="下载证书">下载证书</h2>
-<p>腾讯云下载证书<br>
-<img src="http://image.kuranado.com/blog/1601013639.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="安装证书">安装证书</h2>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1601013649.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>证书下载后解压，得到如下两个文件：</p>
-<ul>
-<li><code>1_kuranado.com_bundle.crt</code> 证书</li>
-<li><code>2_kuranado.com.key</code> 私钥</li>
-</ul>
-<p>将这两份文件上传到服务器，并保存在服务器 /usr/local/nginx/conf 目录下，即 Nginx 的安装目录，然后编辑 Nginx 配置文件，先来看下原有的配置：</p>
-<pre><code>server {
-    listen 80;
-    server_name kuranado.com www.kuranado.com emoji.kuranado.com;
-
-    location / {
-        root /home/jing/data/soft/emoji-web;
-        index index.html;
-    }
-}
-</code></pre>
-<p>原有的配置为 http 配置，可以不用对其做任何修改，下面增加证书配置：</p>
-<pre><code>server {
-    listen 443 ssl;
-    server_name kuranado.com www.kuranado.com;
-    ssl_certificate 1_kuranado.com_bundle.crt;
-    ssl_certificate_key 2_kuranado.com.key;
-    ssl_session_timeout 5m;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-    ssl_prefer_server_ciphers on;
-    location / {
-        root /home/jing/data/soft/emoji-web;
-        index index.html;
-    }
-}
-</code></pre>
-<p>增加了一个监听 443 端口的 server，因为我这里是在腾讯云申请的亚洲诚信免费 DV 版 SSL 证书，一个证书只能用于一个域名，所以 server_name 只能配置为申请证书时的域名（www.kuranado.com 和 kuranado.com 等价），而不能配置泛域名<br>
-配置添加完成后，<code>./sbin/nginx -s reload</code> 重新加载 Nginx 配置文件，可正常访问 https://kuranado.com 或 https://www.kuranado.com/，说明证书生效<br>
-<img src="http://image.kuranado.com/blog/1601013669.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<img src="http://image.kuranado.com/blog/1601013680.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<p>当然原先的 http 也可以正常使用</p>
-<h2 id="申请免费域名证书">申请免费域名证书</h2>
-<p><img src="http://image.kuranado.com/blog/1601013691.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<img src="http://image.kuranado.com/blog/1601013703.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<p>正如上面所见，同一主域可以申请 20 张 DV 版免费 SSL 证书，对于一个个人小型网站来说已经足够使用了，只是稍微有些麻烦，需要为每个子域名都申请一份证书配置到 Nginx 中</p>
-<p>如下面为访问 xxl-job 的 http 配置 <code>http://task.kuranado.com/xxl-job-admin</code>：</p>
-<pre><code>upstream task {
-    ip_hash;
-    server 127.0.0.1:10001 max_fails=3 fail_timeout=30s;
-}
-
-server {
-    listen 80;
-    server_name task.kuranado.com;
-
-    #charset koi8-r;
-
-    #access_log logs/host.access.log main;
-
-    location /xxl-job-admin {
-        #root html;
-        #index index.html index.htm;
-        proxy_pass http://task;
-    }
-}
-</code></pre>
-<p>这时我们就可以为其申请一张免费的域名证书，申请时通用名称填写 <code>task.kuranado.com</code>，然后按照上面的证书安装方法在 Nginx 中增加如下配置：</p>
-<pre><code>server {
-    listen 443 ssl;
-    server_name task.kuranado.com;
-    ssl_certificate 1_task.kuranado.com_bundle.crt;
-    ssl_certificate_key 2_task.kuranado.com.key;
-    ssl_session_timeout 5m;
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-    ssl_prefer_server_ciphers on;
-    
-    location /xxl-job-admin {
-        #root html;
-        #index index.html index.htm;
-        proxy_pass http://task;
-    }
-}
-</code></pre>
-<p>重新加载 Nginx 配置文件，即可使用 <code>https://task.kuranado.com/xxl-job-admin</code> 访问 xxl-job<br>
-同理，为每个域名都申请免费证书（不超过 20 个），便可以实现全站 https 了，美滋滋<br>
-<img src="http://image.kuranado.com/blog/1601013716.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-<img src="http://image.kuranado.com/blog/1601013728.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<h2 id="参考">参考</h2>
-<ul>
-<li><a href="https://cloud.tencent.com/document/product/400/35244">腾讯云文档 - Nginx 服务器证书安装</a></li>
-<li><a href="https://blog.csdn.net/duyusean/article/details/79348613">nginx使用ssl模块配置支持HTTPS访问</a></li>
-</ul>
+                    <p>最近一直想换块布局紧凑的键盘，个人对于键盘布局的要求很简单：<br>
+- 紧凑小巧<br>
+- 必须要有方向键和 F1~F12<br>
+- 有 ⌘ 键和 ⌥ 键，以适用 Mac，不然为了保持和 Mac 键盘布局一致，必须通过 Karabiner 或其它软件实现 Alt 键和 Win 键的位置对调<br>
+晚上在京东刷到了宁芝的 82 键静电容键盘，键盘布局刚好符合我的要求，虽然默认是适应于 Windows 的 Alt 和 Win，但会附赠一套 ⌘ 和 ⌥ 键帽用于替换，而且可以通过设置切换 Mac 系统和 Win 系统，再也不需要通过 Karabiner 对调按键了<br>
+只是从来没用过静电容键盘，手感是否适合自己就不太确定了。在 B 站看了几段开箱评测视频，感觉应该不会有什么大问题。而且静电容键盘一般比机械键盘贵上不少，想必手感也不会比机械键盘差吧🤔<br>
+至于价格的话，双模版八百多块，因为后天就是双十一，今天买的话，即便双十一降价了，也可以申请价保，所以还是用上了之前的京东卡下单了这款键盘<br>
+另外也有粗略浏览了下传说中的 HHKB，首先价格就不在我的承受范围之内</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1605081464.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>第二键帽布局上面，缺少方向键和 F1~F12，虽然可以通过加 FN 键弥补，但却意味着大量的快捷键都需要加按 FN，实在是令人难以忍受</p>
+<p>第二天吃完晚饭，拿到了键盘，上几张图片：</p>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1605081524.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>轴体（不知道是不是应该叫轴体）和机械键盘完全不同：</p>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1605081550.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>和老键盘（ikbc c104）的对比：</p>
+<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1605081562.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>说下自己简单使用中的感受吧！<br>
+- 相较机械键盘，静电容键盘长时间使用起来会更轻松一些，按压力度真的很小，打起字来挺舒服（现在的日记内容全是用这块新键盘写出来的），包装附赠的一些增大压力的小弹簧个人觉得没有必要使用<br>
+- 声音沉闷，不会发出机械键盘那样咔哒咔哒的吵闹声，而是有种沙沙沙的感觉<br>
+- 键盘布局方面很小巧、紧凑，按键虽少，但对于我来说很重要的方向键、HOME、END 却一个没少<br>
+- 蓝牙延迟方面，系统自带蓝牙和附赠的蓝牙接收器都试了一下，肉眼可见的延迟，最终还是插上了附赠的 USB-TypeC 连接线，瞬间延迟消失，所以如果注重无线使用的话，个人并不推荐这款键盘<br>
+跟了我我 4 年的 ikbc 终于可以光荣退休了</p>
 
                 </div>
             </article>
         </div>
 
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/css3-2d-zhuan-huan-md/" class="post-title gt-a-link">
+                    CSS3 2D 转换.md
+                </a>
+            </div>
         
 
         
