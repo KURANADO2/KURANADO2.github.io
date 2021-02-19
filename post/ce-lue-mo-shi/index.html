@@ -1,0 +1,868 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>策略模式.md | KURANADO</title>
+
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1613726850950">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111464093-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-111464093-1');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            KURANADO
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1613726850950" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    策略模式.md
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2021-02-19 ·
+                    </time>
+                    
+                        <a href="http://blog.kuranado.com/tag/e80F3R9Pc/" class="post-tags">
+                            # 设计模式
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/prbxfSBgl/" class="post-tags">
+                            # Java
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>[TOC]</p>
+<p>针对不同的业务情况，使用 if-else 做不同的处理，相信很多人都见过或写过类似下面这样的代码：</p>
+<pre><code>import lombok.Getter;
+
+/**
+ * 计算价格类
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 16:28
+ */
+public class Price {
+
+    /**
+     * 根据用户类型计算商品折扣后的价格
+     *
+     * @param originalPrice 商品原价
+     * @param customType 用户类型
+     * @return 折扣后的价格
+     */
+    public double calcDiscountPrice(double originalPrice, CustomType customType) {
+
+        if (CustomType.NORMAL.equals(customType)) {
+            // 普通客户原价
+            return originalPrice;
+        } else if (CustomType.POOR_MONTH_VIP.equals(customType)) {
+            // 活动送的月度会员打 95 折
+            return originalPrice * 0.95;
+        } else if (CustomType.MONTH_VIP.equals(customType)) {
+            // 月度会员打 9 折
+            return originalPrice * 0.9;
+        } else if (CustomType.YEAR_VIP.equals(customType)) {
+            // 年度会员打 8 折
+            return originalPrice * 0.8;
+        }
+        // 其它类型客户原价
+        return originalPrice;
+    }
+
+    @Getter
+    enum CustomType {
+
+        /**
+         * 普通客户
+         */
+        NORMAL(&quot;普通用户&quot;),
+        /**
+         * 活动送的会员
+         */
+        POOR_MONTH_VIP(&quot;活动送的月度会员&quot;),
+        /**
+         * 月度会员
+         */
+        MONTH_VIP(&quot;月度会员&quot;),
+        /**
+         * 年度会员
+         */
+        YEAR_VIP(&quot;年度会员&quot;);
+
+        private final String type;
+
+        CustomType(String type) {
+            this.type = type;
+        }
+    }
+
+    public static void main(String[] args) {
+        double originalPrice = 100;
+        Price price = new Price();
+        double result = price.calcDiscountPrice(originalPrice, CustomType.NORMAL);
+        System.out.println(&quot;普通用户折扣后价格：&quot; + result);
+
+        result = price.calcDiscountPrice(originalPrice, CustomType.POOR_MONTH_VIP);
+        System.out.println(&quot;活动送的月度会员折扣后价格：&quot; + result);
+
+        result = price.calcDiscountPrice(originalPrice, CustomType.MONTH_VIP);
+        System.out.println(&quot;月度会员折扣后价格：&quot; + result);
+
+        result = price.calcDiscountPrice(originalPrice, CustomType.YEAR_VIP);
+        System.out.println(&quot;年度会员折扣后价格：&quot; + result);
+    }
+}
+</code></pre>
+<p>输出：</p>
+<pre><code>普通用户折扣后价格：100.0
+活动送的月度会员折扣后价格：95.0
+月度会员折扣后价格：90.0
+年度会员折扣后价格：80.0
+</code></pre>
+<p>这只是一个非常简单的例子，实际工作场景中，针对十几种情况，对应连续使用十几个 if-else 做判断，也正是笔者所在公司当前所采用的代码形式。结构丑陋，不易维护是其最大的缺点，针对这种情况，使用策略模式优化是一个很好的选择。<br>
+<img src="http://image.kuranado.com/blog/1613726575.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
+<img src="http://image.kuranado.com/blog/1613726585.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<h2 id="策略模式-模版代码">策略模式-模版代码</h2>
+<blockquote>
+<p>策略模式的思想就是：<strong>每种 if-else 判断都抽取成一个类，在类中实现具体的算法策略。然后定义一个策略上下文类，该上下文类可以持有具体的算法策略，最后再由客户端选择具体的算法策略，交给上下文类处理即可</strong>，总结成如下四步：</p>
+</blockquote>
+<ol>
+<li>创建策略接口</li>
+<li>创建若干个具体策略算法类，实现策略接口</li>
+<li>创建策略上下文类，用于持有具体的策略算法类</li>
+<li>客户端选择具体的策略算法，传给上下文处理</li>
+</ol>
+<p>同样是文章开头根据客户类型计算折扣价格的例子，使用策略模式改造过程如下</p>
+<h3 id="策略接口">策略接口</h3>
+<pre><code>/**
+ * 策略接口
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 16:25
+ */
+public interface Strategy {
+
+    /**
+     * 计算折扣后的价格
+     *
+     * @param originalPrice 原价
+     * @return 折扣后价格
+     */
+    double calcDiscountPrice(double originalPrice);
+}
+</code></pre>
+<h3 id="具体的策略算法实现类">具体的策略算法实现类</h3>
+<p>每个具体的策略类都对应一个原来的 if-else 判断</p>
+<pre><code>/**
+ * 普通会员的折扣策略
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 19:29
+ */
+public class NormalStrategy implements Strategy {
+
+    @Override
+    public double calcDiscountPrice(double originalPrice) {
+        return originalPrice;
+    }
+}
+</code></pre>
+<pre><code>/**
+ * 活动送的月度会员的折扣策略
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 19:30
+ */
+public class PoorMonthVipStrategy implements Strategy {
+
+    @Override
+    public double calcDiscountPrice(double originalPrice) {
+        return originalPrice * 0.95;
+    }
+}
+</code></pre>
+<pre><code>/**
+ * 月度会员的折扣策略
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 19:30
+ */
+public class MonthVipStrategy implements Strategy {
+
+    @Override
+    public double calcDiscountPrice(double originalPrice) {
+        return originalPrice * 0.9;
+    }
+}
+</code></pre>
+<pre><code>/**
+ * 年度会员的折扣策略
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 19:31
+ */
+public class YearVipStrategy implements Strategy {
+
+    @Override
+    public double calcDiscountPrice(double originalPrice) {
+        return originalPrice * 0.8;
+    }
+}
+</code></pre>
+<p>如果后面还有其他种类的会员折扣策略，只需要照葫芦画瓢，再创建一个策略实现类即可，其他已有的策略实现类，策略接口，策略上下文都不需要做任何改动</p>
+<h3 id="策略上下文">策略上下文</h3>
+<pre><code>/**
+ * 策略上下文
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 19:36
+ */
+public class StrategyContext {
+
+    private final Strategy strategy;
+
+    public StrategyContext(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public double calcPrice(double originalPrice) {
+        return this.strategy.calcDiscountPrice(originalPrice);
+    }
+}
+</code></pre>
+<h3 id="客户端">客户端</h3>
+<pre><code>/**
+ * 客户端测试
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 16:26
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        Strategy strategy = new NormalStrategy();
+        StrategyContext strategyContext = new StrategyContext(strategy);
+        double result = strategyContext.calcPrice(100);
+        System.out.println(&quot;普通用户折扣后价格：&quot; + result);
+
+        strategy = new PoorMonthVipStrategy();
+        strategyContext = new StrategyContext(strategy);
+        result = strategyContext.calcPrice(100);
+        System.out.println(&quot;活动送的月度会员折扣后价格：&quot; + result);
+
+        strategy = new MonthVipStrategy();
+        strategyContext = new StrategyContext(strategy);
+        result = strategyContext.calcPrice(100);
+        System.out.println(&quot;月度会员折扣后价格：&quot; + result);
+
+        strategy = new YearVipStrategy();
+        strategyContext = new StrategyContext(strategy);
+        result = strategyContext.calcPrice(100);
+        System.out.println(&quot;年度会员折扣后价格：&quot; + result);
+    }
+}
+</code></pre>
+<p>输出：</p>
+<pre><code>普通用户折扣后价格：100.0
+活动送的月度会员折扣后价格：95.0
+月度会员折扣后价格：90.0
+年度会员折扣后价格：80.0
+</code></pre>
+<h3 id="结构图">结构图</h3>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1613726599.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>以上就是最基本的策略模式</p>
+<h2 id="策略模式-实现公共功能">策略模式-实现公共功能</h2>
+<p>如果不同的策略算法存在公共功能，如对于上面的例子，如果要求不管那种类型的会员，在计算折扣价格钱，都增加消费积分，积分数量等于原价，则可以通过一下子三种方式抽取公共功能：</p>
+<ol>
+<li>在策略上下文类中实现公共功能</li>
+<li>将策略接口改成抽象类，在策略抽象类中实现公共功能</li>
+<li>定义一个抽象类实现策略接口，在该抽象类中实现公共功能，然后让所有的策略算法类不再实现策略接口，转为继承该抽象类</li>
+</ol>
+<p>上面三种方法逐一示例如下：</p>
+<h3 id="方法一策略上下文类中实现公共功能">方法一：策略上下文类中实现公共功能</h3>
+<p>StrategyContext 类修改如下：</p>
+<pre><code>/**
+ * 策略上下文
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 19:36
+ */
+public class StrategyContext {
+
+    private final Strategy strategy;
+
+    public StrategyContext(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public double calcPrice(double originalPrice) {
+        System.out.println(&quot;增加消费积分：&quot; + originalPrice);
+        return this.strategy.calcDiscountPrice(originalPrice);
+    }
+}
+</code></pre>
+<p>执行客户端，输出结果：</p>
+<pre><code>增加消费积分：100.0
+普通用户折扣后价格：100.0
+增加消费积分：100.0
+活动送的月度会员折扣后价格：95.0
+增加消费积分：100.0
+月度会员折扣后价格：90.0
+增加消费积分：100.0
+年度会员折扣后价格：80.0
+</code></pre>
+<h3 id="方法二策略接口改成抽象类">方法二：策略接口改成抽象类</h3>
+<p>Strategy 接口该成抽象类：</p>
+<pre><code>/**
+ * 策略抽象类
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 16:25
+ */
+public abstract class Strategy {
+
+    protected double calcPrice(double originalPrice) {
+        System.out.println(&quot;增加消费积分：&quot; + originalPrice);
+        return calcDiscountPrice(originalPrice);
+    }
+
+    /**
+     * 计算折扣后的价格
+     *
+     * @param originalPrice 原价
+     * @return 折扣后价格
+     */
+    protected abstract double calcDiscountPrice(double originalPrice);
+}
+</code></pre>
+<p>这里增加了一个 calcPrice 方法，用于处理公共逻辑，处理完成之后，再调用原来的 calcDiscountPrice 方法，这里的 calcDiscountPrice 被定义成抽象方法，子类继承 Strategy 抽象类时，需要实现该抽象方法。</p>
+<p>各个算法策略实现类由实现 Strategy 接口改为继承 Strategy 抽象类，即将 <code>implements</code> 改为 <code>extends</code>，如普通会员折扣策略代码修改如下，其他策略算法实现类也是做同样处理，不再赘述：</p>
+<pre><code>/**
+ * 普通会员的折扣策略
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 19:29
+ */
+public class NormalStrategy extends Strategy {
+
+    @Override
+    public double calcDiscountPrice(double originalPrice) {
+        return originalPrice;
+    }
+}
+</code></pre>
+<p>策略上下文类由调用 calcDiscountPrice 方法修改为调用 calcPrice 方法：</p>
+<pre><code>/**
+ * 策略上下文
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 19:36
+ */
+public class StrategyContext {
+
+    private final Strategy strategy;
+
+    public StrategyContext(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public double calcPrice(double originalPrice) {
+        return this.strategy.calcPrice(originalPrice);
+    }
+}
+</code></pre>
+<p>客户端无需做改动。执行客户端，输出结果和第一种方法完全一致</p>
+<h3 id="方法三定义一个抽象类实现策略接口">方法三：定义一个抽象类实现策略接口</h3>
+<p>这种方法其实就是模板方法模式（后续文章中会讲到）<br>
+定义一个抽象类实现策略接口：</p>
+<pre><code>/**
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-02-19 14:31
+ */
+public abstract class StrategyTemplate implements Strategy {
+
+    @Override
+    public double calcDiscountPrice(double originalPrice) {
+        System.out.println(&quot;增加消费积分：&quot; + originalPrice);
+        return calcPrice(originalPrice);
+    }
+
+    protected abstract double calcPrice(double originalPrice);
+}
+</code></pre>
+<p>各个算法策略类由实现 Strategy 接口改为继承抽象类，以普通会员为例，其他策略算法类不再赘述：</p>
+<pre><code>/**
+ * 普通会员的折扣策略
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-01-28 19:29
+ */
+public class NormalStrategy extends StrategyTemplate {
+
+    @Override
+    public double calcPrice(double originalPrice) {
+        return originalPrice;
+    }
+}
+</code></pre>
+<p>策略上下文类和客户端无需做任何改动。执行客户端，输出结果和第一种方法完全一致</p>
+<h2 id="策略模式-参数传递">策略模式-参数传递</h2>
+<p>实际业务中，往往不同算法策略需要的参数是不同的，这就导致在定义策略接口时，很难确定参数。<br>
+举个🌰：如今出行有众多交通工具可供选择，一般的交通工具只要出示身份证即可，比如火车。下面就使用策略模式快速实现这个例子：</p>
+<h3 id="策略类">策略类</h3>
+<pre><code>/**
+ * 交通工具策略
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-02-19 15:29
+ */
+public interface VehicleStrategy {
+
+    void take(VehicleContext vehicleContext);
+}
+</code></pre>
+<h3 id="上下文类">上下文类</h3>
+<pre><code>import lombok.Getter;
+
+/**
+ * 交通工具上下文
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-02-19 15:30
+ */
+@Getter
+public class VehicleContext {
+
+    /**
+     * 用户名
+     */
+    private final String username;
+    /**
+     * 身份证号
+     */
+    private final String idNo;
+    /**
+     * 起始地
+     */
+    private final String origin;
+    /**
+     * 目的地
+     */
+    private final String destination;
+
+    private final VehicleStrategy vehicleStrategy;
+
+    public VehicleContext(String username, String idNo, String origin, String destination,
+        VehicleStrategy vehicleStrategy) {
+        this.username = username;
+        this.idNo = idNo;
+        this.origin = origin;
+        this.destination = destination;
+        this.vehicleStrategy = vehicleStrategy;
+    }
+
+    public void take() {
+        this.vehicleStrategy.take(this);
+    }
+}
+</code></pre>
+<p>这里通过上下文<strong>携带了一些参数，以让具体的策略实现类可以回调这些参数</strong>。</p>
+<h3 id="火车策略实现类">火车策略实现类</h3>
+<pre><code>/**
+ * 火车策略
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-02-19 16:20
+ */
+public class TrainStrategy implements VehicleStrategy {
+
+    @Override
+    public void take(VehicleContext vehicleContext) {
+        System.out.println(vehicleContext.getUsername() + &quot;使用身份证：&quot; + vehicleContext.getIdNo() + &quot; 乘火车从：&quot;
+            + vehicleContext.getOrigin() + &quot;到：&quot; + vehicleContext.getDestination());
+    }
+}
+</code></pre>
+<h3 id="客户端-2">客户端</h3>
+<pre><code>/**
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-02-19 16:11
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        VehicleStrategy vehicleStrategy = new TrainStrategy();
+        VehicleContext vehicleContext = new VehicleContext(&quot;林克&quot;, &quot;1001&quot;, &quot;上海&quot;, &quot;北京&quot;, vehicleStrategy);
+        vehicleContext.take();
+    }
+}
+</code></pre>
+<p>客户端输出结果如下：</p>
+<pre><code>林克使用身份证：1001 乘火车从：上海到：北京
+</code></pre>
+<h3 id="如何扩展">如何扩展？</h3>
+<p>接下里，我们添加一个乘坐飞机的策略实现类，在添加之前，注意到乘坐飞机不仅需要出示身份证，而且还需要出示登机牌，但当前的上下文类并没有携带登机牌这个参数，那该怎么办呢？</p>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1613726619.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>解决方法有如下三个：</p>
+<ol>
+<li>直接在现有的上下文类中添加登机牌参数，并在构造方法中初始化该参数</li>
+<li>再创建一个新的上下文类，让新上下文类继承原来的上下文类，在新上下文类中添加登机牌参数，并在构造方法中初始化该参数</li>
+<li>在飞机策略实现类中添加登机牌参数，并在构造方法中初始化该参数</li>
+</ol>
+<p>接下来一一讲解这三种方法及其优缺点：</p>
+<h4 id="方法一直接在现有的上下文类中添加参数">方法一：直接在现有的上下文类中添加参数</h4>
+<p>需要修改现有的上下文类，违背开闭原则，直接 Pass</p>
+<h4 id="方法二创建一个新的上下文类">方法二：创建一个新的上下文类</h4>
+<p>创建新的上下文类：</p>
+<pre><code>import lombok.Getter;
+
+/**
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-02-19 16:33
+ */
+@Getter
+public class VehicleContext2 extends VehicleContext {
+
+    /**
+     * 登机牌号
+     */
+    private final String boardingNo;
+
+    public VehicleContext2(String username, String idNo, String origin, String destination,
+        VehicleStrategy vehicleStrategy, String boardingNo) {
+        super(username, idNo, origin, destination, vehicleStrategy);
+        this.boardingNo = boardingNo;
+    }
+}
+</code></pre>
+<p>飞机策略类：</p>
+<pre><code>/**
+ * 飞机策略
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-02-19 16:30
+ */
+public class PlaneStrategy implements VehicleStrategy {
+
+    @Override
+    public void take(VehicleContext vehicleContext) {
+        VehicleContext2 vehicleContext2 = (VehicleContext2) vehicleContext;
+        System.out.println(vehicleContext.getUsername() + &quot;使用身份证：&quot; + vehicleContext.getIdNo() + &quot; 和登机牌：&quot;
+            + vehicleContext2.getBoardingNo() + &quot; 乘飞机从：&quot; + vehicleContext.getOrigin() + &quot;到：&quot; + vehicleContext.getDestination());
+    }
+}
+</code></pre>
+<p>客户端：</p>
+<pre><code>/**
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-02-19 16:11
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        VehicleStrategy vehicleStrategy = new TrainStrategy();
+        VehicleContext vehicleContext = new VehicleContext(&quot;林克&quot;, &quot;1001&quot;, &quot;上海&quot;, &quot;北京&quot;, vehicleStrategy);
+        vehicleContext.take();
+
+        vehicleStrategy = new PlaneStrategy();
+        vehicleContext = new VehicleContext2(&quot;塞尔达&quot;, &quot;1002&quot;, &quot;浦东国际机场&quot;, &quot;日本成田机场&quot;, vehicleStrategy, &quot;1234&quot;);
+        vehicleContext.take();
+    }
+}
+</code></pre>
+<p>输出结果如下：</p>
+<pre><code>林克使用身份证：1001 乘火车从：上海到：北京
+塞尔达使用身份证：1002 和登机牌：1234 乘飞机从：浦东国际机场到：日本成田机场
+</code></pre>
+<h4 id="方法三在飞机策略实现类中添加参数">方法三：在飞机策略实现类中添加参数</h4>
+<p>飞机策略类：</p>
+<pre><code>/**
+ * 飞机策略
+ *
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-02-19 16:30
+ */
+public class PlaneStrategy implements VehicleStrategy {
+
+    /**
+     * 登机牌号
+     */
+    private final String boardingNo;
+
+    public PlaneStrategy(String boardingNo) {
+        this.boardingNo = boardingNo;
+    }
+
+    @Override
+    public void take(VehicleContext vehicleContext) {
+        System.out.println(vehicleContext.getUsername() + &quot;使用身份证：&quot; + vehicleContext.getIdNo() + &quot; 和登机牌：&quot;
+            + this.boardingNo + &quot; 乘飞机从：&quot; + vehicleContext.getOrigin() + &quot;到：&quot; + vehicleContext.getDestination());
+    }
+}
+</code></pre>
+<p>客户端：</p>
+<pre><code>/**
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-02-19 16:11
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        VehicleStrategy vehicleStrategy = new TrainStrategy();
+        VehicleContext vehicleContext = new VehicleContext(&quot;林克&quot;, &quot;1001&quot;, &quot;上海&quot;, &quot;北京&quot;, vehicleStrategy);
+        vehicleContext.take();
+
+        vehicleStrategy = new PlaneStrategy(&quot;1234&quot;);
+        vehicleContext = new VehicleContext(&quot;塞尔达&quot;, &quot;1002&quot;, &quot;浦东国际机场&quot;, &quot;日本成田机场&quot;, vehicleStrategy);
+        vehicleContext.take();
+    }
+}
+</code></pre>
+<p>输出结果和方法二相同</p>
+<p>对比方法二和方法三，比较如下：</p>
+<ul>
+<li>方法二：使用了继承，如果后续添加的新算法较多，容易形成复杂的上下文对象层次</li>
+<li>方法三：实现简单，但策略实现类但一部分数据来自于上下文，一部分来自于自身，导致和其他策略实现类风格不统一</li>
+</ul>
+<h2 id="总结">总结</h2>
+<ul>
+<li>策略模式的重点不是如何来实现算法，而是如何组织算法，让程序结构更灵活，具有更好的维护和扩展性</li>
+<li>因为需要客户端选择具体的算法策略，所以需要客户端对策略作出正确选择</li>
+<li>需要把每种算法策略都封装成一个类，如果策略较多，则类的数目也会很可观</li>
+</ul>
+<h2 id="参考">参考</h2>
+<ul>
+<li>《研磨设计模式》</li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/guan-cha-zhe-mo-shi/" class="post-title gt-a-link">
+                    观察者模式.md
+                </a>
+            </div>
+        
+
+        
+
+        
+            
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+<script>
+    // md5.min.js
+    !function(n){
+        "use strict";
+        function d(n,t){var r=(65535&n)+(65535&t);return(n>>16)+(t>>16)+(r>>16)<<16|65535&r}
+        function f(n,t,r,e,o,u){return d((c=d(d(t,n),d(e,u)))<<(f=o)|c>>>32-f,r);var c,f}
+        function l(n,t,r,e,o,u,c){return f(t&r|~t&e,n,t,o,u,c)}
+        function v(n,t,r,e,o,u,c){return f(t&e|r&~e,n,t,o,u,c)}
+        function g(n,t,r,e,o,u,c){return f(t^r^e,n,t,o,u,c)}
+        function m(n,t,r,e,o,u,c){return f(r^(t|~e),n,t,o,u,c)}
+        function i(n,t){var r,e,o,u,c;n[t>>5]|=128<<t%32,n[14+(t+64>>>9<<4)]=t;var f=1732584193,i=-271733879,a=-1732584194,h=271733878;for(r=0;r<n.length;r+=16)f=l(e=f,o=i,u=a,c=h,n[r],7,-680876936),h=l(h,f,i,a,n[r+1],12,-389564586),a=l(a,h,f,i,n[r+2],17,606105819),i=l(i,a,h,f,n[r+3],22,-1044525330),f=l(f,i,a,h,n[r+4],7,-176418897),h=l(h,f,i,a,n[r+5],12,1200080426),a=l(a,h,f,i,n[r+6],17,-1473231341),i=l(i,a,h,f,n[r+7],22,-45705983),f=l(f,i,a,h,n[r+8],7,1770035416),h=l(h,f,i,a,n[r+9],12,-1958414417),a=l(a,h,f,i,n[r+10],17,-42063),i=l(i,a,h,f,n[r+11],22,-1990404162),f=l(f,i,a,h,n[r+12],7,1804603682),h=l(h,f,i,a,n[r+13],12,-40341101),a=l(a,h,f,i,n[r+14],17,-1502002290),f=v(f,i=l(i,a,h,f,n[r+15],22,1236535329),a,h,n[r+1],5,-165796510),h=v(h,f,i,a,n[r+6],9,-1069501632),a=v(a,h,f,i,n[r+11],14,643717713),i=v(i,a,h,f,n[r],20,-373897302),f=v(f,i,a,h,n[r+5],5,-701558691),h=v(h,f,i,a,n[r+10],9,38016083),a=v(a,h,f,i,n[r+15],14,-660478335),i=v(i,a,h,f,n[r+4],20,-405537848),f=v(f,i,a,h,n[r+9],5,568446438),h=v(h,f,i,a,n[r+14],9,-1019803690),a=v(a,h,f,i,n[r+3],14,-187363961),i=v(i,a,h,f,n[r+8],20,1163531501),f=v(f,i,a,h,n[r+13],5,-1444681467),h=v(h,f,i,a,n[r+2],9,-51403784),a=v(a,h,f,i,n[r+7],14,1735328473),f=g(f,i=v(i,a,h,f,n[r+12],20,-1926607734),a,h,n[r+5],4,-378558),h=g(h,f,i,a,n[r+8],11,-2022574463),a=g(a,h,f,i,n[r+11],16,1839030562),i=g(i,a,h,f,n[r+14],23,-35309556),f=g(f,i,a,h,n[r+1],4,-1530992060),h=g(h,f,i,a,n[r+4],11,1272893353),a=g(a,h,f,i,n[r+7],16,-155497632),i=g(i,a,h,f,n[r+10],23,-1094730640),f=g(f,i,a,h,n[r+13],4,681279174),h=g(h,f,i,a,n[r],11,-358537222),a=g(a,h,f,i,n[r+3],16,-722521979),i=g(i,a,h,f,n[r+6],23,76029189),f=g(f,i,a,h,n[r+9],4,-640364487),h=g(h,f,i,a,n[r+12],11,-421815835),a=g(a,h,f,i,n[r+15],16,530742520),f=m(f,i=g(i,a,h,f,n[r+2],23,-995338651),a,h,n[r],6,-198630844),h=m(h,f,i,a,n[r+7],10,1126891415),a=m(a,h,f,i,n[r+14],15,-1416354905),i=m(i,a,h,f,n[r+5],21,-57434055),f=m(f,i,a,h,n[r+12],6,1700485571),h=m(h,f,i,a,n[r+3],10,-1894986606),a=m(a,h,f,i,n[r+10],15,-1051523),i=m(i,a,h,f,n[r+1],21,-2054922799),f=m(f,i,a,h,n[r+8],6,1873313359),h=m(h,f,i,a,n[r+15],10,-30611744),a=m(a,h,f,i,n[r+6],15,-1560198380),i=m(i,a,h,f,n[r+13],21,1309151649),f=m(f,i,a,h,n[r+4],6,-145523070),h=m(h,f,i,a,n[r+11],10,-1120210379),a=m(a,h,f,i,n[r+2],15,718787259),i=m(i,a,h,f,n[r+9],21,-343485551),f=d(f,e),i=d(i,o),a=d(a,u),h=d(h,c);return[f,i,a,h]}
+        function a(n){var t,r="",e=32*n.length;for(t=0;t<e;t+=8)r+=String.fromCharCode(n[t>>5]>>>t%32&255);return r}
+        function h(n){var t,r=[];for(r[(n.length>>2)-1]=void 0,t=0;t<r.length;t+=1)r[t]=0;var e=8*n.length;for(t=0;t<e;t+=8)r[t>>5]|=(255&n.charCodeAt(t/8))<<t%32;return r}
+        function e(n){var t,r,e="0123456789abcdef",o="";for(r=0;r<n.length;r+=1)t=n.charCodeAt(r),o+=e.charAt(t>>>4&15)+e.charAt(15&t);return o}
+        function r(n){return unescape(encodeURIComponent(n))}
+        function o(n){return a(i(h(t=r(n)),8*t.length));var t}
+        function u(n,t){return function(n,t){var r,e,o=h(n),u=[],c=[];for(u[15]=c[15]=void 0,16<o.length&&(o=i(o,8*n.length)),r=0;r<16;r+=1)u[r]=909522486^o[r],c[r]=1549556828^o[r];return e=i(u.concat(h(t)),512+8*t.length),a(i(c.concat(e),640))}(r(n),r(t))}
+        function t(n,t,r){return t?r?u(t,n):e(u(t,n)):r?o(n):e(o(n))}
+        "function"==typeof define&&define.amd?define(function(){return t}):"object"==typeof module&&module.exports?module.exports=t:n.md5=t;
+    }(this);
+</script>
+
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd5112611bb77c8d6bb88',
+    clientSecret: 'b064af1dd2e63f211b8517f1a57d71c1efc01b8e',
+    repo: 'kuranado2.github.io',
+    owner: 'kuranado2',
+    admin: ['kuranado2'],
+    id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false       // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+            
+
+            
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">笔记/博客</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KURANADO2" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+                <a href="https://www.zhihu.com/people/jing-xin-ling-32" target="_blank">
+                    <i class="fab fa-zhihu gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        @Copyright 2020 <a href="http://emoji.kuranado.com">表情包网站</a>
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="http://blog.kuranado.com/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
