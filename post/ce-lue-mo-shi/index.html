@@ -6,7 +6,7 @@
 
 <title>策略模式.md | KURANADO</title>
 
-<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1613780673063">
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1616848196033">
 
 <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
@@ -97,7 +97,7 @@
             
         </div>
         <div style="text-align: center">
-            <form id="gridea-search-form" style="position: relative" data-update="1613780673063" action="/search/index.html">
+            <form id="gridea-search-form" style="position: relative" data-update="1616848196033" action="/search/index.html">
                 <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
                 <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
             </form>
@@ -376,7 +376,7 @@ public class Client {
 <figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1613726599.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 <p>以上就是最基本的策略模式</p>
 <h2 id="策略模式-实现公共功能">策略模式-实现公共功能</h2>
-<p>如果不同的策略算法存在公共功能，如对于上面的例子，如果要求不管那种类型的会员，在计算折扣价格钱，都增加消费积分，积分数量等于原价，则可以通过一下子三种方式抽取公共功能：</p>
+<p>如果不同的策略算法存在公共功能，如对于上面的例子，如果要求不管那种类型的会员，在计算折扣价格钱，都增加消费积分，积分数量等于原价，则可以通过以下三种方式抽取公共功能：</p>
 <ol>
 <li>在策略上下文类中实现公共功能</li>
 <li>将策略接口改成抽象类，在策略抽象类中实现公共功能</li>

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2021-02-20T00:25:10.715Z</updated>
+    <updated>2021-03-27T12:30:12.118Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,572 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2021, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[状态模式.md]]></title>
+        <id>http://blog.kuranado.com/post/zhuang-tai-mo-shi-md/</id>
+        <link href="http://blog.kuranado.com/post/zhuang-tai-mo-shi-md/">
+        </link>
+        <updated>2021-03-27T12:26:10.000Z</updated>
+        <content type="html"><![CDATA[<p>[TOC]</p>
+<p>物联网设备在整个 OTA 的升级过程中，会将自身当前状态上报给 OTA 管理平台，管理员从平台可以查询到所有设备的历史状态和当前状态。在代码开发前，产品需要定义好设备应该具有哪些状态，比如说初期可以定义如下几个状态：</p>
+<ol>
+<li>未检测</li>
+<li>检测无新版本</li>
+<li>检测有新版本</li>
+<li>下载中</li>
+</ol>
+<p>有了状态，还要定义状态之间的<strong>扭转关系</strong>，比如设备当前状态为未检测状态，在设备执行检测动作后，设备状态可以变更为检测无新版本或者是检测有新版本，而不能变成下载中。针对上面四个状态，假设存在如下扭转关系：</p>
+<ul>
+<li>未检测 -&gt; 检测无新版本</li>
+<li>未检测 -&gt; 检测有新版本</li>
+<li>检测无新版本 -&gt; 检测有新版本</li>
+<li>检测有新版本 -&gt; 下载中</li>
+<li>检测有新版本 -&gt; 检测无新版本</li>
+<li>下载中 -&gt; 检测无新版本</li>
+<li>下载中 -&gt; 检测有新版本</li>
+</ul>
+<p>用一张图概括：<br>
+<img src="http://image.kuranado.com/blog/1616848124.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>OK，至此，产品已经定义好了业务逻辑，接下来就该程序员出马了！<br>
+首先定义状态接口：</p>
+<pre><code>/**
+ * 设备状态接口
+ *
+ * @author Xinling Jing
+ * @date 2021-03-27 14:13
+ */
+public interface DeviceState {
+
+    int UN_CHECK_STATE = 1;
+    int CHECK_NO_NEW_STATE = 2;
+    int CHECK_HAS_NEW_STATE = 3;
+    int DOWNLOADING_STATE = 4;
+
+    /**
+     * 未检测
+     */
+    void unCheck();
+
+    /**
+     * 未检测到新版本
+     */
+    void checkNoNew();
+
+    /**
+     * 检测有新版本
+     */
+    void checkHasNew();
+
+    /**
+     * 下载中
+     */
+    void downloading();
+}
+</code></pre>
+<p>状态接口实现类：</p>
+<pre><code>/**
+ * 设备状态接口实现类
+ *
+ * @author Xinling Jing
+ * @date 2021-03-27 14:15
+ */
+public class DeviceStateImpl implements DeviceState {
+
+    /**
+     * 设备当前状态
+     */
+    private int state;
+
+    public DeviceStateImpl(int state) {
+        this.state = state;
+    }
+
+    @Override
+    public void unCheck() {
+        switch (state) {
+            case UN_CHECK_STATE:
+                // do nothing
+                System.out.println(&quot;未检测&quot;);
+                break;
+            case CHECK_NO_NEW_STATE:
+                // do nothing
+                System.out.println(&quot;检测无新版本 -X-&gt; 未检测&quot;);
+                break;
+            case CHECK_HAS_NEW_STATE:
+                // do nothing
+                System.out.println(&quot;检测有新版本 -X-&gt; 未检测&quot;);
+                break;
+            case DOWNLOADING_STATE:
+                // do nothing
+                System.out.println(&quot;下载中 -X-&gt; 未检测&quot;);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void checkNoNew() {
+        switch (state) {
+            case UN_CHECK_STATE:
+                System.out.println(&quot;未检测 -&gt; 检测无新版本&quot;);
+                this.state = CHECK_NO_NEW_STATE;
+                break;
+            case CHECK_NO_NEW_STATE:
+                // do nothing
+                System.out.println(&quot;检测无新版本&quot;);
+                break;
+            case CHECK_HAS_NEW_STATE:
+                // do nothing
+                System.out.println(&quot;检测有新版本 -X-&gt; 检测无新版本&quot;);
+                break;
+            case DOWNLOADING_STATE:
+                System.out.println(&quot;下载中 -&gt; 检测无新版本&quot;);
+                state = CHECK_NO_NEW_STATE;
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void checkHasNew() {
+        switch (state) {
+            case UN_CHECK_STATE:
+                System.out.println(&quot;未检测 -&gt; 检测有新版本&quot;);
+                this.state = CHECK_HAS_NEW_STATE;
+                break;
+            case CHECK_NO_NEW_STATE:
+                System.out.println(&quot;检测无新版本 -&gt; 检测有新版本&quot;);
+                this.state = CHECK_HAS_NEW_STATE;
+                break;
+            case CHECK_HAS_NEW_STATE:
+                // do nothing
+                System.out.println(&quot;检测有新版本&quot;);
+                break;
+            case DOWNLOADING_STATE:
+                System.out.println(&quot;下载中 -&gt; 检测有新版本&quot;);
+                state = CHECK_HAS_NEW_STATE;
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void downloading() {
+        switch (state) {
+            case UN_CHECK_STATE:
+                // do nothing
+                System.out.println(&quot;未检测 -X-&gt; 下载中&quot;);
+                break;
+            case CHECK_NO_NEW_STATE:
+                // do nothing
+                System.out.println(&quot;检测无新版本 -X-&gt; 下载中&quot;);
+                break;
+            case CHECK_HAS_NEW_STATE:
+                System.out.println(&quot;检测有新版本 -&gt; 下载中&quot;);
+                state = DOWNLOADING_STATE;
+                break;
+            case DOWNLOADING_STATE:
+                // do nothing
+                System.out.println(&quot;下载中&quot;);
+                break;
+            default:
+                break;
+        }
+    }
+}
+</code></pre>
+<p>测试：</p>
+<pre><code>/**
+ * 非状态模式下的状态扭转
+ *
+ * @author Xinling Jing
+ * @date 2021-03-27 14:08
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        // 设置初使状态为未检测
+        DeviceState deviceState = new DeviceStateImpl(DeviceState.UN_CHECK_STATE);
+
+        // 设备开始上报自身状态
+        // 过渡到检测无新版本状态
+        deviceState.checkNoNew();
+
+        // 过渡到检测有新版本状态
+        deviceState.checkHasNew();
+
+        // 过渡到未检测状态（应该过渡失败）
+        deviceState.unCheck();
+
+        // 过渡到下载中状态
+        deviceState.downloading();
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code>未检测 -&gt; 检测无新版本
+检测无新版本 -&gt; 检测有新版本
+检测有新版本 -X-&gt; 未检测
+检测有新版本 -&gt; 下载中
+</code></pre>
+<p>重点便在于上面的状态实现类 DeviceStateImpl，该类定义了设备能否从当前状态转换为设备上报的最新状态。举例说：设备当前状态为检测有新版本，如果设备上报最新状态为下载中，则将设备当前状态切换成下载中，并处理相关的业务逻辑。为了示例简单，此处用打印输出省去了相关的业务处理。</p>
+<p>显而易见，上面的实现方式存在如下缺点：</p>
+<ul>
+<li>所有业务逻辑都集中在 DeviceStateImpl 类中，不易维护</li>
+<li>存在大量 switch 或 if 判断，代码臃肿</li>
+<li>当产品要求增加状态时，需修改 DeviceState 接口增加方法，DeviceStateImpl 增加对应方法实现，同时，对于每个方法中的 switch 都需要增加对应的 case 或 if 判断。如随着公司业务的发展，需要定义更多的状态，就可能演变成下图这种情况：<br>
+<img src="http://image.kuranado.com/blog/1616848145.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
+</ul>
+<p>这。。。代码每次修改起来简直是一场噩梦！<br>
+<img src="http://image.kuranado.com/blog/1616848154.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>为了解决上述问题，我们需要引入状态模式</p>
+<blockquote>
+<p>当一个对象内在状态改变时，状态的变更引起了行为的变更，从外部看起来就好像这个对象对应的类发生了改变一样</p>
+</blockquote>
+<h2 id="状态模式各个角色">状态模式各个角色</h2>
+<h3 id="state-抽象状态角色">State 抽象状态角色</h3>
+<ul>
+<li>接口或者是抽象类，负责定义状态</li>
+<li>封装上下文对象，通过上下文对象实现状态切换</li>
+</ul>
+<h3 id="concretestate-具体状态角色">ConcreteState 具体状态角色</h3>
+<ul>
+<li>继承抽象状态角色（或实现抽象状态接口）</li>
+<li>定义本状态要做哪些事情，以及本状态如何<strong>过渡</strong>到其它状态</li>
+</ul>
+<h3 id="statecontext-上下文对象">StateContext 上下文对象</h3>
+<ul>
+<li>定义客户端需要的接口</li>
+<li>负责具体状态的切换</li>
+</ul>
+<p>状态模式结构：<br>
+<img src="http://image.kuranado.com/blog/1616848164.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<h2 id="实战">实战</h2>
+<h3 id="设备状态抽象类">设备状态抽象类</h3>
+<pre><code>/**
+ * @version 1.0.0
+ * @author: Xinling Jing
+ * @date: 2021-03-16 22:25
+ */
+public abstract class DeviceState {
+
+    protected StateContext stateContext;
+
+    public void setStateContext(StateContext stateContext) {
+        this.stateContext = stateContext;
+    }
+
+    /**
+     * 未检测
+     */
+    public abstract void unCheck();
+
+    /**
+     * 未检测到新版本
+     */
+    public abstract void checkNoNew();
+
+    /**
+     * 检测有新版本
+     */
+    public abstract void checkHasNew();
+
+    /**
+     * 下载中
+     */
+    public abstract void downloading();
+
+}
+</code></pre>
+<p>设备状态抽象类持有状态上下文（StateContext）引用，以便具体子类可以使用 StateContext 对象更新状态。<br>
+<strong>小 Tip：</strong><br>
+此处也可以把 StateContext 从 DeviceState 抽象类中拿走，通过方法参数将 StateContext 对象传递给子类使用：</p>
+<pre><code>public abstract class DeviceState {
+
+    /**
+     * 未检测
+     */
+    public abstract void unCheck(StateContext stateContext);
+
+    /**
+     * 未检测到新版本
+     */
+    public abstract void checkNoNew(StateContext stateContext);
+
+    /**
+     * 检测有新版本
+     */
+    public abstract void checkHasNew(StateContext stateContext);
+
+    /**
+     * 下载中
+     */
+    public abstract void downloading(StateContext stateContext);
+
+}
+</code></pre>
+<h3 id="设备状态上下文">设备状态上下文</h3>
+<pre><code>/**
+ * @version 1.0.0
+ * @author: Xinling Jing
+ * @date: 2021-03-16 22:26
+ */
+public class StateContext {
+
+    public final static DeviceState UN_CHECK_STATE = new UnCheckState();
+    public final static DeviceState CHECK_NO_NEW_STATE = new CheckNoNewState();
+    public final static DeviceState CHECK_HAS_NEW_STATE = new CheckHasNewState();
+    public final static DeviceState DOWNLOADING_STATE = new DownloadingState();
+
+    private DeviceState deviceState;
+
+    public void setDeviceState(DeviceState deviceState) {
+        this.deviceState = deviceState;
+        this.deviceState.setStateContext(this);
+    }
+
+    public void unCheck() {
+        deviceState.unCheck();
+    }
+
+    public void checkNoNew() {
+        deviceState.checkNoNew();
+    }
+
+    public void checkHasNew() {
+        deviceState.checkHasNew();
+    }
+
+    public void downloading() {
+        deviceState.downloading();
+    }
+}
+</code></pre>
+<p>状态上下文提供了相关状态切换方法，也就是状态切换的入口。同时，<strong>状态上下文持有设备状态引用，以通过具体的设备状态子类完成状态切换</strong>（看到这里，会发现状态模式的结构和策略模式如出一辙，策略模式也是策略上下文持有策略接口）。</p>
+<p>上面提到 DeviceState 中可以将 StateContext 通过方法参数的形式传递给子类使用，与之对应，StateContext 需要改造如下，具体使用哪种方式大家自己斟酌：</p>
+<pre><code>public class StateContext {
+
+    public final static DeviceState UN_CHECK_STATE = new UnCheckState();
+    public final static DeviceState CHECK_NO_NEW_STATE = new CheckNoNewState();
+    public final static DeviceState CHECK_HAS_NEW_STATE = new CheckHasNewState();
+    public final static DeviceState DOWNLOADING_STATE = new DownloadingState();
+
+    private DeviceState deviceState;
+
+    public void setDeviceState(DeviceState deviceState) {
+        this.deviceState = deviceState;
+    }
+
+    public void unCheck() {
+        deviceState.unCheck(this);
+    }
+
+    public void checkNoNew() {
+        deviceState.checkNoNew(this);
+    }
+
+    public void checkHasNew() {
+        deviceState.checkHasNew(this);
+    }
+
+    public void downloading() {
+        deviceState.downloading(this);
+    }
+}
+</code></pre>
+<h3 id="具体设备状态类">具体设备状态类</h3>
+<p>具体的状态子类，实际上就是将原先 switch 或 if 的代码拆到具体的类中<br>
+未检测状态：</p>
+<pre><code>/**
+ * @version 1.0.0
+ * @author: Xinling Jing
+ * @date: 2021-03-16 22:26
+ */
+public class UnCheckState extends DeviceState {
+
+    @Override
+    public void unCheck() {
+        // do nothing
+        System.out.println(&quot;未检测&quot;);
+    }
+
+    @Override
+    public void checkNoNew() {
+        System.out.println(&quot;未检测 -&gt; 检测无新版本&quot;);
+        super.stateContext.setDeviceState(StateContext.UN_CHECK_STATE);
+    }
+
+    @Override
+    public void checkHasNew() {
+        System.out.println(&quot;未检测 -&gt; 检测有新版本&quot;);
+        stateContext.setDeviceState(StateContext.CHECK_HAS_NEW_STATE);
+    }
+
+    @Override
+    public void downloading() {
+        // do nothing
+        System.out.println(&quot;未检测 -X-&gt; 下载中&quot;);
+    }
+}
+</code></pre>
+<p>检测无新版本状态：</p>
+<pre><code>/**
+ * @version 1.0.0
+ * @author: Xinling Jing
+ * @date: 2021-03-16 22:26
+ */
+public class CheckNoNewState extends DeviceState {
+
+    @Override
+    public void unCheck() {
+        // do nothing
+        System.out.println(&quot;检测无新版本 -X-&gt; 未检测&quot;);
+    }
+
+    @Override
+    public void checkNoNew() {
+        // do nothing
+        System.out.println(&quot;检测无新版本&quot;);
+    }
+
+    @Override
+    public void checkHasNew() {
+        System.out.println(&quot;检测无新版本 -&gt; 检测有新版本&quot;);
+        stateContext.setDeviceState(StateContext.CHECK_HAS_NEW_STATE);
+    }
+
+    @Override
+    public void downloading() {
+        // do nothing
+        System.out.println(&quot;检测无新版本 -X-&gt; 检测有新版本&quot;);
+    }
+}
+</code></pre>
+<p>检测有新版本状态：</p>
+<pre><code>/**
+ * @version 1.0.0
+ * @author: Xinling Jing
+ * @date: 2021-03-16 22:26
+ */
+public class CheckHasNewState extends DeviceState {
+
+    @Override
+    public void unCheck() {
+        // do nothing
+        System.out.println(&quot;检测有新版本 -X-&gt; 未检测&quot;);
+    }
+
+    @Override
+    public void checkNoNew() {
+        System.out.println(&quot;检测有新版本 -X-&gt; 检测无新版本&quot;);
+        stateContext.setDeviceState(StateContext.CHECK_NO_NEW_STATE);
+    }
+
+    @Override
+    public void checkHasNew() {
+        // do nothing
+        System.out.println(&quot;检测有新版本&quot;);
+    }
+
+    @Override
+    public void downloading() {
+        System.out.println(&quot;检测有新版本 -&gt; 下载中&quot;);
+        stateContext.setDeviceState(StateContext.DOWNLOADING_STATE);
+    }
+}
+</code></pre>
+<p>下载中状态：</p>
+<pre><code>/**
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-03-15 16:02
+ */
+public class DownloadingState extends DeviceState {
+
+    @Override
+    public void unCheck() {
+        // do nothing
+        System.out.println(&quot;下载中 -X-&gt; 未检测&quot;);
+    }
+
+    @Override
+    public void checkNoNew() {
+        System.out.println(&quot;下载中 -&gt; 检测无新版本&quot;);
+        stateContext.setDeviceState(StateContext.CHECK_NO_NEW_STATE);
+    }
+
+    @Override
+    public void checkHasNew() {
+        System.out.println(&quot;下载中 -&gt; 检测有新版本&quot;);
+        stateContext.setDeviceState(StateContext.CHECK_HAS_NEW_STATE);
+    }
+
+    @Override
+    public void downloading() {
+        // do nothing
+        System.out.println(&quot;下载中&quot;);
+    }
+
+}
+</code></pre>
+<h3 id="客户端测试">客户端测试</h3>
+<pre><code>/**
+ * @version 1.0.0
+ * @author: Xinling Jing
+ * @date: 2021-03-16 22:24
+ */
+public class Client {
+
+    public static void main(String[] args) {
+        // 初使状态为未检测
+        //StateContext stateContext = new StateContext(new UnCheckState());
+        StateContext stateContext = new StateContext();
+
+        // 设置初使状态
+        stateContext.setDeviceState(StateContext.UN_CHECK_STATE);
+
+        // 过渡到检测无新版本状态
+        stateContext.checkNoNew();
+
+        // 过渡到检测有新版本状态
+        stateContext.checkHasNew();
+
+        // 过渡到未检测状态（应该过渡失败）
+        stateContext.unCheck();
+
+        // 过渡到下载中状态
+        stateContext.downloading();
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code>未检测 -&gt; 检测无新版本
+未检测 -&gt; 检测有新版本
+检测有新版本 -X-&gt; 未检测
+检测有新版本 -&gt; 下载中
+</code></pre>
+<p>到此我们就通过状态模式完成了代码改造，类图如下：<br>
+<img src="http://image.kuranado.com/blog/1616848179.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>这时候可能就有人要问了，如果要增加状态，那不还是要修改代码吗？？？<br>
+<img src="http://image.kuranado.com/blog/1616848190.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>说的没错，如果要增加状态，修改代码确实是不可避免的。但不使用状态模式的情况下，修改代码需要修改原有方法下的 switch 或 if 判断；使用状态模式的情况下，只需要增加对应的状态子类以及增加相应的方法就可以了，虽然在增加方法时，也需要改动原有的状态类，但原有方法并不需要做任何改动，也就是说，状态模式符合<strong>开闭原则</strong>。</p>
+<h2 id="状态模式缺点">状态模式缺点</h2>
+<p>每增加一种状态，就需要增加一个状态类，类膨胀也会让代码看起来更杂乱。常见的解决方法是将状态全部存到数据库中，比如工作流框架 Activiti 就是将状态存入数据库中，然后根据状态执行相应等操作。</p>
+<h2 id="状态模式与状态机">状态模式与状态机</h2>
+<p>说完了状态模式，就不得不提一下有限状态机。<br>
+状态模式需要针对业务场景编写具体代码，而状态机则更通用，只需要引入状态机框架，然后定义好状态和事件就可以做到状态扭转了，比自己手写状态模式更快捷。Spring 也提供了状态机实现，引入相关依赖，就可以快速开发业务代码。<a href="https://spring.io/projects/spring-statemachine#learn">Spring StateMachine 文档</a>。在这里也比较推荐大家使用状态机。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li>[有限状态机与状态模式]<br>
+(http://www.360doc.com/content/17/1113/19/15077656_703518498.shtml)</li>
+<li>《设计模式之禅》</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[外观模式.md]]></title>
         <id>http://blog.kuranado.com/post/wai-guan-mo-shi-md/</id>
@@ -26,7 +592,7 @@
 <li>淘洗芝麻，去除芝麻里的沙土</li>
 <li>将芝麻放到旋转的炒锅里炒至出烟，约 40 分钟左右</li>
 <li>炒好的芝麻中筛选掉劣质的芝麻</li>
-<li>芝麻放到石墨上进行磨酱，磨好的酱倒进大锅里</li>
+<li>芝麻放到石磨上进行磨酱，磨好的酱倒进大锅里</li>
 <li>将开水倒进有香油酱的大锅里进行搅拌出油</li>
 <li>把香油装在桶里进行沉淀，准备出售</li>
 </ol>
@@ -154,7 +720,7 @@ public class Client {
     }
 }
 </code></pre>
-<p>###外观模式的优缺点</p>
+<h3 id="外观模式的优缺点">外观模式的优缺点</h3>
 <ul>
 <li>松散耦合：外观模式松散了客户端与子系统的耦合关系，让子系统内部的模块更容易扩展和维护</li>
 <li>简单易用：外观模式让子系统更加易用，客户端不需要了解子系统的内部实现，也不需要跟众多子系统内部的模块进行交互，只需要跟外观模式交互就可以了，相当于外观类为客户端使用子系统提供了一条龙服务</li>
@@ -432,7 +998,7 @@ public class Client {
 <figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1613726599.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
 <p>以上就是最基本的策略模式</p>
 <h2 id="策略模式-实现公共功能">策略模式-实现公共功能</h2>
-<p>如果不同的策略算法存在公共功能，如对于上面的例子，如果要求不管那种类型的会员，在计算折扣价格钱，都增加消费积分，积分数量等于原价，则可以通过一下子三种方式抽取公共功能：</p>
+<p>如果不同的策略算法存在公共功能，如对于上面的例子，如果要求不管那种类型的会员，在计算折扣价格钱，都增加消费积分，积分数量等于原价，则可以通过以下三种方式抽取公共功能：</p>
 <ol>
 <li>在策略上下文类中实现公共功能</li>
 <li>将策略接口改成抽象类，在策略抽象类中实现公共功能</li>
@@ -1982,51 +2548,6 @@ jing.xin@mail.kuranado.com
 <ul>
 <li>《正则表达式必知必会修订版》</li>
 </ul>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[CSS3 过渡.md]]></title>
-        <id>http://blog.kuranado.com/post/css3-guo-du-md/</id>
-        <link href="http://blog.kuranado.com/post/css3-guo-du-md/">
-        </link>
-        <updated>2020-10-19T11:06:04.000Z</updated>
-        <content type="html"><![CDATA[<ul>
-<li>transition: 要过渡的属性1 花费时间1 运动曲线1 何时开始1, 要过渡的属性2 花费时间2 运动曲线2 何时开始2; 谁想要过渡效果，就为谁设置 trasition 属性
-<ul>
-<li>要过渡的属性 即想要变化的 CSS 属性，如 width、heigth、background-color、padding、margin、border 都可以，如果想要所有的属性都有过渡效果，则将该值设置为 all</li>
-<li>花费时间 过渡需要花费的时间，单位 s，如 .5s（单位 s 不可省略）</li>
-<li>运动曲线 可省略，默认为 ease<br>
-<img src="http://image.kuranado.com/blog/1603105590.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
-<li>何时开始 可省略，默认为 0s，表示立即触发。单位 s（单位 s 不可省略）</li>
-</ul>
-</li>
-</ul>
-<pre><code>div {
-    width: 100px;
-    height: 100px;
-    background-color: skyblue;
-    /* 口诀：过渡写到本身上，谁做动画给谁加 */
-    transition: width 1s ease .5s;
-}
-div:hover {
-    width: 200px;
-}
-&lt;div&gt;&lt;/div&gt;
-</code></pre>
-<p>当鼠标悬浮在 div 上时，0.5s 后，该 div 的宽度会在 1s 内由原来的 100px 过渡到 200px</p>
-<pre><code>div {
-    width: 100px;
-    height: 100px;
-    background-color: skyblue;
-    transition: width 1s ease .5s, heigth 1s ease .5s;
-}
-div:hover {
-    width: 200px;
-    height: 200px;
-}
-&lt;div&gt;&lt;/div&gt;
-</code></pre>
-<p>当鼠标悬浮在 div 上时，0.5s 后，该 div 的宽度会在 1s 内由原来的 100px 过渡到 200px，同时高度也会在 1s 内由原来的 100px 过渡到 200px</p>
 ]]></content>
     </entry>
 </feed>

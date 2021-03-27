@@ -1,0 +1,796 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+<meta name="description" content=""/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+<title>状态模式.md | KURANADO</title>
+
+<link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1616848196033">
+
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="http://blog.kuranado.com/styles/main.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@highlightjs/cdn-assets/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dockerfile.min.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.15.10/languages/dart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
+<!-- DEMO JS -->
+<!--<script src="media/scripts/index.js"></script>-->
+
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111464093-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+        gtag('config', 'UA-111464093-1');
+    </script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.css">
+</head>
+<body>
+<div class="main gt-bg-theme-color-first">
+    <nav class="navbar navbar-expand-lg">
+    <div class="navbar-brand">
+        <img class="user-avatar" src="/images/avatar.png" alt="头像">
+        <div class="site-name gt-c-content-color-first">
+            KURANADO
+        </div>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars gt-c-content-color-first" style="font-size: 18px"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="navbar-nav mr-auto" style="text-align: center">
+            
+                <div class="nav-item">
+                    
+                        <a href="/" class="menu gt-a-link">
+                            首页
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/archives" class="menu gt-a-link">
+                            归档
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/tags" class="menu gt-a-link">
+                            标签
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/about" class="menu gt-a-link">
+                            关于
+                        </a>
+                    
+                </div>
+            
+                <div class="nav-item">
+                    
+                        <a href="/friends" class="menu gt-a-link">
+                            友链
+                        </a>
+                    
+                </div>
+            
+        </div>
+        <div style="text-align: center">
+            <form id="gridea-search-form" style="position: relative" data-update="1616848196033" action="/search/index.html">
+                <input class="search-input" autocomplete="off" spellcheck="false" name="q" placeholder="搜索文章" />
+                <i class="fas fa-search gt-c-content-color-first" style="position: absolute; top: 9px; left: 10px;"></i>
+            </form>
+        </div>
+    </div>
+</nav>
+
+    <div class="post-container">
+        <div class="post-detail gt-bg-theme-color-second">
+            <article class="gt-post-content">
+                <h2 class="post-title">
+                    状态模式.md
+                </h2>
+                <div class="post-info">
+                    <time class="post-time gt-c-content-color-first">
+                        · 2021-03-27 ·
+                    </time>
+                    
+                        <a href="http://blog.kuranado.com/tag/e80F3R9Pc/" class="post-tags">
+                            # 设计模式
+                        </a>
+                    
+                        <a href="http://blog.kuranado.com/tag/prbxfSBgl/" class="post-tags">
+                            # Java
+                        </a>
+                    
+                </div>
+                <div class="post-content">
+                    <p>[TOC]</p>
+<p>物联网设备在整个 OTA 的升级过程中，会将自身当前状态上报给 OTA 管理平台，管理员从平台可以查询到所有设备的历史状态和当前状态。在代码开发前，产品需要定义好设备应该具有哪些状态，比如说初期可以定义如下几个状态：</p>
+<ol>
+<li>未检测</li>
+<li>检测无新版本</li>
+<li>检测有新版本</li>
+<li>下载中</li>
+</ol>
+<p>有了状态，还要定义状态之间的<strong>扭转关系</strong>，比如设备当前状态为未检测状态，在设备执行检测动作后，设备状态可以变更为检测无新版本或者是检测有新版本，而不能变成下载中。针对上面四个状态，假设存在如下扭转关系：</p>
+<ul>
+<li>未检测 -&gt; 检测无新版本</li>
+<li>未检测 -&gt; 检测有新版本</li>
+<li>检测无新版本 -&gt; 检测有新版本</li>
+<li>检测有新版本 -&gt; 下载中</li>
+<li>检测有新版本 -&gt; 检测无新版本</li>
+<li>下载中 -&gt; 检测无新版本</li>
+<li>下载中 -&gt; 检测有新版本</li>
+</ul>
+<p>用一张图概括：<br>
+<img src="http://image.kuranado.com/blog/1616848124.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>OK，至此，产品已经定义好了业务逻辑，接下来就该程序员出马了！<br>
+首先定义状态接口：</p>
+<pre><code>/**
+ * 设备状态接口
+ *
+ * @author Xinling Jing
+ * @date 2021-03-27 14:13
+ */
+public interface DeviceState {
+
+    int UN_CHECK_STATE = 1;
+    int CHECK_NO_NEW_STATE = 2;
+    int CHECK_HAS_NEW_STATE = 3;
+    int DOWNLOADING_STATE = 4;
+
+    /**
+     * 未检测
+     */
+    void unCheck();
+
+    /**
+     * 未检测到新版本
+     */
+    void checkNoNew();
+
+    /**
+     * 检测有新版本
+     */
+    void checkHasNew();
+
+    /**
+     * 下载中
+     */
+    void downloading();
+}
+</code></pre>
+<p>状态接口实现类：</p>
+<pre><code>/**
+ * 设备状态接口实现类
+ *
+ * @author Xinling Jing
+ * @date 2021-03-27 14:15
+ */
+public class DeviceStateImpl implements DeviceState {
+
+    /**
+     * 设备当前状态
+     */
+    private int state;
+
+    public DeviceStateImpl(int state) {
+        this.state = state;
+    }
+
+    @Override
+    public void unCheck() {
+        switch (state) {
+            case UN_CHECK_STATE:
+                // do nothing
+                System.out.println(&quot;未检测&quot;);
+                break;
+            case CHECK_NO_NEW_STATE:
+                // do nothing
+                System.out.println(&quot;检测无新版本 -X-&gt; 未检测&quot;);
+                break;
+            case CHECK_HAS_NEW_STATE:
+                // do nothing
+                System.out.println(&quot;检测有新版本 -X-&gt; 未检测&quot;);
+                break;
+            case DOWNLOADING_STATE:
+                // do nothing
+                System.out.println(&quot;下载中 -X-&gt; 未检测&quot;);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void checkNoNew() {
+        switch (state) {
+            case UN_CHECK_STATE:
+                System.out.println(&quot;未检测 -&gt; 检测无新版本&quot;);
+                this.state = CHECK_NO_NEW_STATE;
+                break;
+            case CHECK_NO_NEW_STATE:
+                // do nothing
+                System.out.println(&quot;检测无新版本&quot;);
+                break;
+            case CHECK_HAS_NEW_STATE:
+                // do nothing
+                System.out.println(&quot;检测有新版本 -X-&gt; 检测无新版本&quot;);
+                break;
+            case DOWNLOADING_STATE:
+                System.out.println(&quot;下载中 -&gt; 检测无新版本&quot;);
+                state = CHECK_NO_NEW_STATE;
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void checkHasNew() {
+        switch (state) {
+            case UN_CHECK_STATE:
+                System.out.println(&quot;未检测 -&gt; 检测有新版本&quot;);
+                this.state = CHECK_HAS_NEW_STATE;
+                break;
+            case CHECK_NO_NEW_STATE:
+                System.out.println(&quot;检测无新版本 -&gt; 检测有新版本&quot;);
+                this.state = CHECK_HAS_NEW_STATE;
+                break;
+            case CHECK_HAS_NEW_STATE:
+                // do nothing
+                System.out.println(&quot;检测有新版本&quot;);
+                break;
+            case DOWNLOADING_STATE:
+                System.out.println(&quot;下载中 -&gt; 检测有新版本&quot;);
+                state = CHECK_HAS_NEW_STATE;
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void downloading() {
+        switch (state) {
+            case UN_CHECK_STATE:
+                // do nothing
+                System.out.println(&quot;未检测 -X-&gt; 下载中&quot;);
+                break;
+            case CHECK_NO_NEW_STATE:
+                // do nothing
+                System.out.println(&quot;检测无新版本 -X-&gt; 下载中&quot;);
+                break;
+            case CHECK_HAS_NEW_STATE:
+                System.out.println(&quot;检测有新版本 -&gt; 下载中&quot;);
+                state = DOWNLOADING_STATE;
+                break;
+            case DOWNLOADING_STATE:
+                // do nothing
+                System.out.println(&quot;下载中&quot;);
+                break;
+            default:
+                break;
+        }
+    }
+}
+</code></pre>
+<p>测试：</p>
+<pre><code>/**
+ * 非状态模式下的状态扭转
+ *
+ * @author Xinling Jing
+ * @date 2021-03-27 14:08
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        // 设置初使状态为未检测
+        DeviceState deviceState = new DeviceStateImpl(DeviceState.UN_CHECK_STATE);
+
+        // 设备开始上报自身状态
+        // 过渡到检测无新版本状态
+        deviceState.checkNoNew();
+
+        // 过渡到检测有新版本状态
+        deviceState.checkHasNew();
+
+        // 过渡到未检测状态（应该过渡失败）
+        deviceState.unCheck();
+
+        // 过渡到下载中状态
+        deviceState.downloading();
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code>未检测 -&gt; 检测无新版本
+检测无新版本 -&gt; 检测有新版本
+检测有新版本 -X-&gt; 未检测
+检测有新版本 -&gt; 下载中
+</code></pre>
+<p>重点便在于上面的状态实现类 DeviceStateImpl，该类定义了设备能否从当前状态转换为设备上报的最新状态。举例说：设备当前状态为检测有新版本，如果设备上报最新状态为下载中，则将设备当前状态切换成下载中，并处理相关的业务逻辑。为了示例简单，此处用打印输出省去了相关的业务处理。</p>
+<p>显而易见，上面的实现方式存在如下缺点：</p>
+<ul>
+<li>所有业务逻辑都集中在 DeviceStateImpl 类中，不易维护</li>
+<li>存在大量 switch 或 if 判断，代码臃肿</li>
+<li>当产品要求增加状态时，需修改 DeviceState 接口增加方法，DeviceStateImpl 增加对应方法实现，同时，对于每个方法中的 switch 都需要增加对应的 case 或 if 判断。如随着公司业务的发展，需要定义更多的状态，就可能演变成下图这种情况：<br>
+<img src="http://image.kuranado.com/blog/1616848145.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></li>
+</ul>
+<p>这。。。代码每次修改起来简直是一场噩梦！<br>
+<img src="http://image.kuranado.com/blog/1616848154.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>为了解决上述问题，我们需要引入状态模式</p>
+<blockquote>
+<p>当一个对象内在状态改变时，状态的变更引起了行为的变更，从外部看起来就好像这个对象对应的类发生了改变一样</p>
+</blockquote>
+<h2 id="状态模式各个角色">状态模式各个角色</h2>
+<h3 id="state-抽象状态角色">State 抽象状态角色</h3>
+<ul>
+<li>接口或者是抽象类，负责定义状态</li>
+<li>封装上下文对象，通过上下文对象实现状态切换</li>
+</ul>
+<h3 id="concretestate-具体状态角色">ConcreteState 具体状态角色</h3>
+<ul>
+<li>继承抽象状态角色（或实现抽象状态接口）</li>
+<li>定义本状态要做哪些事情，以及本状态如何<strong>过渡</strong>到其它状态</li>
+</ul>
+<h3 id="statecontext-上下文对象">StateContext 上下文对象</h3>
+<ul>
+<li>定义客户端需要的接口</li>
+<li>负责具体状态的切换</li>
+</ul>
+<p>状态模式结构：<br>
+<img src="http://image.kuranado.com/blog/1616848164.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<h2 id="实战">实战</h2>
+<h3 id="设备状态抽象类">设备状态抽象类</h3>
+<pre><code>/**
+ * @version 1.0.0
+ * @author: Xinling Jing
+ * @date: 2021-03-16 22:25
+ */
+public abstract class DeviceState {
+
+    protected StateContext stateContext;
+
+    public void setStateContext(StateContext stateContext) {
+        this.stateContext = stateContext;
+    }
+
+    /**
+     * 未检测
+     */
+    public abstract void unCheck();
+
+    /**
+     * 未检测到新版本
+     */
+    public abstract void checkNoNew();
+
+    /**
+     * 检测有新版本
+     */
+    public abstract void checkHasNew();
+
+    /**
+     * 下载中
+     */
+    public abstract void downloading();
+
+}
+</code></pre>
+<p>设备状态抽象类持有状态上下文（StateContext）引用，以便具体子类可以使用 StateContext 对象更新状态。<br>
+<strong>小 Tip：</strong><br>
+此处也可以把 StateContext 从 DeviceState 抽象类中拿走，通过方法参数将 StateContext 对象传递给子类使用：</p>
+<pre><code>public abstract class DeviceState {
+
+    /**
+     * 未检测
+     */
+    public abstract void unCheck(StateContext stateContext);
+
+    /**
+     * 未检测到新版本
+     */
+    public abstract void checkNoNew(StateContext stateContext);
+
+    /**
+     * 检测有新版本
+     */
+    public abstract void checkHasNew(StateContext stateContext);
+
+    /**
+     * 下载中
+     */
+    public abstract void downloading(StateContext stateContext);
+
+}
+</code></pre>
+<h3 id="设备状态上下文">设备状态上下文</h3>
+<pre><code>/**
+ * @version 1.0.0
+ * @author: Xinling Jing
+ * @date: 2021-03-16 22:26
+ */
+public class StateContext {
+
+    public final static DeviceState UN_CHECK_STATE = new UnCheckState();
+    public final static DeviceState CHECK_NO_NEW_STATE = new CheckNoNewState();
+    public final static DeviceState CHECK_HAS_NEW_STATE = new CheckHasNewState();
+    public final static DeviceState DOWNLOADING_STATE = new DownloadingState();
+
+    private DeviceState deviceState;
+
+    public void setDeviceState(DeviceState deviceState) {
+        this.deviceState = deviceState;
+        this.deviceState.setStateContext(this);
+    }
+
+    public void unCheck() {
+        deviceState.unCheck();
+    }
+
+    public void checkNoNew() {
+        deviceState.checkNoNew();
+    }
+
+    public void checkHasNew() {
+        deviceState.checkHasNew();
+    }
+
+    public void downloading() {
+        deviceState.downloading();
+    }
+}
+</code></pre>
+<p>状态上下文提供了相关状态切换方法，也就是状态切换的入口。同时，<strong>状态上下文持有设备状态引用，以通过具体的设备状态子类完成状态切换</strong>（看到这里，会发现状态模式的结构和策略模式如出一辙，策略模式也是策略上下文持有策略接口）。</p>
+<p>上面提到 DeviceState 中可以将 StateContext 通过方法参数的形式传递给子类使用，与之对应，StateContext 需要改造如下，具体使用哪种方式大家自己斟酌：</p>
+<pre><code>public class StateContext {
+
+    public final static DeviceState UN_CHECK_STATE = new UnCheckState();
+    public final static DeviceState CHECK_NO_NEW_STATE = new CheckNoNewState();
+    public final static DeviceState CHECK_HAS_NEW_STATE = new CheckHasNewState();
+    public final static DeviceState DOWNLOADING_STATE = new DownloadingState();
+
+    private DeviceState deviceState;
+
+    public void setDeviceState(DeviceState deviceState) {
+        this.deviceState = deviceState;
+    }
+
+    public void unCheck() {
+        deviceState.unCheck(this);
+    }
+
+    public void checkNoNew() {
+        deviceState.checkNoNew(this);
+    }
+
+    public void checkHasNew() {
+        deviceState.checkHasNew(this);
+    }
+
+    public void downloading() {
+        deviceState.downloading(this);
+    }
+}
+</code></pre>
+<h3 id="具体设备状态类">具体设备状态类</h3>
+<p>具体的状态子类，实际上就是将原先 switch 或 if 的代码拆到具体的类中<br>
+未检测状态：</p>
+<pre><code>/**
+ * @version 1.0.0
+ * @author: Xinling Jing
+ * @date: 2021-03-16 22:26
+ */
+public class UnCheckState extends DeviceState {
+
+    @Override
+    public void unCheck() {
+        // do nothing
+        System.out.println(&quot;未检测&quot;);
+    }
+
+    @Override
+    public void checkNoNew() {
+        System.out.println(&quot;未检测 -&gt; 检测无新版本&quot;);
+        super.stateContext.setDeviceState(StateContext.UN_CHECK_STATE);
+    }
+
+    @Override
+    public void checkHasNew() {
+        System.out.println(&quot;未检测 -&gt; 检测有新版本&quot;);
+        stateContext.setDeviceState(StateContext.CHECK_HAS_NEW_STATE);
+    }
+
+    @Override
+    public void downloading() {
+        // do nothing
+        System.out.println(&quot;未检测 -X-&gt; 下载中&quot;);
+    }
+}
+</code></pre>
+<p>检测无新版本状态：</p>
+<pre><code>/**
+ * @version 1.0.0
+ * @author: Xinling Jing
+ * @date: 2021-03-16 22:26
+ */
+public class CheckNoNewState extends DeviceState {
+
+    @Override
+    public void unCheck() {
+        // do nothing
+        System.out.println(&quot;检测无新版本 -X-&gt; 未检测&quot;);
+    }
+
+    @Override
+    public void checkNoNew() {
+        // do nothing
+        System.out.println(&quot;检测无新版本&quot;);
+    }
+
+    @Override
+    public void checkHasNew() {
+        System.out.println(&quot;检测无新版本 -&gt; 检测有新版本&quot;);
+        stateContext.setDeviceState(StateContext.CHECK_HAS_NEW_STATE);
+    }
+
+    @Override
+    public void downloading() {
+        // do nothing
+        System.out.println(&quot;检测无新版本 -X-&gt; 检测有新版本&quot;);
+    }
+}
+</code></pre>
+<p>检测有新版本状态：</p>
+<pre><code>/**
+ * @version 1.0.0
+ * @author: Xinling Jing
+ * @date: 2021-03-16 22:26
+ */
+public class CheckHasNewState extends DeviceState {
+
+    @Override
+    public void unCheck() {
+        // do nothing
+        System.out.println(&quot;检测有新版本 -X-&gt; 未检测&quot;);
+    }
+
+    @Override
+    public void checkNoNew() {
+        System.out.println(&quot;检测有新版本 -X-&gt; 检测无新版本&quot;);
+        stateContext.setDeviceState(StateContext.CHECK_NO_NEW_STATE);
+    }
+
+    @Override
+    public void checkHasNew() {
+        // do nothing
+        System.out.println(&quot;检测有新版本&quot;);
+    }
+
+    @Override
+    public void downloading() {
+        System.out.println(&quot;检测有新版本 -&gt; 下载中&quot;);
+        stateContext.setDeviceState(StateContext.DOWNLOADING_STATE);
+    }
+}
+</code></pre>
+<p>下载中状态：</p>
+<pre><code>/**
+ * @author Xinling Jing
+ * @version 1.0.0
+ * @date 2021-03-15 16:02
+ */
+public class DownloadingState extends DeviceState {
+
+    @Override
+    public void unCheck() {
+        // do nothing
+        System.out.println(&quot;下载中 -X-&gt; 未检测&quot;);
+    }
+
+    @Override
+    public void checkNoNew() {
+        System.out.println(&quot;下载中 -&gt; 检测无新版本&quot;);
+        stateContext.setDeviceState(StateContext.CHECK_NO_NEW_STATE);
+    }
+
+    @Override
+    public void checkHasNew() {
+        System.out.println(&quot;下载中 -&gt; 检测有新版本&quot;);
+        stateContext.setDeviceState(StateContext.CHECK_HAS_NEW_STATE);
+    }
+
+    @Override
+    public void downloading() {
+        // do nothing
+        System.out.println(&quot;下载中&quot;);
+    }
+
+}
+</code></pre>
+<h3 id="客户端测试">客户端测试</h3>
+<pre><code>/**
+ * @version 1.0.0
+ * @author: Xinling Jing
+ * @date: 2021-03-16 22:24
+ */
+public class Client {
+
+    public static void main(String[] args) {
+        // 初使状态为未检测
+        //StateContext stateContext = new StateContext(new UnCheckState());
+        StateContext stateContext = new StateContext();
+
+        // 设置初使状态
+        stateContext.setDeviceState(StateContext.UN_CHECK_STATE);
+
+        // 过渡到检测无新版本状态
+        stateContext.checkNoNew();
+
+        // 过渡到检测有新版本状态
+        stateContext.checkHasNew();
+
+        // 过渡到未检测状态（应该过渡失败）
+        stateContext.unCheck();
+
+        // 过渡到下载中状态
+        stateContext.downloading();
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code>未检测 -&gt; 检测无新版本
+未检测 -&gt; 检测有新版本
+检测有新版本 -X-&gt; 未检测
+检测有新版本 -&gt; 下载中
+</code></pre>
+<p>到此我们就通过状态模式完成了代码改造，类图如下：<br>
+<img src="http://image.kuranado.com/blog/1616848179.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>这时候可能就有人要问了，如果要增加状态，那不还是要修改代码吗？？？<br>
+<img src="http://image.kuranado.com/blog/1616848190.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
+<p>说的没错，如果要增加状态，修改代码确实是不可避免的。但不使用状态模式的情况下，修改代码需要修改原有方法下的 switch 或 if 判断；使用状态模式的情况下，只需要增加对应的状态子类以及增加相应的方法就可以了，虽然在增加方法时，也需要改动原有的状态类，但原有方法并不需要做任何改动，也就是说，状态模式符合<strong>开闭原则</strong>。</p>
+<h2 id="状态模式缺点">状态模式缺点</h2>
+<p>每增加一种状态，就需要增加一个状态类，类膨胀也会让代码看起来更杂乱。常见的解决方法是将状态全部存到数据库中，比如工作流框架 Activiti 就是将状态存入数据库中，然后根据状态执行相应等操作。</p>
+<h2 id="状态模式与状态机">状态模式与状态机</h2>
+<p>说完了状态模式，就不得不提一下有限状态机。<br>
+状态模式需要针对业务场景编写具体代码，而状态机则更通用，只需要引入状态机框架，然后定义好状态和事件就可以做到状态扭转了，比自己手写状态模式更快捷。Spring 也提供了状态机实现，引入相关依赖，就可以快速开发业务代码。<a href="https://spring.io/projects/spring-statemachine#learn">Spring StateMachine 文档</a>。在这里也比较推荐大家使用状态机。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li>[有限状态机与状态模式]<br>
+(http://www.360doc.com/content/17/1113/19/15077656_703518498.shtml)</li>
+<li>《设计模式之禅》</li>
+</ul>
+
+                </div>
+            </article>
+        </div>
+
+        
+            <div class="next-post">
+                <div class="next gt-c-content-color-first">下一篇</div>
+                <a href="http://blog.kuranado.com/post/wai-guan-mo-shi-md/" class="post-title gt-a-link">
+                    外观模式.md
+                </a>
+            </div>
+        
+
+        
+
+        
+            
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js"></script>
+<script>
+    // md5.min.js
+    !function(n){
+        "use strict";
+        function d(n,t){var r=(65535&n)+(65535&t);return(n>>16)+(t>>16)+(r>>16)<<16|65535&r}
+        function f(n,t,r,e,o,u){return d((c=d(d(t,n),d(e,u)))<<(f=o)|c>>>32-f,r);var c,f}
+        function l(n,t,r,e,o,u,c){return f(t&r|~t&e,n,t,o,u,c)}
+        function v(n,t,r,e,o,u,c){return f(t&e|r&~e,n,t,o,u,c)}
+        function g(n,t,r,e,o,u,c){return f(t^r^e,n,t,o,u,c)}
+        function m(n,t,r,e,o,u,c){return f(r^(t|~e),n,t,o,u,c)}
+        function i(n,t){var r,e,o,u,c;n[t>>5]|=128<<t%32,n[14+(t+64>>>9<<4)]=t;var f=1732584193,i=-271733879,a=-1732584194,h=271733878;for(r=0;r<n.length;r+=16)f=l(e=f,o=i,u=a,c=h,n[r],7,-680876936),h=l(h,f,i,a,n[r+1],12,-389564586),a=l(a,h,f,i,n[r+2],17,606105819),i=l(i,a,h,f,n[r+3],22,-1044525330),f=l(f,i,a,h,n[r+4],7,-176418897),h=l(h,f,i,a,n[r+5],12,1200080426),a=l(a,h,f,i,n[r+6],17,-1473231341),i=l(i,a,h,f,n[r+7],22,-45705983),f=l(f,i,a,h,n[r+8],7,1770035416),h=l(h,f,i,a,n[r+9],12,-1958414417),a=l(a,h,f,i,n[r+10],17,-42063),i=l(i,a,h,f,n[r+11],22,-1990404162),f=l(f,i,a,h,n[r+12],7,1804603682),h=l(h,f,i,a,n[r+13],12,-40341101),a=l(a,h,f,i,n[r+14],17,-1502002290),f=v(f,i=l(i,a,h,f,n[r+15],22,1236535329),a,h,n[r+1],5,-165796510),h=v(h,f,i,a,n[r+6],9,-1069501632),a=v(a,h,f,i,n[r+11],14,643717713),i=v(i,a,h,f,n[r],20,-373897302),f=v(f,i,a,h,n[r+5],5,-701558691),h=v(h,f,i,a,n[r+10],9,38016083),a=v(a,h,f,i,n[r+15],14,-660478335),i=v(i,a,h,f,n[r+4],20,-405537848),f=v(f,i,a,h,n[r+9],5,568446438),h=v(h,f,i,a,n[r+14],9,-1019803690),a=v(a,h,f,i,n[r+3],14,-187363961),i=v(i,a,h,f,n[r+8],20,1163531501),f=v(f,i,a,h,n[r+13],5,-1444681467),h=v(h,f,i,a,n[r+2],9,-51403784),a=v(a,h,f,i,n[r+7],14,1735328473),f=g(f,i=v(i,a,h,f,n[r+12],20,-1926607734),a,h,n[r+5],4,-378558),h=g(h,f,i,a,n[r+8],11,-2022574463),a=g(a,h,f,i,n[r+11],16,1839030562),i=g(i,a,h,f,n[r+14],23,-35309556),f=g(f,i,a,h,n[r+1],4,-1530992060),h=g(h,f,i,a,n[r+4],11,1272893353),a=g(a,h,f,i,n[r+7],16,-155497632),i=g(i,a,h,f,n[r+10],23,-1094730640),f=g(f,i,a,h,n[r+13],4,681279174),h=g(h,f,i,a,n[r],11,-358537222),a=g(a,h,f,i,n[r+3],16,-722521979),i=g(i,a,h,f,n[r+6],23,76029189),f=g(f,i,a,h,n[r+9],4,-640364487),h=g(h,f,i,a,n[r+12],11,-421815835),a=g(a,h,f,i,n[r+15],16,530742520),f=m(f,i=g(i,a,h,f,n[r+2],23,-995338651),a,h,n[r],6,-198630844),h=m(h,f,i,a,n[r+7],10,1126891415),a=m(a,h,f,i,n[r+14],15,-1416354905),i=m(i,a,h,f,n[r+5],21,-57434055),f=m(f,i,a,h,n[r+12],6,1700485571),h=m(h,f,i,a,n[r+3],10,-1894986606),a=m(a,h,f,i,n[r+10],15,-1051523),i=m(i,a,h,f,n[r+1],21,-2054922799),f=m(f,i,a,h,n[r+8],6,1873313359),h=m(h,f,i,a,n[r+15],10,-30611744),a=m(a,h,f,i,n[r+6],15,-1560198380),i=m(i,a,h,f,n[r+13],21,1309151649),f=m(f,i,a,h,n[r+4],6,-145523070),h=m(h,f,i,a,n[r+11],10,-1120210379),a=m(a,h,f,i,n[r+2],15,718787259),i=m(i,a,h,f,n[r+9],21,-343485551),f=d(f,e),i=d(i,o),a=d(a,u),h=d(h,c);return[f,i,a,h]}
+        function a(n){var t,r="",e=32*n.length;for(t=0;t<e;t+=8)r+=String.fromCharCode(n[t>>5]>>>t%32&255);return r}
+        function h(n){var t,r=[];for(r[(n.length>>2)-1]=void 0,t=0;t<r.length;t+=1)r[t]=0;var e=8*n.length;for(t=0;t<e;t+=8)r[t>>5]|=(255&n.charCodeAt(t/8))<<t%32;return r}
+        function e(n){var t,r,e="0123456789abcdef",o="";for(r=0;r<n.length;r+=1)t=n.charCodeAt(r),o+=e.charAt(t>>>4&15)+e.charAt(15&t);return o}
+        function r(n){return unescape(encodeURIComponent(n))}
+        function o(n){return a(i(h(t=r(n)),8*t.length));var t}
+        function u(n,t){return function(n,t){var r,e,o=h(n),u=[],c=[];for(u[15]=c[15]=void 0,16<o.length&&(o=i(o,8*n.length)),r=0;r<16;r+=1)u[r]=909522486^o[r],c[r]=1549556828^o[r];return e=i(u.concat(h(t)),512+8*t.length),a(i(c.concat(e),640))}(r(n),r(t))}
+        function t(n,t,r){return t?r?u(t,n):e(u(t,n)):r?o(n):e(o(n))}
+        "function"==typeof define&&define.amd?define(function(){return t}):"object"==typeof module&&module.exports?module.exports=t:n.md5=t;
+    }(this);
+</script>
+
+
+<div id="gitalk-container"></div>
+
+<script>
+
+  var gitalk = new Gitalk({
+    clientID: 'd5112611bb77c8d6bb88',
+    clientSecret: 'b064af1dd2e63f211b8517f1a57d71c1efc01b8e',
+    repo: 'kuranado2.github.io',
+    owner: 'kuranado2',
+    admin: ['kuranado2'],
+    id: md5(location.pathname),      // Ensure uniqueness and length less than 50
+    distractionFreeMode: false       // Facebook-like distraction free mode
+  })
+
+  gitalk.render('gitalk-container')
+
+</script>
+
+            
+
+            
+        
+
+        
+
+        <div class="site-footer gt-c-content-color-first">
+    <div class="slogan gt-c-content-color-first">笔记/博客</div>
+    <div class="social-container">
+        
+            
+                <a href="https://github.com/KURANADO2" target="_blank">
+                    <i class="fab fa-github gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+            
+                <a href="https://www.zhihu.com/people/jing-xin-ling-32" target="_blank">
+                    <i class="fab fa-zhihu gt-c-content-color-first"></i>
+                </a>
+            
+        
+            
+        
+            
+        
+    </div>
+    <div class="footer-info">
+        @Copyright 2020 <a href="http://emoji.kuranado.com">表情包网站</a>
+    </div>
+    <div>
+        Theme by <a href="https://imhanjie.com/" target="_blank">imhanjie</a>, Powered by <a
+                href="https://github.com/getgridea/gridea" target="_blank">Gridea | <a href="http://blog.kuranado.com/atom.xml" target="_blank">RSS</a></a>
+    </div>
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+    </div>
+</div>
+</body>
+</html>
