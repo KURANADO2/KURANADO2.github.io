@@ -4,7 +4,7 @@
 <meta name="description" content=""/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<title>LeetCode - 1 两数之和 | KURANADO</title>
+<title>简单工厂模式.md | KURANADO</title>
 
 <link rel="shortcut icon" href="http://blog.kuranado.com/favicon.ico?v=1616923635853">
 
@@ -109,71 +109,273 @@
         <div class="post-detail gt-bg-theme-color-second">
             <article class="gt-post-content">
                 <h2 class="post-title">
-                    LeetCode - 1 两数之和
+                    简单工厂模式.md
                 </h2>
                 <div class="post-info">
                     <time class="post-time gt-c-content-color-first">
-                        · 2020-10-04 ·
+                        · 2021-03-28 ·
                     </time>
                     
-                        <a href="http://blog.kuranado.com/tag/tfVz-s3hI/" class="post-tags">
-                            # LeetCode
+                        <a href="http://blog.kuranado.com/tag/e80F3R9Pc/" class="post-tags">
+                            # 设计模式
                         </a>
                     
-                        <a href="http://blog.kuranado.com/tag/qjEtrVrzm/" class="post-tags">
-                            # Algorithm
+                        <a href="http://blog.kuranado.com/tag/prbxfSBgl/" class="post-tags">
+                            # Java
                         </a>
                     
                 </div>
                 <div class="post-content">
-                    <h2 id="1-两数之和"><a href="https://leetcode-cn.com/problems/two-sum/">1 两数之和</a> 2020年3月15日星期日</h2>
-<p>在 LeetCode 做的第一题，比起以前做的 OJ 系统，省去了编写繁琐、无脑的读取文件操作部分的代码，很人性化</p>
-<h3 id="解法一-92ms">解法一 92ms</h3>
-<p>暴力遍历</p>
-<pre><code class="language-java">class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        int[] result = new int[2];
-        for (int i = 0; i &lt; nums.length; i++) {
-            for (int j = i + 1; j &lt; nums.length; j++) {
-                if (nums[i] + nums[j] == target) {
-                    result[0] = i;
-                    result[1] = j;
-                    return result;
-                }
-            }
-        }
-        return result;
+                    <p>[TOC]</p>
+<p>现如今各家云厂商都推出了自己的对象存储产品，AWS S3、阿里云 OSS、腾讯云 COS、金山云 KS3 等等，数不胜数，开发者不再需要将文件存储到本地磁盘，也不再需要 FastDFS 等文件系统，直接使用对象存储提供的强大 SDK，就可以更高效、安全的管理文件。作为一家致力服务于汽车 OTA 升级的公司，每家车厂提供的对象存储资源都不同，如生产海外车型的 A 车厂会选用 S3，而做国内车型的 B 车厂则可能会选用 OSS。一套代码，如何优雅的接入不同对象存储便是我们今天要探讨的问题！</p>
+<!-- more -->
+<h2 id="栗子">栗子🌰</h2>
+<p>作如下假设：</p>
+<ul>
+<li>A 车厂需要使用 S3 对象存储</li>
+<li>B 车厂需要使用 OSS 对象存储</li>
+<li>C 车厂需要使用 COS 对象存储</li>
+</ul>
+<p>编写代码如下：</p>
+<h3 id="文件操作接口">文件操作接口</h3>
+<pre><code>import java.io.InputStream;
+
+/**
+ * 文件操作接口
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:25
+ */
+public interface FileApi {
+
+    /**
+     * 上传文件
+     *
+     * @param inputStream 文件输入流
+     * @param objectKey 文件路径
+     */
+    void uploadFile(InputStream inputStream, String objectKey);
+
+    /**
+     * 获取文件下载 Url
+     *
+     * @param objectKey 文件路径
+     * @return 下载 Url
+     */
+    String getUrl(String objectKey);
+}
+</code></pre>
+<h3 id="s3-文件操作实现类">S3 文件操作实现类</h3>
+<pre><code>import java.io.InputStream;
+
+/**
+ * AWS S3 对象存储文件操作实现
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:31
+ */
+public class S3FileApiImpl implements FileApi {
+
+    @Override
+    public void uploadFile(InputStream inputStream, String objectKey) {
+        System.out.println(&quot;文件已成功上传到 S3&quot;);
+    }
+
+    @Override
+    public String getUrl(String objectKey) {
+        return &quot;https://bucket.s3-website.us-west-2.amazonaws.com/&quot; + objectKey;
     }
 }
 </code></pre>
-<h4 id="时间复杂度">时间复杂度</h4>
-<p>O(n<sup>2</sup>)</p>
-<h4 id="空间复杂度">空间复杂度</h4>
-<p>O(1)</p>
-<h3 id="解法二-4ms">解法二 4ms</h3>
-<p>借助 Hash 表</p>
-<pre><code class="language-java">class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;(nums.length);
-        for (int i = 0; i &lt; nums.length; i++) {
-            int a = target - nums[i];
-            if (map.containsKey(a)) {
-                return new int[]{map.get(a), i};
-            }
-            map.put(nums[i], i);
-        }
-        throw new IllegalArgumentException();
+<p>为了示例简单，此处并没有真的把文件上传到对象存储，下同</p>
+<h3 id="oss-文件操作实现类">OSS 文件操作实现类</h3>
+<pre><code>import java.io.InputStream;
+
+/**
+ * 阿里 OSS 对象存储文件操作实现
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:26
+ */
+public class OssFileApiImpl implements FileApi {
+
+    @Override
+    public void uploadFile(InputStream inputStream, String objectKey) {
+        System.out.println(&quot;文件已成功上传到 OSS&quot;);
+    }
+
+    @Override
+    public String getUrl(String objectKey) {
+        return &quot;https://bucket.oss-cn-shanghai.aliyuncs.com/&quot; + objectKey;
     }
 }
 </code></pre>
-<h4 id="个人观点">个人观点</h4>
-<p>题目并没有明确提到给定数组中不会出现重复元素，但根据题意，如果真的有重复元素，那结果就可能会有多个，真的有重复数据，就会自动覆盖掉，代码仍可以返回其中一组答案，所以把数组元素当作 map 的 key 也是没有问题的</p>
-<h4 id="时间复杂度-2">时间复杂度</h4>
-<p>O(n)<br>
-遍历了包含有 n 个元素的列表一次。在表中进行的每次查找只花费 O(1) 的时间</p>
-<h4 id="空间复杂度-2">空间复杂度</h4>
-<p>O(n)<br>
-所需的额外空间取决于哈希表中存储的元素数量，最多存储 n 个元素</p>
+<h3 id="cos-文件操作实现类">COS 文件操作实现类</h3>
+<pre><code>import java.io.InputStream;
+
+/**
+ * 腾讯云 COS 对象存储文件操作实现
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:32
+ */
+public class CosFileApiImpl implements FileApi {
+
+    @Override
+    public void uploadFile(InputStream inputStream, String objectKey) {
+        System.out.println(&quot;文件已成功上传到 COS&quot;);
+    }
+
+    @Override
+    public String getUrl(String objectKey) {
+        return &quot;https://bucket.cos.ap-shanghai.myqcloud.com/&quot; + objectKey;
+    }
+}
+</code></pre>
+<h3 id="客户端测试">客户端测试</h3>
+<pre><code>/**
+ * 测试客户端
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:34
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        // 对象存储类型
+        String type = &quot;OSS&quot;;
+
+        FileApi fileApi = null;
+        switch (type.toUpperCase()) {
+            case &quot;S3&quot;:
+                fileApi = new S3FileApiImpl();
+                break;
+            case &quot;OSS&quot;:
+                fileApi = new OssFileApiImpl();
+                break;
+            case &quot;COS&quot;:
+                fileApi = new CosFileApiImpl();
+                break;
+            default:
+                break;
+        }
+
+        if (fileApi == null) {
+            System.out.println(&quot;文件操作实现类创建失败&quot;);
+            return;
+        }
+
+        String path = &quot;user/avatar/1234.png&quot;;
+        fileApi.uploadFile(null, path);
+        String downloadUrl = fileApi.getUrl(path);
+        System.out.println(&quot;文件下载 url: &quot; + downloadUrl);
+    }
+}
+</code></pre>
+<p>这里的对象存储类型 type，在实际开发中可以放到配置文件中，然后通过 <code>@Value</code> 注解注入，对于文章一开始的假设，为 A 车厂部署的代码，配置文件中就配置为 S3，B 车厂配置为 OSS，C 车厂则配置为 COS。</p>
+<p>输出结果：</p>
+<pre><code>文件已成功上传到 OSS
+文件下载 url: https://bucket.oss-cn-shanghai.aliyuncs.com/user/avatar/1234.png
+</code></pre>
+<p>这样一来，代码就完成啦！</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1616923542.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>先别高兴的太早。实际业务中往往不止一处地方需要获得文件操作接口，所以下面这段代码可能会重复出现多次：</p>
+<pre><code>FileApi fileApi = null;
+switch (type.toUpperCase()) {
+    case &quot;S3&quot;:
+        fileApi = new S3FileApiImpl();
+        break;
+    case &quot;OSS&quot;:
+        fileApi = new OssFileApiImpl();
+        break;
+    case &quot;COS&quot;:
+        fileApi = new CosFileApiImpl();
+        break;
+    default:
+        break;
+}
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1616923555.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>别着急嘛！使用简单工厂模式就可以轻松解决这个问题。既然称之为“简单”工厂模式，以大家的聪明才智，那肯定就是一学就会！</p>
+<h2 id="简单工厂模式">简单工厂模式</h2>
+<blockquote>
+<p>提供一个创建对象实例的功能，而无需关心其具体实现。被创建实例的类型可以是接口、抽象类，也可以是具体的类</p>
+</blockquote>
+<p>在 Java 中，接口的思想是封装隔离，模块外部的客户端却违背了这一点，因为客户端知道了所有的实现类。我们的代码只用到了接口的<strong>多态</strong>特性，接口最重要的<strong>封装隔离</strong>并没有体现出来。<br>
+既然<strong>模块外部不应该知道模块内部的细节，那我们就在模块内部新建一个简单工厂类</strong>，将原先位于客户端中的创建实例方法移动到简单工厂类当中，这样模块外部的客户端通过简单工厂类返回的接口对象，就可以拥有想要的功能。客户端将选择实现类的工作交给了简单工厂类，自己不再需要知道模块内部细节，也就不脱离封装隔离思想了</p>
+<h3 id="简单工厂结构图">简单工厂结构图</h3>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1616923566.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h3 id="简单工厂类">简单工厂类</h3>
+<pre><code>/**
+ * 文件操作实现类工厂
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:33
+ */
+public class FileFactory {
+
+    private FileFactory() {
+    }
+
+    /**
+     * 根据外部传入的存储类型，决定创建何种对象存储文件操作实现类
+     *
+     * @param type 存储类型
+     * @return 具体的对象存储实现类
+     */
+    public static FileApi createFileApi(String type) {
+        switch (type.toUpperCase()) {
+            case &quot;S3&quot;:
+                return new S3FileApiImpl();
+            case &quot;OSS&quot;:
+                return new OssFileApiImpl();
+            case &quot;COS&quot;:
+                return new CosFileApiImpl();
+            default:
+                return null;
+        }
+    }
+}
+</code></pre>
+<h3 id="客户端测试-2">客户端测试</h3>
+<pre><code>/**
+ * 测试客户端
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:34
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        // 对象存储类型
+        String type = &quot;OSS&quot;;
+        FileApi fileApi = FileFactory.createFileApi(type);
+
+        if (fileApi == null) {
+            System.out.println(&quot;文件操作实现类创建失败&quot;);
+            return;
+        }
+
+        String path = &quot;user/avatar/1234.png&quot;;
+        fileApi.uploadFile(null, path);
+        String downloadUrl = fileApi.getUrl(path);
+        System.out.println(&quot;文件下载 url: &quot; + downloadUrl);
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code>文件已成功上传到 OSS
+文件下载 url: https://bucket.oss-cn-shanghai.aliyuncs.com/user/avatar/1234.png
+</code></pre>
+<p>到此代码就改造完成了，即便有多个地方需要进行文件操作，都只需要执行 <code>FileApi fileApi = FileFactory.createFileApi(type);</code> 就可以获得具体实例，这样模块外部才算真正做到<strong>面向接口编程</strong></p>
+<h3 id="类结构图">类结构图</h3>
+<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1616923578.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="参考">参考</h2>
+<ul>
+<li>《研磨设计模式》</li>
+</ul>
 
                 </div>
             </article>
@@ -182,8 +384,8 @@
         
             <div class="next-post">
                 <div class="next gt-c-content-color-first">下一篇</div>
-                <a href="http://blog.kuranado.com/post/css-fu-dong-md/" class="post-title gt-a-link">
-                    CSS 浮动.md
+                <a href="http://blog.kuranado.com/post/zhuang-tai-mo-shi-md/" class="post-title gt-a-link">
+                    状态模式.md
                 </a>
             </div>
         

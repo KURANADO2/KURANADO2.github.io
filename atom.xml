@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://blog.kuranado.com</id>
     <title>KURANADO</title>
-    <updated>2021-03-27T12:32:30.849Z</updated>
+    <updated>2021-03-28T09:27:34.563Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://blog.kuranado.com"/>
     <link rel="self" href="http://blog.kuranado.com/atom.xml"/>
@@ -10,6 +10,267 @@
     <logo>http://blog.kuranado.com/images/avatar.png</logo>
     <icon>http://blog.kuranado.com/favicon.ico</icon>
     <rights>All rights reserved 2021, KURANADO</rights>
+    <entry>
+        <title type="html"><![CDATA[简单工厂模式.md]]></title>
+        <id>http://blog.kuranado.com/post/jian-dan-gong-han-mo-shi-md/</id>
+        <link href="http://blog.kuranado.com/post/jian-dan-gong-han-mo-shi-md/">
+        </link>
+        <updated>2021-03-28T09:22:46.000Z</updated>
+        <summary type="html"><![CDATA[<p>[TOC]</p>
+<p>现如今各家云厂商都推出了自己的对象存储产品，AWS S3、阿里云 OSS、腾讯云 COS、金山云 KS3 等等，数不胜数，开发者不再需要将文件存储到本地磁盘，也不再需要 FastDFS 等文件系统，直接使用对象存储提供的强大 SDK，就可以更高效、安全的管理文件。作为一家致力服务于汽车 OTA 升级的公司，每家车厂提供的对象存储资源都不同，如生产海外车型的 A 车厂会选用 S3，而做国内车型的 B 车厂则可能会选用 OSS。一套代码，如何优雅的接入不同对象存储便是我们今天要探讨的问题！</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>[TOC]</p>
+<p>现如今各家云厂商都推出了自己的对象存储产品，AWS S3、阿里云 OSS、腾讯云 COS、金山云 KS3 等等，数不胜数，开发者不再需要将文件存储到本地磁盘，也不再需要 FastDFS 等文件系统，直接使用对象存储提供的强大 SDK，就可以更高效、安全的管理文件。作为一家致力服务于汽车 OTA 升级的公司，每家车厂提供的对象存储资源都不同，如生产海外车型的 A 车厂会选用 S3，而做国内车型的 B 车厂则可能会选用 OSS。一套代码，如何优雅的接入不同对象存储便是我们今天要探讨的问题！</p>
+<!-- more -->
+<h2 id="栗子">栗子🌰</h2>
+<p>作如下假设：</p>
+<ul>
+<li>A 车厂需要使用 S3 对象存储</li>
+<li>B 车厂需要使用 OSS 对象存储</li>
+<li>C 车厂需要使用 COS 对象存储</li>
+</ul>
+<p>编写代码如下：</p>
+<h3 id="文件操作接口">文件操作接口</h3>
+<pre><code>import java.io.InputStream;
+
+/**
+ * 文件操作接口
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:25
+ */
+public interface FileApi {
+
+    /**
+     * 上传文件
+     *
+     * @param inputStream 文件输入流
+     * @param objectKey 文件路径
+     */
+    void uploadFile(InputStream inputStream, String objectKey);
+
+    /**
+     * 获取文件下载 Url
+     *
+     * @param objectKey 文件路径
+     * @return 下载 Url
+     */
+    String getUrl(String objectKey);
+}
+</code></pre>
+<h3 id="s3-文件操作实现类">S3 文件操作实现类</h3>
+<pre><code>import java.io.InputStream;
+
+/**
+ * AWS S3 对象存储文件操作实现
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:31
+ */
+public class S3FileApiImpl implements FileApi {
+
+    @Override
+    public void uploadFile(InputStream inputStream, String objectKey) {
+        System.out.println(&quot;文件已成功上传到 S3&quot;);
+    }
+
+    @Override
+    public String getUrl(String objectKey) {
+        return &quot;https://bucket.s3-website.us-west-2.amazonaws.com/&quot; + objectKey;
+    }
+}
+</code></pre>
+<p>为了示例简单，此处并没有真的把文件上传到对象存储，下同</p>
+<h3 id="oss-文件操作实现类">OSS 文件操作实现类</h3>
+<pre><code>import java.io.InputStream;
+
+/**
+ * 阿里 OSS 对象存储文件操作实现
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:26
+ */
+public class OssFileApiImpl implements FileApi {
+
+    @Override
+    public void uploadFile(InputStream inputStream, String objectKey) {
+        System.out.println(&quot;文件已成功上传到 OSS&quot;);
+    }
+
+    @Override
+    public String getUrl(String objectKey) {
+        return &quot;https://bucket.oss-cn-shanghai.aliyuncs.com/&quot; + objectKey;
+    }
+}
+</code></pre>
+<h3 id="cos-文件操作实现类">COS 文件操作实现类</h3>
+<pre><code>import java.io.InputStream;
+
+/**
+ * 腾讯云 COS 对象存储文件操作实现
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:32
+ */
+public class CosFileApiImpl implements FileApi {
+
+    @Override
+    public void uploadFile(InputStream inputStream, String objectKey) {
+        System.out.println(&quot;文件已成功上传到 COS&quot;);
+    }
+
+    @Override
+    public String getUrl(String objectKey) {
+        return &quot;https://bucket.cos.ap-shanghai.myqcloud.com/&quot; + objectKey;
+    }
+}
+</code></pre>
+<h3 id="客户端测试">客户端测试</h3>
+<pre><code>/**
+ * 测试客户端
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:34
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        // 对象存储类型
+        String type = &quot;OSS&quot;;
+
+        FileApi fileApi = null;
+        switch (type.toUpperCase()) {
+            case &quot;S3&quot;:
+                fileApi = new S3FileApiImpl();
+                break;
+            case &quot;OSS&quot;:
+                fileApi = new OssFileApiImpl();
+                break;
+            case &quot;COS&quot;:
+                fileApi = new CosFileApiImpl();
+                break;
+            default:
+                break;
+        }
+
+        if (fileApi == null) {
+            System.out.println(&quot;文件操作实现类创建失败&quot;);
+            return;
+        }
+
+        String path = &quot;user/avatar/1234.png&quot;;
+        fileApi.uploadFile(null, path);
+        String downloadUrl = fileApi.getUrl(path);
+        System.out.println(&quot;文件下载 url: &quot; + downloadUrl);
+    }
+}
+</code></pre>
+<p>这里的对象存储类型 type，在实际开发中可以放到配置文件中，然后通过 <code>@Value</code> 注解注入，对于文章一开始的假设，为 A 车厂部署的代码，配置文件中就配置为 S3，B 车厂配置为 OSS，C 车厂则配置为 COS。</p>
+<p>输出结果：</p>
+<pre><code>文件已成功上传到 OSS
+文件下载 url: https://bucket.oss-cn-shanghai.aliyuncs.com/user/avatar/1234.png
+</code></pre>
+<p>这样一来，代码就完成啦！</p>
+<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1616923542.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>先别高兴的太早。实际业务中往往不止一处地方需要获得文件操作接口，所以下面这段代码可能会重复出现多次：</p>
+<pre><code>FileApi fileApi = null;
+switch (type.toUpperCase()) {
+    case &quot;S3&quot;:
+        fileApi = new S3FileApiImpl();
+        break;
+    case &quot;OSS&quot;:
+        fileApi = new OssFileApiImpl();
+        break;
+    case &quot;COS&quot;:
+        fileApi = new CosFileApiImpl();
+        break;
+    default:
+        break;
+}
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1616923555.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<p>别着急嘛！使用简单工厂模式就可以轻松解决这个问题。既然称之为“简单”工厂模式，以大家的聪明才智，那肯定就是一学就会！</p>
+<h2 id="简单工厂模式">简单工厂模式</h2>
+<blockquote>
+<p>提供一个创建对象实例的功能，而无需关心其具体实现。被创建实例的类型可以是接口、抽象类，也可以是具体的类</p>
+</blockquote>
+<p>在 Java 中，接口的思想是封装隔离，模块外部的客户端却违背了这一点，因为客户端知道了所有的实现类。我们的代码只用到了接口的<strong>多态</strong>特性，接口最重要的<strong>封装隔离</strong>并没有体现出来。<br>
+既然<strong>模块外部不应该知道模块内部的细节，那我们就在模块内部新建一个简单工厂类</strong>，将原先位于客户端中的创建实例方法移动到简单工厂类当中，这样模块外部的客户端通过简单工厂类返回的接口对象，就可以拥有想要的功能。客户端将选择实现类的工作交给了简单工厂类，自己不再需要知道模块内部细节，也就不脱离封装隔离思想了</p>
+<h3 id="简单工厂结构图">简单工厂结构图</h3>
+<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1616923566.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h3 id="简单工厂类">简单工厂类</h3>
+<pre><code>/**
+ * 文件操作实现类工厂
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:33
+ */
+public class FileFactory {
+
+    private FileFactory() {
+    }
+
+    /**
+     * 根据外部传入的存储类型，决定创建何种对象存储文件操作实现类
+     *
+     * @param type 存储类型
+     * @return 具体的对象存储实现类
+     */
+    public static FileApi createFileApi(String type) {
+        switch (type.toUpperCase()) {
+            case &quot;S3&quot;:
+                return new S3FileApiImpl();
+            case &quot;OSS&quot;:
+                return new OssFileApiImpl();
+            case &quot;COS&quot;:
+                return new CosFileApiImpl();
+            default:
+                return null;
+        }
+    }
+}
+</code></pre>
+<h3 id="客户端测试-2">客户端测试</h3>
+<pre><code>/**
+ * 测试客户端
+ *
+ * @author Xinling Jing
+ * @date 2021-03-28 14:34
+ */
+public class Client {
+
+    public static void main(String[] args) {
+
+        // 对象存储类型
+        String type = &quot;OSS&quot;;
+        FileApi fileApi = FileFactory.createFileApi(type);
+
+        if (fileApi == null) {
+            System.out.println(&quot;文件操作实现类创建失败&quot;);
+            return;
+        }
+
+        String path = &quot;user/avatar/1234.png&quot;;
+        fileApi.uploadFile(null, path);
+        String downloadUrl = fileApi.getUrl(path);
+        System.out.println(&quot;文件下载 url: &quot; + downloadUrl);
+    }
+}
+</code></pre>
+<p>输出结果：</p>
+<pre><code>文件已成功上传到 OSS
+文件下载 url: https://bucket.oss-cn-shanghai.aliyuncs.com/user/avatar/1234.png
+</code></pre>
+<p>到此代码就改造完成了，即便有多个地方需要进行文件操作，都只需要执行 <code>FileApi fileApi = FileFactory.createFileApi(type);</code> 就可以获得具体实例，这样模块外部才算真正做到<strong>面向接口编程</strong></p>
+<h3 id="类结构图">类结构图</h3>
+<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1616923578.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
+<h2 id="参考">参考</h2>
+<ul>
+<li>《研磨设计模式》</li>
+</ul>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[状态模式.md]]></title>
         <id>http://blog.kuranado.com/post/zhuang-tai-mo-shi-md/</id>
@@ -570,8 +831,7 @@ public class Client {
 状态模式需要针对业务场景编写具体代码，而状态机则更通用，只需要引入状态机框架，然后定义好状态和事件就可以做到状态扭转了，比自己手写状态模式更快捷。Spring 也提供了状态机实现，引入相关依赖，就可以快速开发业务代码。<a href="https://spring.io/projects/spring-statemachine#learn">Spring StateMachine 文档</a>。在这里也比较推荐大家使用状态机。</p>
 <h2 id="参考">参考</h2>
 <ul>
-<li>[有限状态机与状态模式]<br>
-(http://www.360doc.com/content/17/1113/19/15077656_703518498.shtml)</li>
+<li><a href="http://www.360doc.com/content/17/1113/19/15077656_703518498.shtml">有限状态机与状态模式</a></li>
 <li>《设计模式之禅》</li>
 </ul>
 ]]></content>
@@ -2405,149 +2665,6 @@ div img:hover{
     }
 }
 </code></pre>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[常见正则示例.md]]></title>
-        <id>http://blog.kuranado.com/post/chang-jian-zheng-ze-shi-li-md/</id>
-        <link href="http://blog.kuranado.com/post/chang-jian-zheng-ze-shi-li-md/">
-        </link>
-        <updated>2020-10-22T13:21:38.000Z</updated>
-        <content type="html"><![CDATA[<h2 id="url">URL</h2>
-<p>简单写法：</p>
-<h3 id="表达式">表达式</h3>
-<pre><code>https?:\/\/[-\w.]+(:\d+)?(\/([\w\/_.]*)?)?
-</code></pre>
-<ul>
-<li><code>https?:\/\/</code> 匹配 <code>http://</code> 或 <code>https://</code></li>
-<li><code>[-\w.]+</code> 匹配主机名</li>
-<li><code>(:\d+)?</code> 匹配一个可选的端口号</li>
-<li><code>(\/([\w\/_.]*)?)?</code> 匹配路径</li>
-</ul>
-<h3 id="测试文本">测试文本</h3>
-<pre><code>https://www.forta.com/blog
-https://www.forta.com:80/blog/index.do
-http://www.forta.com
-http://ben:password@www.forta.com/
-http://localhost/index.php?username=1&amp;type=2
-http://localhost:8500
-</code></pre>
-<h3 id="匹配结果">匹配结果</h3>
-<figure data-type="image" tabindex="1"><img src="http://image.kuranado.com/blog/1603372932.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>虽然第四条和第五条匹配不正确，但该写法已经可以满足绝大部分使用场景了，如需要匹配的更精准，参考下面的写法：</p>
-<p>复杂写法：</p>
-<h3 id="表达式-2">表达式</h3>
-<pre><code>https?:\/\/(\w*:\w*@)?[-\w.]+(:\d+)?(\/([\w\/_.]*(\?\S+)?)?)?
-</code></pre>
-<ul>
-<li><code>(\w*:\w*@)?</code> 匹配 Url 中的用户名和密码</li>
-<li><code>(\?\S+)?</code> 匹配查询参数</li>
-</ul>
-<h3 id="匹配结果-2">匹配结果</h3>
-<figure data-type="image" tabindex="2"><img src="http://image.kuranado.com/blog/1603372958.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<p>这种写法虽然匹配的更精准，但性能上也会大打折扣</p>
-<hr>
-<h2 id="ip-地址">IP 地址</h2>
-<p>IP 地址范围为 0.0.0.0 ~ 255.255.255.255，总结如下：</p>
-<ol>
-<li>任意的 1 位或 2 位数字</li>
-<li>任意的以 1 开头的 3 位数字</li>
-<li>任意的以 2 开头，第二位数字在 0 到 4 之间的 3 位数字</li>
-<li>任意的以 25 开头，第三位数字在 0 到 5 之间的 3 位数字<br>
-很容易写出如下正则：</li>
-</ol>
-<pre><code>(((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))\.){3}((\d{1,2})|(1\d{2})|(2[0-4]\d)|(25[0-5]))
-</code></pre>
-<p>但这个正则却是错误的，如 IP 地址：<code>12.159.46.200</code> 的匹配结果如下图，最后的 0 无法被匹配，这是因为 <code>20</code> 已经被子表达式 <code>(\d{1, 2})</code> 匹配，并没有被 <code>(25[0-5])</code> 匹配<br>
-<img src="http://image.kuranado.com/blog/1603372978.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"><br>
-正确的写法如下：</p>
-<pre><code>((((25[0-5])\d)|(2[0-4]\d)|(1\d{2})|(\d{1,2}))\.){3}(((25[0-5])\d)|(2[0-4]\d)|(1\d{2})|(\d{1,2}))
-</code></pre>
-<p>匹配结果：<br>
-<img src="http://image.kuranado.com/blog/1603372987.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></p>
-<hr>
-<h2 id="邮箱地址">邮箱地址</h2>
-<h3 id="表达式-3">表达式</h3>
-<pre><code>(\w+\.)*\w+@(\w+\.)+[A-z]+
-</code></pre>
-<h3 id="测试文本-2">测试文本</h3>
-<pre><code>jing@163.com
-jing.xin@mail.kuranado.com
-</code></pre>
-<h3 id="匹配结果-3">匹配结果</h3>
-<figure data-type="image" tabindex="3"><img src="http://image.kuranado.com/blog/1603372998.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<hr>
-<h2 id="身份证号">身份证号</h2>
-<h3 id="表达式-4">表达式</h3>
-<pre><code>^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{4}$
-</code></pre>
-<h3 id="测试文本-3">测试文本</h3>
-<pre><code>322225199809020429
-</code></pre>
-<h2 id="手机号">手机号</h2>
-<h3 id="表达式-5">表达式</h3>
-<pre><code>^1(3|4|5|6|7|8|9)\d{9}$
-</code></pre>
-<h3 id="测试文本-4">测试文本</h3>
-<pre><code>18855465629
-</code></pre>
-<h2 id="html-注释">HTML 注释</h2>
-<h3 id="表达式-6">表达式</h3>
-<pre><code>&lt;!-{2,}.*?-{2,}&gt;
-</code></pre>
-<h3 id="测试文本-5">测试文本</h3>
-<pre><code>&lt;!-- comment --&gt;
-&lt;!---- -- comment -- -----&gt;
-</code></pre>
-<h3 id="匹配结果-4">匹配结果</h3>
-<figure data-type="image" tabindex="4"><img src="http://image.kuranado.com/blog/1603373014.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<hr>
-<h2 id="java-单行注释">Java 单行注释</h2>
-<h3 id="表达式-7">表达式</h3>
-<pre><code>\/\/.*
-</code></pre>
-<h3 id="测试文本-6">测试文本</h3>
-<pre><code>// comment
-</code></pre>
-<h3 id="匹配结果-5">匹配结果</h3>
-<figure data-type="image" tabindex="5"><img src="http://image.kuranado.com/blog/1603373023.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<hr>
-<h2 id="java-多行注释">Java 多行注释</h2>
-<h3 id="表达式-8">表达式</h3>
-<pre><code>/\*[\s\S]*?\*/
-</code></pre>
-<h3 id="测试文本-7">测试文本</h3>
-<pre><code>public class UpgradeEntity {
-    /**
-     * This field was generated by MyBatis Generator.
-     * This field corresponds to the database columnT_UPGRADE_TASK.ID
-     *
-     * @mbggenerated Wed Oct 14 14:39:23 CST 2020
-     */
-    private long id;
-
-    /**
-     * This field was generated by MyBatis Generator.
-     * This field corresponds to the database columnT_UPGRADE_TASK.UPGRADE_NAMES
-     *
-     * @mbggenerated Wed Oct 14 14:39:23 CST 2020
-     */
-    private String upgradeNames;
-
-    /**
-     * This field was generated by MyBatis Generator.
-     * This field corresponds to the database columnT_UPGRADE_TASK.UPGRADE_DESCRIPTION
-     *
-     * @mbggenerated Wed Oct 14 14:39:23 CST 2020
-     */
-    private String upgradeDescription;
-</code></pre>
-<h3 id="匹配结果-6">匹配结果</h3>
-<figure data-type="image" tabindex="6"><img src="http://image.kuranado.com/blog/1603373053.png?imageMogr2/thumbnail/!70p" alt="" loading="lazy"></figure>
-<h2 id="参考">参考</h2>
-<ul>
-<li>《正则表达式必知必会修订版》</li>
-</ul>
 ]]></content>
     </entry>
 </feed>
